@@ -12,17 +12,11 @@ export default function RSVPPage() {
   const [attendance, setAttendance] = useState<"yes" | "no">("yes");
 
   if (pageState === "password") {
-    return (
-      <PasswordGate
-        onAuthenticated={() => setPageState("form")}
-      />
-    );
+    return <PasswordGate onAuthenticated={() => setPageState("form")} />;
   }
 
   if (pageState === "success") {
-    return (
-      <SuccessMessage attendance={attendance} />
-    );
+    return <SuccessMessage attendance={attendance} />;
   }
 
   return (

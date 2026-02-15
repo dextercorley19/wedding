@@ -15,7 +15,10 @@ export default function GalleryPage() {
               <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
                 Gallery
               </a>
-              <a href="/rehearsal-dinner" className="text-sm hover:text-foreground/70 transition-colors">
+              <a
+                href="/rehearsal-dinner"
+                className="text-sm hover:text-foreground/70 transition-colors"
+              >
                 Rehearsal Dinner
               </a>
               <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
@@ -84,5 +87,5 @@ export default function GalleryPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

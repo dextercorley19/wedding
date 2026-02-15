@@ -7,7 +7,7 @@ To enable these rules on `main`, go to:
 
 - ✅ Require pull request reviews before merging (1 approval)
 - ✅ Require status checks to pass:
-  - `lint` 
+  - `lint`
   - `type-check`
   - `build`
 - ✅ Require branches to be up to date before merging

@@ -1,5 +1,5 @@
-import { Gift, ExternalLink } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Gift, ExternalLink } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function RegistryPage() {
   const registries = [
@@ -21,7 +21,7 @@ export default function RegistryPage() {
       url: "https://zola.com",
       icon: "💝",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,7 +39,10 @@ export default function RegistryPage() {
               <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
                 Gallery
               </a>
-              <a href="/rehearsal-dinner" className="text-sm hover:text-foreground/70 transition-colors">
+              <a
+                href="/rehearsal-dinner"
+                className="text-sm hover:text-foreground/70 transition-colors"
+              >
                 Rehearsal Dinner
               </a>
               <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
@@ -59,8 +62,8 @@ export default function RegistryPage() {
             <Gift className="w-16 h-16 mx-auto mb-6 text-muted-foreground" />
             <h1 className="font-serif text-5xl md:text-6xl mb-4">Registry</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift,
-              we've registered at the following stores.
+              Your presence at our wedding is the greatest gift of all. However, if you wish to
+              honor us with a gift, we've registered at the following stores.
             </p>
           </div>
 
@@ -91,12 +94,12 @@ export default function RegistryPage() {
           <div className="mt-16 p-8 bg-muted/30 rounded-lg text-center">
             <h3 className="font-serif text-2xl mb-4">Honeymoon Fund</h3>
             <p className="text-muted-foreground leading-relaxed">
-              We're also saving for our dream honeymoon to Japan. If you'd like to contribute, we've set up a honeymoon
-              fund through our Zola registry.
+              We're also saving for our dream honeymoon to Japan. If you'd like to contribute, we've
+              set up a honeymoon fund through our Zola registry.
             </p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import * as Label from "@radix-ui/react-label"
+import * as React from "react";
+import * as Label from "@radix-ui/react-label";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const LabelComponent = React.forwardRef<
   React.ElementRef<typeof Label.Root>,
@@ -18,7 +18,7 @@ const LabelComponent = React.forwardRef<
     )}
     {...props}
   />
-))
-LabelComponent.displayName = Label.Root.displayName
+));
+LabelComponent.displayName = Label.Root.displayName;
 
-export { LabelComponent as Label }
+export { LabelComponent as Label };
