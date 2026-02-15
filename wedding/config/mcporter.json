@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"],
+      "timeout": 60000
+    },
+    "clerk": {
+      "command": "npx",
+      "args": ["@clerk/clerk-mcp@latest", "mcp"],
+      "timeout": 30000
+    }
+  }
+}

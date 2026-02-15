@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Calendar, MapPin, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function Home() {
   return (
@@ -214,16 +215,24 @@ export default function Home() {
               <h3 className="font-serif text-2xl">Where to Stay</h3>
               <p className="text-muted-foreground leading-relaxed mb-4">We have room blocks at the following hotels:</p>
               <div className="space-y-4">
-                <div className="p-6 bg-background rounded-lg border">
-                  <h4 className="font-medium mb-2">Napa Valley Lodge</h4>
-                  <p className="text-sm text-muted-foreground mb-2">456 Main Street, Yountville, CA</p>
-                  <p className="text-sm text-muted-foreground">Book by May 15, 2025 | Group Code: SARAHMICHAEL</p>
-                </div>
-                <div className="p-6 bg-background rounded-lg border">
-                  <h4 className="font-medium mb-2">Valley Inn & Suites</h4>
-                  <p className="text-sm text-muted-foreground mb-2">789 Valley Road, Napa, CA</p>
-                  <p className="text-sm text-muted-foreground">Book by May 15, 2025 | Group Code: SARAHMICHAEL</p>
-                </div>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Napa Valley Lodge</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <p className="text-sm text-muted-foreground">456 Main Street, Yountville, CA</p>
+                    <p className="text-sm text-muted-foreground">Book by May 15, 2025 | Group Code: SARAHMICHAEL</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Valley Inn & Suites</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <p className="text-sm text-muted-foreground">789 Valley Road, Napa, CA</p>
+                    <p className="text-sm text-muted-foreground">Book by May 15, 2025 | Group Code: SARAHMICHAEL</p>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           </div>
