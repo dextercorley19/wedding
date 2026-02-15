@@ -1,21 +1,21 @@
-import type React from "react"
-import type { Metadata } from "next"
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
-import "./globals.css"
+import type React from "react";
+import type { Metadata } from "next";
+import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import "./globals.css";
 
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 const geistMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-})
+});
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
-})
+});
 
 export const metadata: Metadata = {
   title: "Sami & Dexter | June 15, 2025",
@@ -38,12 +38,12 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable} ${playfair.variable}`}>
@@ -52,5 +52,5 @@ export default function RootLayout({
         <Analytics />
       </body>
     </html>
-  )
+  );
 }

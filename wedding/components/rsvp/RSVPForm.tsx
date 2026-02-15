@@ -49,9 +49,7 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
       await submitRsvp(data);
       onSuccess();
     } catch (error) {
-      setSubmitError(
-        error instanceof Error ? error.message : "Failed to submit RSVP"
-      );
+      setSubmitError(error instanceof Error ? error.message : "Failed to submit RSVP");
     } finally {
       setIsSubmitting(false);
     }
@@ -65,16 +63,11 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
         <div className="container mx-auto px-4 max-w-2xl">
           <div className="text-center mb-12">
             <h1 className="font-serif text-5xl md:text-6xl mb-4">RSVP</h1>
-            <p className="text-lg text-muted-foreground">
-              Please respond by May 1, 2025
-            </p>
+            <p className="text-lg text-muted-foreground">Please respond by May 1, 2025</p>
           </div>
 
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className="space-y-8"
-            >
+            <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8">
               {/* Name */}
               <FormField
                 control={form.control}
@@ -83,11 +76,7 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
                   <FormItem>
                     <FormLabel>Full Name *</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="John Smith"
-                        {...field}
-                        disabled={isSubmitting}
-                      />
+                      <Input placeholder="John Smith" {...field} disabled={isSubmitting} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -129,19 +118,13 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
                       >
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="yes" id="yes" />
-                          <Label
-                            htmlFor="yes"
-                            className="font-normal cursor-pointer"
-                          >
+                          <Label htmlFor="yes" className="font-normal cursor-pointer">
                             Joyfully accepts
                           </Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="no" id="no" />
-                          <Label
-                            htmlFor="no"
-                            className="font-normal cursor-pointer"
-                          >
+                          <Label htmlFor="no" className="font-normal cursor-pointer">
                             Regretfully declines
                           </Label>
                         </div>
@@ -161,13 +144,7 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
                     <FormItem>
                       <FormLabel>Number of Guests *</FormLabel>
                       <FormControl>
-                        <Input
-                          type="number"
-                          min="1"
-                          max="10"
-                          {...field}
-                          disabled={isSubmitting}
-                        />
+                        <Input type="number" min="1" max="10" {...field} disabled={isSubmitting} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -221,12 +198,7 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
                 </Alert>
               )}
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting}
-                size="lg"
-              >
+              <Button type="submit" className="w-full" disabled={isSubmitting} size="lg">
                 {isSubmitting ? "Submitting..." : "Submit RSVP"}
               </Button>
             </form>

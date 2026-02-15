@@ -9,16 +9,10 @@ export function Navigation() {
             Sami & Dexter
           </a>
           <div className="flex items-center gap-6">
-            <a
-              href="/#details"
-              className="text-sm hover:text-foreground/70 transition-colors"
-            >
+            <a href="/#details" className="text-sm hover:text-foreground/70 transition-colors">
               Details
             </a>
-            <a
-              href="/gallery"
-              className="text-sm hover:text-foreground/70 transition-colors"
-            >
+            <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
               Gallery
             </a>
             <a
@@ -27,16 +21,10 @@ export function Navigation() {
             >
               Rehearsal Dinner
             </a>
-            <a
-              href="/rsvp"
-              className="text-sm hover:text-foreground/70 transition-colors"
-            >
+            <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
               RSVP
             </a>
-            <a
-              href="/registry"
-              className="text-sm hover:text-foreground/70 transition-colors"
-            >
+            <a href="/registry" className="text-sm hover:text-foreground/70 transition-colors">
               Registry
             </a>
           </div>

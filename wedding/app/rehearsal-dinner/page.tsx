@@ -1,27 +1,27 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Lock, MapPin, Clock, Calendar } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import type React from "react";
+import { useState } from "react";
+import { Lock, MapPin, Clock, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function RehearsalDinnerPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Simple password check - guests will have their unique password
     if (password === "wedding2025" || password.trim() !== "") {
-      setIsAuthenticated(true)
-      setError("")
+      setIsAuthenticated(true);
+      setError("");
     } else {
-      setError("Please enter your password")
+      setError("Please enter your password");
     }
-  }
+  };
 
   if (!isAuthenticated) {
     return (
@@ -40,7 +40,10 @@ export default function RehearsalDinnerPage() {
                 <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
                   Gallery
                 </a>
-                <a href="/rehearsal-dinner" className="text-sm hover:text-foreground/70 transition-colors">
+                <a
+                  href="/rehearsal-dinner"
+                  className="text-sm hover:text-foreground/70 transition-colors"
+                >
                   Rehearsal Dinner
                 </a>
                 <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
@@ -83,11 +86,13 @@ export default function RehearsalDinnerPage() {
             <p className="text-sm text-muted-foreground text-center mt-6">
               Your password was included in your rehearsal dinner invitation
             </p>
-            <p className="text-xs text-muted-foreground text-center mt-2">(Dev password: wedding2025)</p>
+            <p className="text-xs text-muted-foreground text-center mt-2">
+              (Dev password: wedding2025)
+            </p>
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -106,7 +111,10 @@ export default function RehearsalDinnerPage() {
               <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
                 Gallery
               </a>
-              <a href="/rehearsal-dinner" className="text-sm hover:text-foreground/70 transition-colors">
+              <a
+                href="/rehearsal-dinner"
+                className="text-sm hover:text-foreground/70 transition-colors"
+              >
                 Rehearsal Dinner
               </a>
               <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
@@ -146,7 +154,9 @@ export default function RehearsalDinnerPage() {
                   <div>
                     <h3 className="font-serif text-2xl mb-2">Time</h3>
                     <p className="text-muted-foreground">6:00 PM - 9:00 PM</p>
-                    <p className="text-sm text-muted-foreground mt-1">Cocktails at 6:00 PM, Dinner at 7:00 PM</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Cocktails at 6:00 PM, Dinner at 7:00 PM
+                    </p>
                   </div>
                 </div>
 
@@ -158,7 +168,11 @@ export default function RehearsalDinnerPage() {
                     <p className="text-sm text-muted-foreground">123 Harbor Drive</p>
                     <p className="text-sm text-muted-foreground mb-3">Maui, HI 96753</p>
                     <Button variant="outline" size="sm" asChild>
-                      <a href="https://maps.google.com/?q=Maui+Hawaii" target="_blank" rel="noopener noreferrer">
+                      <a
+                        href="https://maps.google.com/?q=Maui+Hawaii"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         Get Directions
                       </a>
                     </Button>
@@ -173,15 +187,16 @@ export default function RehearsalDinnerPage() {
                 <h3 className="font-serif text-2xl mb-4">Dress Code</h3>
                 <p className="text-muted-foreground">Resort Casual</p>
                 <p className="text-sm text-muted-foreground mt-2">
-                  Think sundresses, linen shirts, and comfortable footwear. The venue has a beautiful oceanfront patio.
+                  Think sundresses, linen shirts, and comfortable footwear. The venue has a
+                  beautiful oceanfront patio.
                 </p>
               </div>
 
               <div>
                 <h3 className="font-serif text-2xl mb-4">What to Expect</h3>
                 <p className="text-muted-foreground mb-3">
-                  Join us for an intimate evening with our closest family and friends as we celebrate the night before
-                  the wedding.
+                  Join us for an intimate evening with our closest family and friends as we
+                  celebrate the night before the wedding.
                 </p>
                 <ul className="space-y-2 text-sm text-muted-foreground">
                   <li>• Welcome cocktails and appetizers</li>
@@ -193,7 +208,9 @@ export default function RehearsalDinnerPage() {
 
               <div>
                 <h3 className="font-serif text-2xl mb-4">RSVP</h3>
-                <p className="text-muted-foreground mb-3">Please confirm your attendance by May 1, 2025</p>
+                <p className="text-muted-foreground mb-3">
+                  Please confirm your attendance by May 1, 2025
+                </p>
                 <Button asChild>
                   <a href="/rsvp">RSVP Now</a>
                 </Button>
@@ -205,12 +222,12 @@ export default function RehearsalDinnerPage() {
           <div className="mt-16 p-6 bg-muted/50 rounded-lg">
             <h3 className="font-serif text-xl mb-3">Questions?</h3>
             <p className="text-muted-foreground text-sm">
-              If you have any questions about the rehearsal dinner, please reach out to our wedding planner at
-              planner@example.com or call (555) 123-4567.
+              If you have any questions about the rehearsal dinner, please reach out to our wedding
+              planner at planner@example.com or call (555) 123-4567.
             </p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

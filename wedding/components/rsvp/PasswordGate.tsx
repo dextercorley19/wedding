@@ -17,7 +17,7 @@ export const PasswordGate: FC<PasswordGateProps> = ({ onAuthenticated }) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Fix: Only authenticate if password matches (was: || password.trim() !== "")
     if (password === process.env.NEXT_PUBLIC_RSVP_PASSWORD) {
       onAuthenticated();
@@ -37,9 +37,7 @@ export const PasswordGate: FC<PasswordGateProps> = ({ onAuthenticated }) => {
           <div className="text-center mb-8">
             <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
             <h1 className="font-serif text-4xl mb-2">RSVP</h1>
-            <p className="text-muted-foreground">
-              Please enter the password from your invitation
-            </p>
+            <p className="text-muted-foreground">Please enter the password from your invitation</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
