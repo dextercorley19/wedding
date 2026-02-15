@@ -229,7 +229,7 @@ export default function RSVPPage() {
             {/* Attendance */}
             <div className="space-y-3">
               <Label>Will you be attending? *</Label>
-              <RadioGroup value={formData.attendance} onValueChange={(value) => handleInputChange("attendance", value)}>
+              <RadioGroup value={formData.attendance} onValueChange={(value: string) => handleInputChange("attendance", value)}>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="yes" id="yes" />
                   <Label htmlFor="yes" className="font-normal cursor-pointer">
