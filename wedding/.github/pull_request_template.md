@@ -14,10 +14,6 @@ What does this PR do? (replace this)
 
 Closes #(issue number, if applicable)
 
-## Testing
-
-How did you test this? (replace this)
-
 ## Checklist
 
 - [ ] Code follows conventions in TYPESCRIPT-CONVENTIONS.md
