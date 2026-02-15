@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Form,
   FormControl,
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/form";
 import { submitRsvp } from "@/app/actions/submitRsvp";
 import { Navigation } from "@/components/common/Navigation";
+import { AlertCircle } from "lucide-react";
 
 interface RSVPFormProps {
   onSuccess: () => void;
@@ -212,9 +214,11 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
               />
 
               {submitError && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded text-red-700 text-sm">
-                  {submitError}
-                </div>
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Error</AlertTitle>
+                  <AlertDescription>{submitError}</AlertDescription>
+                </Alert>
               )}
 
               <Button
