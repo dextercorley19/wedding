@@ -71,9 +71,9 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Garden Estate</p>
-                      <p className="text-sm">123 Vineyard Lane</p>
-                      <p className="text-sm">Napa Valley, CA 94558</p>
+                      <p className="font-medium text-foreground">Newport Beach Country Club</p>
+                      <p className="text-sm">One Clubhouse Dr</p>
+                      <p className="text-sm">Newport Beach, CA 92660</p>
                     </div>
                   </div>
                 </div>
@@ -106,9 +106,9 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Garden Estate</p>
-                      <p className="text-sm">123 Vineyard Lane</p>
-                      <p className="text-sm">Napa Valley, CA 94558</p>
+                      <p className="font-medium text-foreground">Newport Beach Country Club</p>
+                      <p className="text-sm">One Clubhouse Dr</p>
+                      <p className="text-sm">Newport Beach, CA 92660</p>
                     </div>
                   </div>
                 </div>
