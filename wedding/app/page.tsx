@@ -36,7 +36,7 @@ export default function Home() {
         </div>
         <div className="relative text-center space-y-6 px-4 text-white">
           <h1 className="font-serif text-6xl md:text-8xl text-balance drop-shadow-lg">Sami & Dexter</h1>
-          <p className="text-xl md:text-2xl drop-shadow-md">June 15, 2025</p>
+          <p className="text-xl md:text-2xl drop-shadow-md">October 24, 2026</p>
           <p className="text-lg drop-shadow-md">We're getting married!</p>
           <Button asChild size="lg" className="mt-8">
             <Link href="/rsvp">RSVP Now</Link>
@@ -94,7 +94,7 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Saturday, June 15, 2025</p>
+                      <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -128,7 +128,7 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Saturday, June 15, 2025</p>
+                      <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -255,7 +255,7 @@ export default function Home() {
       <footer className="py-12 border-t">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
           <p>We can't wait to celebrate with you!</p>
-          <p className="mt-2">Sami & Dexter | June 15, 2025</p>
+          <p className="mt-2">Sami & Dexter | October 24, 2026</p>
         </div>
       </footer>
     </div>
