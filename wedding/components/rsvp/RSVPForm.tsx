@@ -153,8 +153,10 @@ export const RSVPForm = () => {
                     <FormLabel>Will you attend? *</FormLabel>
                     <FormControl>
                       <RadioGroup
-                        value={field.value}
-                        onValueChange={field.onChange}
+                        value={field.value || ""}
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
                       >
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="yes" id="yes" />
