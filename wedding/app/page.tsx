@@ -17,9 +17,6 @@ export default function Home() {
               <Link href="/#details" className="text-sm hover:text-foreground/70 transition-colors">
                 Details
               </Link>
-              <Link href="/rehearsal-dinner" className="text-sm hover:text-foreground/70 transition-colors">
-                Rehearsal Dinner
-              </Link>
               <Link href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
                 RSVP
               </Link>
