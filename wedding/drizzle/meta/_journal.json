@@ -8,6 +8,13 @@
       "when": 1771275602756,
       "tag": "0000_tricky_nextwave",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771277259435,
+      "tag": "0001_wise_garia",
+      "breakpoints": true
     }
   ]
 }

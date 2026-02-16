@@ -1,19 +1,13 @@
 "use server";
 
 import { db } from "@/db";
-import { rsvps, invites } from "@/db/schema";
+import { rsvps } from "@/db/schema";
 import { rsvpFormSchema } from "@/db/zod/schema";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
 
 export async function submitRsvp(data: unknown) {
   try {
-    // Extend schema to accept optional token
-    const extendedSchema = rsvpFormSchema.extend({
-      token: z.string().optional(),
-    });
-
-    const validated = extendedSchema.parse(data);
+    const validated = rsvpFormSchema.parse(data);
 
     // Map form data to database schema
     const dbData = {
@@ -27,44 +21,11 @@ export async function submitRsvp(data: unknown) {
       notes: validated.notes,
     };
 
-    // If token is provided, validate and link to invite
-    let inviteId: string | undefined;
-    if (validated.token) {
-      const [invite] = await db
-        .select()
-        .from(invites)
-        .where(eq(invites.token, validated.token))
-        .limit(1)
-        .execute();
-
-      if (!invite) {
-        throw new Error("Invalid invitation token");
-      }
-
-      if (invite.rsvpedAt) {
-        throw new Error("This invitation has already been used");
-      }
-
-      inviteId = invite.id;
-    }
-
     // Insert into database
     const [rsvp] = await db
       .insert(rsvps)
-      .values({
-        ...dbData,
-        inviteId,
-      })
+      .values(dbData)
       .returning();
-
-    // Mark invite as used if token was provided
-    if (inviteId) {
-      await db
-        .update(invites)
-        .set({ rsvpedAt: new Date() })
-        .where(eq(invites.id, inviteId))
-        .execute();
-    }
 
     console.log("RSVP saved:", rsvp.id);
 
