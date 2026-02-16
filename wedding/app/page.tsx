@@ -71,10 +71,10 @@ export default function Home() {
               <img src="/IMG_4371.JPG" alt="Proposal moment 1" className="w-full h-full object-cover" />
             </div>
             <div className="aspect-square bg-muted rounded-lg overflow-hidden">
-              <img src="/IMG_4372.JPG" alt="Proposal moment 2" className="w-full h-full object-cover" />
+              <img src="/IMG_4373.JPG" alt="Proposal moment 2" className="w-full h-full object-cover" />
             </div>
             <div className="aspect-square bg-muted rounded-lg overflow-hidden">
-              <img src="/IMG_4373.JPG" alt="Proposal moment 3" className="w-full h-full object-cover" />
+              <img src="/IMG_4372.JPG" alt="Proposal moment 3" className="w-full h-full object-cover" />
             </div>
           </div>
         </div>
