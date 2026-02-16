@@ -28,12 +28,10 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { guests: guestData } = generateInviteSchema.parse(body);
 
-    console.log(`Generating ${guestData.length} invites...`);
+    console.log(`[ADMIN] Generating ${guestData.length} invites...`);
+    console.log(`[ADMIN] DATABASE_URL exists:`, !!process.env.DATABASE_URL);
 
-    // Clear existing guests + invites (for demo)
-    await db.delete(guests);
-
-    // Insert guests
+    // Insert guests (don't delete - just add new ones)
     const insertedGuests = await db
       .insert(guests)
       .values(
@@ -48,7 +46,7 @@ export async function POST(request: Request) {
       )
       .returning();
 
-    console.log(`Inserted ${insertedGuests.length} guests`);
+    console.log(`[ADMIN] Inserted ${insertedGuests.length} guests`);
 
     // Generate invites with tokens
     const generatedInvites = await db
@@ -57,6 +55,7 @@ export async function POST(request: Request) {
         insertedGuests.map((guest) => {
           const token = uuidv4();
           const url = `${process.env.NEXT_PUBLIC_APP_URL}/rsvp?token=${token}`;
+          console.log(`[ADMIN] Generated token for ${guest.firstName}: ${token}`);
           return {
             guestId: guest.id,
             token,
@@ -66,7 +65,7 @@ export async function POST(request: Request) {
       )
       .returning();
 
-    console.log(`Generated ${generatedInvites.length} invites`);
+    console.log(`[ADMIN] Generated ${generatedInvites.length} invites`);
 
     return NextResponse.json(
       {
@@ -81,15 +80,18 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("[ADMIN] Error generating invites:", error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { error: "Invalid request", details: error.errors },
         { status: 400 }
       );
     }
-    console.error("Error generating invites:", error);
     return NextResponse.json(
-      { error: "Failed to generate invites" },
+      { 
+        error: "Failed to generate invites",
+        details: error instanceof Error ? error.message : String(error)
+      },
       { status: 500 }
     );
   }
