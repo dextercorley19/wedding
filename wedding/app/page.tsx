@@ -36,7 +36,7 @@ export default function Home() {
         </div>
         <div className="relative text-center space-y-6 px-4 text-white">
           <h1 className="font-serif text-6xl md:text-8xl text-balance drop-shadow-lg">Sami & Dexter</h1>
-          <p className="text-xl md:text-2xl drop-shadow-md">June 15, 2025</p>
+          <p className="text-xl md:text-2xl drop-shadow-md">October 24, 2026</p>
           <p className="text-lg drop-shadow-md">We're getting married!</p>
           <Button asChild size="lg" className="mt-8">
             <Link href="/rsvp">RSVP Now</Link>
@@ -94,19 +94,19 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Saturday, June 15, 2025</p>
+                      <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 mt-0.5 shrink-0" />
-                    <p>4:00 PM</p>
+                    <p>5:00 PM</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Garden Estate</p>
-                      <p className="text-sm">123 Vineyard Lane</p>
-                      <p className="text-sm">Napa Valley, CA 94558</p>
+                      <p className="font-medium text-foreground">Newport Beach Country Club</p>
+                      <p className="text-sm">One Clubhouse Dr</p>
+                      <p className="text-sm">Newport Beach, CA 92660</p>
                     </div>
                   </div>
                 </div>
@@ -128,19 +128,19 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Saturday, June 15, 2025</p>
+                      <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 mt-0.5 shrink-0" />
-                    <p>6:00 PM - 11:00 PM</p>
+                    <p>5:30 PM - 10:30 PM</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Garden Estate</p>
-                      <p className="text-sm">123 Vineyard Lane</p>
-                      <p className="text-sm">Napa Valley, CA 94558</p>
+                      <p className="font-medium text-foreground">Newport Beach Country Club</p>
+                      <p className="text-sm">One Clubhouse Dr</p>
+                      <p className="text-sm">Newport Beach, CA 92660</p>
                     </div>
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function Home() {
             <div className="max-w-2xl mx-auto space-y-6">
               <div className="flex gap-6">
                 <div className="w-24 shrink-0 text-right">
-                  <span className="font-medium">3:30 PM</span>
+                  <span className="font-medium">4:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-6">
                   <h4 className="font-medium mb-1">Guest Arrival</h4>
@@ -163,7 +163,7 @@ export default function Home() {
               </div>
               <div className="flex gap-6">
                 <div className="w-24 shrink-0 text-right">
-                  <span className="font-medium">4:00 PM</span>
+                  <span className="font-medium">5:00 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-6">
                   <h4 className="font-medium mb-1">Ceremony Begins</h4>
@@ -172,7 +172,7 @@ export default function Home() {
               </div>
               <div className="flex gap-6">
                 <div className="w-24 shrink-0 text-right">
-                  <span className="font-medium">5:00 PM</span>
+                  <span className="font-medium">5:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-6">
                   <h4 className="font-medium mb-1">Cocktail Hour</h4>
@@ -181,16 +181,16 @@ export default function Home() {
               </div>
               <div className="flex gap-6">
                 <div className="w-24 shrink-0 text-right">
-                  <span className="font-medium">6:00 PM</span>
+                  <span className="font-medium">6:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-6">
-                  <h4 className="font-medium mb-1">Reception & Dinner</h4>
-                  <p className="text-sm text-muted-foreground">Dinner service and toasts</p>
+                  <h4 className="font-medium mb-1">Dinner Service</h4>
+                  <p className="text-sm text-muted-foreground">Dinner and toasts</p>
                 </div>
               </div>
               <div className="flex gap-6">
                 <div className="w-24 shrink-0 text-right">
-                  <span className="font-medium">8:00 PM</span>
+                  <span className="font-medium">7:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-6">
                   <h4 className="font-medium mb-1">Dancing</h4>
@@ -199,7 +199,7 @@ export default function Home() {
               </div>
               <div className="flex gap-6">
                 <div className="w-24 shrink-0 text-right">
-                  <span className="font-medium">11:00 PM</span>
+                  <span className="font-medium">10:30 PM</span>
                 </div>
                 <div className="flex-1 pl-6">
                   <h4 className="font-medium mb-1">Send Off</h4>
@@ -219,8 +219,8 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="font-serif text-2xl">Getting There</h3>
               <p className="text-muted-foreground leading-relaxed">
-                The venue is located in beautiful Napa Valley, approximately 1 hour north of San Francisco. We recommend
-                flying into San Francisco International Airport (SFO) or Oakland International Airport (OAK).
+                The venue is located in beautiful Newport Beach, Orange County, approximately 1 hour south of Los Angeles. We recommend
+                flying into Los Angeles International Airport (LAX) or John Wayne Airport (SNA) in Orange County.
               </p>
             </div>
             <div className="space-y-4">
@@ -229,20 +229,29 @@ export default function Home() {
               <div className="space-y-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Napa Valley Lodge</CardTitle>
+                    <CardTitle className="text-lg">Balboa Bay Resort</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">456 Main Street, Yountville, CA</p>
-                    <p className="text-sm text-muted-foreground">Book by May 15, 2025 | Group Code: SARAHMICHAEL</p>
+                    <p className="text-sm text-muted-foreground">651 Yacht Club Drive, Newport Beach, CA 92663</p>
+                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Valley Inn & Suites</CardTitle>
+                    <CardTitle className="text-lg">Island Hotel Newport Beach</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">789 Valley Road, Napa, CA</p>
-                    <p className="text-sm text-muted-foreground">Book by May 15, 2025 | Group Code: SARAHMICHAEL</p>
+                    <p className="text-sm text-muted-foreground">690 Newport Center Drive, Newport Beach, CA 92660</p>
+                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Pelican Hill Resort</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <p className="text-sm text-muted-foreground">22551 Pelican Hill Road South, Newport Beach, CA 92657</p>
+                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
                   </CardContent>
                 </Card>
               </div>
@@ -255,7 +264,7 @@ export default function Home() {
       <footer className="py-12 border-t">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
           <p>We can't wait to celebrate with you!</p>
-          <p className="mt-2">Sami & Dexter | June 15, 2025</p>
+          <p className="mt-2">Sami & Dexter | October 24, 2026</p>
         </div>
       </footer>
     </div>
