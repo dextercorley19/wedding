@@ -29,9 +29,14 @@ export async function POST(request: Request) {
     const { guests: guestData } = generateInviteSchema.parse(body);
 
     console.log(`[ADMIN] Generating ${guestData.length} invites...`);
-    console.log(`[ADMIN] DATABASE_URL exists:`, !!process.env.DATABASE_URL);
 
-    // Insert guests (don't delete - just add new ones)
+    // Get the host from the request (works with any deployment URL)
+    const host = request.headers.get("host") || "localhost:3000";
+    const protocol = request.headers.get("x-forwarded-proto") || "http";
+    const baseUrl = `${protocol}://${host}`;
+    console.log(`[ADMIN] Base URL: ${baseUrl}`);
+
+    // Insert guests
     const insertedGuests = await db
       .insert(guests)
       .values(
@@ -54,7 +59,7 @@ export async function POST(request: Request) {
       .values(
         insertedGuests.map((guest) => {
           const token = uuidv4();
-          const url = `${process.env.NEXT_PUBLIC_APP_URL}/rsvp?token=${token}`;
+          const url = `${baseUrl}/rsvp?token=${token}`;
           console.log(`[ADMIN] Generated token for ${guest.firstName}: ${token}`);
           return {
             guestId: guest.id,
