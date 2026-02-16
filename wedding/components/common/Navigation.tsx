@@ -20,15 +20,6 @@ export function Navigation() {
             <a href="/#details" className="text-sm hover:text-foreground/70 transition-colors">
               Details
             </a>
-            <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
-              Gallery
-            </a>
-            <a
-              href="/rehearsal-dinner"
-              className="text-sm hover:text-foreground/70 transition-colors"
-            >
-              Rehearsal Dinner
-            </a>
             <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
               RSVP
             </a>
@@ -58,20 +49,6 @@ export function Navigation() {
               onClick={() => setMobileMenuOpen(false)}
             >
               Details
-            </a>
-            <a
-              href="/gallery"
-              className="block py-2 px-4 text-base hover:bg-muted rounded-md transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Gallery
-            </a>
-            <a
-              href="/rehearsal-dinner"
-              className="block py-2 px-4 text-base hover:bg-muted rounded-md transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Rehearsal Dinner
             </a>
             <a
               href="/rsvp"
