@@ -8,7 +8,7 @@ export default function RSVPPage() {
   const [authenticated, setAuthenticated] = useState(false);
 
   if (!authenticated) {
-    return <PasswordGate onSuccess={() => setAuthenticated(true)} />;
+    return <PasswordGate onAuthenticated={() => setAuthenticated(true)} />;
   }
 
   return (
