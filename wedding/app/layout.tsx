@@ -21,6 +21,11 @@ export const metadata: Metadata = {
   title: "Sami & Dexter | June 15, 2025",
   description: "Join us as we celebrate our wedding on June 15, 2025 in Maui",
   generator: "v0.app",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+  },
   icons: {
     icon: [
       {

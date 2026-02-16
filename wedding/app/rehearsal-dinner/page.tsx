@@ -6,6 +6,7 @@ import { Lock, MapPin, Clock, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Navigation } from "@/components/common/Navigation";
 
 export default function RehearsalDinnerPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -27,35 +28,7 @@ export default function RehearsalDinnerPage() {
     return (
       <div className="min-h-screen bg-background">
         {/* Navigation */}
-        <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <a href="/" className="font-serif text-xl">
-                Sami & Dexter
-              </a>
-              <div className="flex items-center gap-6">
-                <a href="/#details" className="text-sm hover:text-foreground/70 transition-colors">
-                  Details
-                </a>
-                <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
-                  Gallery
-                </a>
-                <a
-                  href="/rehearsal-dinner"
-                  className="text-sm hover:text-foreground/70 transition-colors"
-                >
-                  Rehearsal Dinner
-                </a>
-                <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
-                  RSVP
-                </a>
-                <a href="/registry" className="text-sm hover:text-foreground/70 transition-colors">
-                  Registry
-                </a>
-              </div>
-            </div>
-          </div>
-        </nav>
+        <Navigation />
 
         <div className="pt-24 pb-16 flex items-center justify-center min-h-screen">
           <div className="w-full max-w-md px-4">
@@ -98,35 +71,7 @@ export default function RehearsalDinnerPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <a href="/" className="font-serif text-xl">
-              Sami & Dexter
-            </a>
-            <div className="flex items-center gap-6">
-              <a href="/#details" className="text-sm hover:text-foreground/70 transition-colors">
-                Details
-              </a>
-              <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
-                Gallery
-              </a>
-              <a
-                href="/rehearsal-dinner"
-                className="text-sm hover:text-foreground/70 transition-colors"
-              >
-                Rehearsal Dinner
-              </a>
-              <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
-                RSVP
-              </a>
-              <a href="/registry" className="text-sm hover:text-foreground/70 transition-colors">
-                Registry
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Navigation />
 
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">
@@ -137,7 +82,7 @@ export default function RehearsalDinnerPage() {
           </div>
 
           {/* Main Content */}
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
             {/* Event Details */}
             <div className="space-y-8">
               <div>
