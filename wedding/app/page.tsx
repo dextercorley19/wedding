@@ -44,21 +44,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Our Story */}
-      <section id="our-story" className="py-24 bg-muted/30">
-        <div className="container mx-auto px-4 max-w-3xl text-center">
-          <h2 className="font-serif text-4xl md:text-5xl mb-8">Our Story</h2>
-          <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-            We met in the summer of 2019 at a mutual friend's gathering. What started as a conversation about our shared
-            love of adventure turned into countless memories together.
-          </p>
-          <p className="text-lg text-muted-foreground leading-relaxed">
-            Five years later, Dexter proposed during a beautiful sunset on the beach. We can't wait to celebrate this
-            next chapter with all of you.
-          </p>
-        </div>
-      </section>
-
       {/* Proposal Gallery */}
       <section className="py-24">
         <div className="container mx-auto px-4 max-w-5xl">
