@@ -1,34 +1,41 @@
 "use server";
 
-import { rsvpSchema, type RSVPData } from "@/lib/validators";
+import { db } from "@/db";
+import { rsvps } from "@/db/schema";
+import { rsvpFormSchema } from "@/db/zod/schema";
+import { z } from "zod";
 
-export async function submitRsvp(data: RSVPData) {
-  // Validate input
-  const validated = rsvpSchema.parse(data);
-
+export async function submitRsvp(data: unknown) {
   try {
-    // TODO: Save to database when Drizzle schema is set up
-    // For now, just log to console
-    console.log("RSVP submitted:", validated);
+    // Validate input with form schema
+    const validated = rsvpFormSchema.parse(data);
 
-    // In the future:
-    // const [rsvp] = await db
-    //   .insert(rsvps)
-    //   .values({
-    //     name: validated.name,
-    //     email: validated.email,
-    //     attendance: validated.attendance,
-    //     guestCount: validated.guestCount,
-    //     dietaryRestrictions: validated.dietaryRestrictions,
-    //     song: validated.song,
-    //     submittedAt: new Date(),
-    //   })
-    //   .returning();
-    //
-    // return rsvp;
+    // Map form data to database schema
+    const dbData = {
+      firstName: validated.firstName,
+      lastName: validated.lastName,
+      email: validated.email,
+      attending: validated.attendance === "yes",
+      numGuests: String(validated.guestCount),
+      dietaryRestrictions: validated.dietaryRestrictions,
+      allergies: validated.allergies,
+      notes: validated.notes,
+    };
 
-    return { success: true, data: validated };
+    // Insert into database
+    const [rsvp] = await db
+      .insert(rsvps)
+      .values(dbData)
+      .returning();
+
+    console.log("RSVP saved:", rsvp.id);
+
+    return { success: true, data: rsvp };
   } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.error("Validation error:", error.errors);
+      throw new Error("Invalid RSVP data");
+    }
     console.error("RSVP submission error:", error);
     throw new Error("Failed to submit RSVP");
   }

@@ -3,7 +3,7 @@
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { rsvpSchema, type RSVPData } from "@/lib/validators";
+import { rsvpFormSchema, type RSVPFormInput } from "@/db/zod/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -30,23 +30,39 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
-  const form = useForm<RSVPData>({
-    resolver: zodResolver(rsvpSchema),
+  const form = useForm<RSVPFormInput>({
+    resolver: zodResolver(rsvpFormSchema),
     defaultValues: {
       name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       attendance: undefined,
       guestCount: 1,
       dietaryRestrictions: "",
-      song: "",
+      allergies: "",
+      notes: "",
     },
   });
 
-  const handleSubmit = async (data: RSVPData) => {
+  const handleSubmit = async (data: RSVPFormInput) => {
     try {
       setIsSubmitting(true);
       setSubmitError("");
-      await submitRsvp(data);
+
+      // Prepare data for server action
+      const submitData = {
+        firstName: data.firstName || data.name?.split(" ")[0] || "",
+        lastName: data.lastName || data.name?.split(" ").slice(1).join(" ") || "",
+        email: data.email,
+        attendance: data.attendance,
+        guestCount: data.guestCount,
+        dietaryRestrictions: data.dietaryRestrictions,
+        allergies: data.allergies,
+        notes: data.notes,
+      };
+
+      await submitRsvp(submitData);
       onSuccess();
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Failed to submit RSVP");
@@ -144,7 +160,13 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
                     <FormItem>
                       <FormLabel>Number of Guests *</FormLabel>
                       <FormControl>
-                        <Input type="number" min="1" max="10" {...field} disabled={isSubmitting} />
+                        <Input
+                          type="number"
+                          min="1"
+                          max="10"
+                          {...field}
+                          disabled={isSubmitting}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -171,16 +193,35 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
                 )}
               />
 
-              {/* Song Request */}
+              {/* Allergies */}
               <FormField
                 control={form.control}
-                name="song"
+                name="allergies"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Song Request</FormLabel>
+                    <FormLabel>Allergies</FormLabel>
                     <FormControl>
                       <Textarea
-                        placeholder="Any song requests for the reception?"
+                        placeholder="Any allergies we should know about?"
+                        {...field}
+                        disabled={isSubmitting}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Notes */}
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Additional Notes</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Any other comments?"
                         {...field}
                         disabled={isSubmitting}
                       />
