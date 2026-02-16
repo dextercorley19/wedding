@@ -17,9 +17,6 @@ export default function Home() {
               <Link href="/#details" className="text-sm hover:text-foreground/70 transition-colors">
                 Details
               </Link>
-              <Link href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
-                Gallery
-              </Link>
               <Link href="/rehearsal-dinner" className="text-sm hover:text-foreground/70 transition-colors">
                 Rehearsal Dinner
               </Link>
@@ -37,7 +34,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center">
         <div className="absolute inset-0">
-          <img src="/beach-proposal.jpg" alt="Beach proposal" className="w-full h-full object-cover" />
+          <img src="/IMG_4370 (2).jpg" alt="Wedding hero" className="w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/30" />
         </div>
         <div className="relative text-center space-y-6 px-4 text-white">
@@ -51,7 +48,7 @@ export default function Home() {
       </section>
 
       {/* Our Story */}
-      <section className="py-24 bg-muted/30">
+      <section id="our-story" className="py-24 bg-muted/30">
         <div className="container mx-auto px-4 max-w-3xl text-center">
           <h2 className="font-serif text-4xl md:text-5xl mb-8">Our Story</h2>
           <p className="text-lg text-muted-foreground leading-relaxed mb-6">
@@ -62,6 +59,24 @@ export default function Home() {
             Five years later, Dexter proposed during a beautiful sunset on the beach. We can't wait to celebrate this
             next chapter with all of you.
           </p>
+        </div>
+      </section>
+
+      {/* Proposal Gallery */}
+      <section className="py-24">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <h2 className="font-serif text-4xl md:text-5xl text-center mb-16">The Proposal</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="aspect-square bg-muted rounded-lg overflow-hidden">
+              <img src="/IMG_4371.JPG" alt="Proposal moment 1" className="w-full h-full object-cover" />
+            </div>
+            <div className="aspect-square bg-muted rounded-lg overflow-hidden">
+              <img src="/IMG_4372.JPG" alt="Proposal moment 2" className="w-full h-full object-cover" />
+            </div>
+            <div className="aspect-square bg-muted rounded-lg overflow-hidden">
+              <img src="/IMG_4373.JPG" alt="Proposal moment 3" className="w-full h-full object-cover" />
+            </div>
+          </div>
         </div>
       </section>
 
