@@ -89,7 +89,7 @@ export default function Home() {
             {/* Ceremony */}
             <div className="space-y-6">
               <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                <img src="/elegant-wedding-venue.png" alt="Ceremony venue" className="w-full h-full object-cover" />
+                <img src="/27_ceremony-area-Newport-Beach-Country-Club-wedding-photographer.jpg" alt="Ceremony venue" className="w-full h-full object-cover" />
               </div>
               <div className="space-y-4">
                 <h3 className="font-serif text-2xl">Ceremony</h3>
@@ -120,7 +120,7 @@ export default function Home() {
             <div className="space-y-6">
               <div className="aspect-video bg-muted rounded-lg overflow-hidden">
                 <img
-                  src="/elegant-wedding-reception.png"
+                  src="/34135813_1738752159505266_6750061028635049984_o.jpg"
                   alt="Reception venue"
                   className="w-full h-full object-cover"
                 />
