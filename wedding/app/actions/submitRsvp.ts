@@ -8,58 +8,67 @@ import { eq, and } from "drizzle-orm";
 
 export async function submitRsvp(data: unknown) {
   try {
-    const validated = rsvpFormSchema.parse(data);
+    // Accept array of RSVPs
+    const dataArray = Array.isArray(data) ? data : [data];
+    const validated = z.array(rsvpFormSchema).parse(dataArray);
 
-    // Check for duplicate email
-    const emailExists = await db
-      .select()
-      .from(rsvps)
-      .where(eq(rsvps.email, validated.email))
-      .limit(1)
-      .execute();
+    const results = [];
 
-    if (emailExists.length > 0) {
-      throw new Error("An RSVP with this email address already exists");
-    }
+    for (const entry of validated) {
+      // Check for duplicate email
+      const emailExists = await db
+        .select()
+        .from(rsvps)
+        .where(eq(rsvps.email, entry.email))
+        .limit(1)
+        .execute();
 
-    // Check for duplicate name combination
-    const nameExists = await db
-      .select()
-      .from(rsvps)
-      .where(
-        and(
-          eq(rsvps.firstName, validated.firstName),
-          eq(rsvps.lastName, validated.lastName)
+      if (emailExists.length > 0) {
+        throw new Error(`An RSVP with email "${entry.email}" already exists`);
+      }
+
+      // Check for duplicate name combination
+      const nameExists = await db
+        .select()
+        .from(rsvps)
+        .where(
+          and(
+            eq(rsvps.firstName, entry.firstName),
+            eq(rsvps.lastName, entry.lastName)
+          )
         )
-      )
-      .limit(1)
-      .execute();
+        .limit(1)
+        .execute();
 
-    if (nameExists.length > 0) {
-      throw new Error("An RSVP for this person already exists");
+      if (nameExists.length > 0) {
+        throw new Error(
+          `An RSVP for ${entry.firstName} ${entry.lastName} already exists`
+        );
+      }
+
+      // Map form data to database schema
+      const dbData = {
+        firstName: entry.firstName,
+        lastName: entry.lastName,
+        email: entry.email,
+        attending: entry.attendance === "yes",
+        numGuests: null,
+        dietaryRestrictions: null,
+        allergies: null,
+        notes: null,
+      };
+
+      // Insert into database
+      const [rsvp] = await db
+        .insert(rsvps)
+        .values(dbData)
+        .returning();
+
+      results.push(rsvp);
+      console.log("RSVP saved:", rsvp.id);
     }
 
-    // Map form data to database schema
-    const dbData = {
-      firstName: validated.firstName,
-      lastName: validated.lastName,
-      email: validated.email,
-      attending: validated.attendance === "yes",
-      numGuests: null, // No longer used
-      dietaryRestrictions: validated.dietaryRestrictions,
-      allergies: validated.allergies,
-      notes: validated.notes,
-    };
-
-    // Insert into database
-    const [rsvp] = await db
-      .insert(rsvps)
-      .values(dbData)
-      .returning();
-
-    console.log("RSVP saved:", rsvp.id);
-
-    return { success: true, data: rsvp };
+    return { success: true, data: results };
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error("Validation error:", error.errors);

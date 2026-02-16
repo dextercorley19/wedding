@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
   Form,
@@ -20,13 +19,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { submitRsvp } from "@/app/actions/submitRsvp";
-import { AlertCircle, CheckCircle } from "lucide-react";
+import { AlertCircle, CheckCircle, X } from "lucide-react";
 
 export const RSVPForm = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [people, setPeople] = useState<RSVPFormInput[]>([]);
 
   const form = useForm<RSVPFormInput>({
     resolver: zodResolver(rsvpFormSchema),
@@ -35,26 +35,33 @@ export const RSVPForm = () => {
       lastName: "",
       email: "",
       attendance: undefined,
-      dietaryRestrictions: "",
-      allergies: "",
-      notes: "",
     },
   });
 
-  const handleSubmit = async (data: RSVPFormInput) => {
+  const handleAddPerson = async () => {
+    const isValid = await form.trigger();
+    if (!isValid) return;
+
+    const data = form.getValues();
+    setPeople([...people, data]);
+    form.reset();
+  };
+
+  const removePerson = (index: number) => {
+    setPeople(people.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async () => {
+    if (people.length === 0) {
+      setSubmitError("Please add at least one person");
+      return;
+    }
+
     try {
       setIsSubmitting(true);
       setSubmitError("");
 
-      await submitRsvp({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        attendance: data.attendance,
-        dietaryRestrictions: data.dietaryRestrictions,
-        allergies: data.allergies,
-        notes: data.notes,
-      });
+      await submitRsvp(people);
 
       setSubmitted(true);
 
@@ -85,146 +92,145 @@ export const RSVPForm = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-8 bg-white p-8 rounded-lg shadow-sm">
-          {/* Name */}
-          <div className="grid grid-cols-2 gap-4">
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Name *</FormLabel>
-                  <FormControl>
-                    <Input placeholder="First" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name *</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Last" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
+      <div className="space-y-8">
+        {/* Form to add people */}
+        <div className="bg-white p-8 rounded-lg shadow-sm">
+          <h2 className="text-2xl font-serif mb-6">Add Guest</h2>
 
-          {/* Email */}
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email *</FormLabel>
-                <FormControl>
-                  <Input type="email" placeholder="you@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <Form {...form}>
+            <form className="space-y-4">
+              {/* Name */}
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="firstName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Name *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="First" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="lastName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last Name *</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Last" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-          {/* Attendance */}
-          <FormField
-            control={form.control}
-            name="attendance"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Will you attend? *</FormLabel>
-                <FormControl>
-                  <RadioGroup value={field.value} onValueChange={field.onChange}>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="yes" id="yes" />
-                      <Label htmlFor="yes">Yes, I'll be there!</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="no" id="no" />
-                      <Label htmlFor="no">Sorry, I can't make it</Label>
-                    </div>
-                  </RadioGroup>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              {/* Email */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email *</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="you@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          {/* Dietary Restrictions */}
-          <FormField
-            control={form.control}
-            name="dietaryRestrictions"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Dietary restrictions</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g., Vegetarian, Vegan, Gluten-free" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              {/* Attendance */}
+              <FormField
+                control={form.control}
+                name="attendance"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Will you attend? *</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="yes" id="yes" />
+                          <Label htmlFor="yes">Yes, I'll be there!</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="no" id="no" />
+                          <Label htmlFor="no">Sorry, I can't make it</Label>
+                        </div>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-          {/* Allergies */}
-          <FormField
-            control={form.control}
-            name="allergies"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Allergies</FormLabel>
-                <FormControl>
-                  <Input placeholder="e.g., Peanuts, Shellfish, Dairy" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+              <Button
+                type="button"
+                onClick={handleAddPerson}
+                className="w-full"
+              >
+                Add Person
+              </Button>
+            </form>
+          </Form>
+        </div>
 
-          {/* Notes */}
-          <FormField
-            control={form.control}
-            name="notes"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Any additional notes?</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Tell us anything else we should know!" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {submitError && (
-            <Alert variant="destructive">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{submitError}</AlertDescription>
-            </Alert>
-          )}
-
+        {/* Display added people */}
+        {people.length > 0 && (
           <div className="space-y-3">
-            <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Submit RSVP"}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              size="lg"
-              className="w-full"
-              onClick={() => form.reset()}
-            >
-              RSVP for Someone Else
-            </Button>
+            <h2 className="text-2xl font-serif">Added Guests ({people.length})</h2>
+            {people.map((person, index) => (
+              <div
+                key={index}
+                className="bg-white p-4 rounded-lg shadow-sm flex items-center justify-between"
+              >
+                <div>
+                  <p className="font-semibold">
+                    {person.firstName} {person.lastName}
+                  </p>
+                  <p className="text-sm text-muted-foreground">{person.email}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Attending: {person.attendance === "yes" ? "Yes" : "No"}
+                  </p>
+                </div>
+                <button
+                  onClick={() => removePerson(index)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            ))}
           </div>
-        </form>
-      </Form>
+        )}
+
+        {submitError && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{submitError}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Submit button - only show when people are added */}
+        {people.length > 0 && (
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            size="lg"
+            className="w-full"
+          >
+            {isSubmitting ? "Submitting..." : "Submit All RSVPs"}
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
