@@ -184,6 +184,8 @@ Jane, Smith, jane@example.com"
                     ref={(el) => {
                       if (el) canvasRefs.current[invite.id] = el;
                     }}
+                    width={200}
+                    height={200}
                     className="border"
                   />
 
