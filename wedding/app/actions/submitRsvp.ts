@@ -4,7 +4,6 @@ import { db } from "@/db";
 import { rsvps } from "@/db/schema";
 import { rsvpFormSchema } from "@/db/zod/schema";
 import { z } from "zod";
-import { eq, and } from "drizzle-orm";
 
 export async function submitRsvp(data: unknown) {
   try {
@@ -15,37 +14,6 @@ export async function submitRsvp(data: unknown) {
     const results = [];
 
     for (const entry of validated) {
-      // Check for duplicate email
-      const emailExists = await db
-        .select()
-        .from(rsvps)
-        .where(eq(rsvps.email, entry.email))
-        .limit(1)
-        .execute();
-
-      if (emailExists.length > 0) {
-        throw new Error(`An RSVP with email "${entry.email}" already exists`);
-      }
-
-      // Check for duplicate name combination
-      const nameExists = await db
-        .select()
-        .from(rsvps)
-        .where(
-          and(
-            eq(rsvps.firstName, entry.firstName),
-            eq(rsvps.lastName, entry.lastName)
-          )
-        )
-        .limit(1)
-        .execute();
-
-      if (nameExists.length > 0) {
-        throw new Error(
-          `An RSVP for ${entry.firstName} ${entry.lastName} already exists`
-        );
-      }
-
       // Map form data to database schema
       const dbData = {
         firstName: entry.firstName,
@@ -54,14 +22,24 @@ export async function submitRsvp(data: unknown) {
         attending: entry.attendance === "yes",
       };
 
-      // Insert into database
-      const [rsvp] = await db
-        .insert(rsvps)
-        .values(dbData)
-        .returning();
+      try {
+        // Insert into database (unique constraint will be enforced by DB)
+        const [rsvp] = await db
+          .insert(rsvps)
+          .values(dbData)
+          .returning();
 
-      results.push(rsvp);
-      console.log("RSVP saved:", rsvp.id);
+        results.push(rsvp);
+        console.log("RSVP saved:", rsvp.id);
+      } catch (error) {
+        // Handle unique constraint violation
+        if (error instanceof Error && error.message.includes("unique")) {
+          throw new Error(
+            `An RSVP for ${entry.firstName} ${entry.lastName} (${entry.email}) already exists`
+          );
+        }
+        throw error;
+      }
     }
 
     return { success: true, data: results };

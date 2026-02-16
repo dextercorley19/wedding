@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "rsvps_name_email_unique" ON "rsvps" USING btree ("first_name","last_name","email");
