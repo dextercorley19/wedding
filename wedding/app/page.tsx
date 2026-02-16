@@ -199,7 +199,7 @@ export default function Home() {
               </div>
               <div className="flex gap-6">
                 <div className="w-24 shrink-0 text-right">
-                  <span className="font-medium">11:00 PM</span>
+                  <span className="font-medium">10:30 PM</span>
                 </div>
                 <div className="flex-1 pl-6">
                   <h4 className="font-medium mb-1">Send Off</h4>
