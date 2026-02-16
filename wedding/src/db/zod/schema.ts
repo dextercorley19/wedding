@@ -6,7 +6,6 @@ export const rsvpFormSchema = z.object({
   lastName: z.string().min(1, "Last name is required").max(255),
   email: z.string().email("Invalid email address").max(255),
   attendance: z.enum(["yes", "no"]),
-  guestCount: z.coerce.number().int().positive().max(10),
   dietaryRestrictions: z.string().optional(),
   allergies: z.string().optional(),
   notes: z.string().optional(),

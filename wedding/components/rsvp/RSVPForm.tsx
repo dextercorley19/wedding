@@ -35,7 +35,6 @@ export const RSVPForm = () => {
       lastName: "",
       email: "",
       attendance: undefined,
-      guestCount: 1,
       dietaryRestrictions: "",
       allergies: "",
       notes: "",
@@ -52,17 +51,16 @@ export const RSVPForm = () => {
         lastName: data.lastName,
         email: data.email,
         attendance: data.attendance,
-        guestCount: data.guestCount,
         dietaryRestrictions: data.dietaryRestrictions,
         allergies: data.allergies,
         notes: data.notes,
       });
 
       setSubmitted(true);
-      
+
       // Redirect after 2 seconds
       setTimeout(() => {
-        router.push("/#our-story");
+        router.push("/");
       }, 2000);
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Failed to submit RSVP");
@@ -158,27 +156,6 @@ export const RSVPForm = () => {
             )}
           />
 
-          {/* Guest Count */}
-          <FormField
-            control={form.control}
-            name="guestCount"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Number of guests (including yourself) *</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min="1"
-                    max="10"
-                    {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           {/* Dietary Restrictions */}
           <FormField
             control={form.control}
@@ -232,9 +209,20 @@ export const RSVPForm = () => {
             </Alert>
           )}
 
-          <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Submit RSVP"}
-          </Button>
+          <div className="space-y-3">
+            <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit RSVP"}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="lg"
+              className="w-full"
+              onClick={() => form.reset()}
+            >
+              RSVP for Someone Else
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
