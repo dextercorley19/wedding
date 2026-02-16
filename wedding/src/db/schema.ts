@@ -28,23 +28,6 @@ export const rsvps = pgTable("rsvps", {
     .notNull(),
 });
 
-/**
- * Events table — wedding events (ceremony, reception, rehearsal dinner, etc.)
- */
-export const events = pgTable("events", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: varchar("name", { length: 255 }).notNull(),
-  description: text("description"),
-  date: timestamp("date", { withTimezone: true }).notNull(),
-  location: varchar("location", { length: 255 }),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .defaultNow()
-    .notNull(),
-});
-
 // Type exports for use in components/server actions
 export type RSVP = typeof rsvps.$inferSelect;
 export type InsertRSVP = typeof rsvps.$inferInsert;
-
-export type Event = typeof events.$inferSelect;
-export type InsertEvent = typeof events.$inferInsert;

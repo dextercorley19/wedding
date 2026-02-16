@@ -15,6 +15,13 @@
       "when": 1771277259435,
       "tag": "0001_wise_garia",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1771277328915,
+      "tag": "0002_tidy_micromacro",
+      "breakpoints": true
     }
   ]
 }
