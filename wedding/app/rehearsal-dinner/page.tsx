@@ -37,15 +37,6 @@ export default function RehearsalDinnerPage() {
                 <a href="/#details" className="text-sm hover:text-foreground/70 transition-colors">
                   Details
                 </a>
-                <a href="/gallery" className="text-sm hover:text-foreground/70 transition-colors">
-                  Gallery
-                </a>
-                <a
-                  href="/rehearsal-dinner"
-                  className="text-sm hover:text-foreground/70 transition-colors"
-                >
-                  Rehearsal Dinner
-                </a>
                 <a href="/rsvp" className="text-sm hover:text-foreground/70 transition-colors">
                   RSVP
                 </a>
