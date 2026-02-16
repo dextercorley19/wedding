@@ -16,7 +16,6 @@ interface GeneratedInvite {
     lastName: string;
     email: string;
   };
-  qrDataUrl?: string;
 }
 
 export default function GenerateInvitesPage() {
@@ -26,6 +25,24 @@ export default function GenerateInvitesPage() {
   const [invites, setInvites] = useState<GeneratedInvite[]>([]);
   const [generated, setGenerated] = useState(false);
   const canvasRefs = useRef<{ [key: string]: HTMLCanvasElement | null }>({});
+
+  // Generate QR codes when invites are set
+  useEffect(() => {
+    if (invites.length > 0 && generated) {
+      invites.forEach((invite) => {
+        const canvas = canvasRefs.current[invite.id];
+        if (canvas) {
+          QRCode.toCanvas(canvas, invite.url, {
+            width: 200,
+            margin: 2,
+            color: { dark: "#000", light: "#fff" },
+          }).catch((err) => {
+            console.error("Error generating QR code for", invite.id, ":", err);
+          });
+        }
+      });
+    }
+  }, [invites, generated]);
 
   const handleGenerate = async () => {
     try {
@@ -69,24 +86,6 @@ export default function GenerateInvitesPage() {
       const result = await response.json();
       setInvites(result.invites);
       setGenerated(true);
-
-      // Generate QR codes after invites are set
-      setTimeout(async () => {
-        for (const invite of result.invites) {
-          try {
-            const canvas = canvasRefs.current[invite.id];
-            if (canvas) {
-              await QRCode.toCanvas(canvas, invite.url, {
-                width: 200,
-                margin: 2,
-                color: { dark: "#000", light: "#fff" },
-              });
-            }
-          } catch (err) {
-            console.error("Error generating QR code:", err);
-          }
-        }
-      }, 0);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
