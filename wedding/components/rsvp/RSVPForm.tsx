@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { rsvpFormSchema, type RSVPFormInput } from "@/db/zod/schema";
@@ -24,19 +24,25 @@ import { AlertCircle } from "lucide-react";
 
 interface RSVPFormProps {
   onSuccess: () => void;
+  prefilledData?: {
+    firstName: string;
+    lastName: string;
+    email: string;
+  } | null;
+  token?: string | null;
 }
 
-export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
+export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess, prefilledData, token }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
 
   const form = useForm<RSVPFormInput>({
     resolver: zodResolver(rsvpFormSchema),
     defaultValues: {
-      name: "",
-      firstName: "",
-      lastName: "",
-      email: "",
+      name: prefilledData ? `${prefilledData.firstName} ${prefilledData.lastName}` : "",
+      firstName: prefilledData?.firstName || "",
+      lastName: prefilledData?.lastName || "",
+      email: prefilledData?.email || "",
       attendance: undefined,
       guestCount: 1,
       dietaryRestrictions: "",
@@ -60,6 +66,7 @@ export const RSVPForm: FC<RSVPFormProps> = ({ onSuccess }) => {
         dietaryRestrictions: data.dietaryRestrictions,
         allergies: data.allergies,
         notes: data.notes,
+        token: token || undefined,
       };
 
       await submitRsvp(submitData);

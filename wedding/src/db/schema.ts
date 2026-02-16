@@ -29,19 +29,45 @@ export const guests = pgTable("guests", {
 });
 
 /**
+ * Invites table — tracks invitation tokens and QR codes
+ */
+export const invites = pgTable(
+  "invites",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    guestId: uuid("guest_id").references(() => guests.id, { onDelete: "cascade" }),
+    token: varchar("token", { length: 255 }).unique().notNull(),
+    url: text("url"), // Pre-generated invite URL with token
+    sentAt: timestamp("sent_at", { withTimezone: true }),
+    rsvpedAt: timestamp("rsvped_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .defaultNow()
+      .notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.guestId],
+      foreignColumns: [guests.id],
+      name: "invites_guest_id_fk",
+    }).onDelete("cascade"),
+  ]
+);
+
+/**
  * RSVPs table — tracks guest responses
  */
 export const rsvps = pgTable(
   "rsvps",
   {
     id: uuid("id").primaryKey().defaultRandom(),
+    inviteId: uuid("invite_id").references(() => invites.id, { onDelete: "cascade" }),
     guestId: uuid("guest_id"),
     firstName: varchar("first_name", { length: 255 }).notNull(),
     lastName: varchar("last_name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
     phone: varchar("phone", { length: 20 }),
     attending: boolean("attending").notNull(),
-    numGuests: text("num_guests"), // "1", "2", etc.
+    numGuests: text("num_guests"),
     dietaryRestrictions: text("dietary_restrictions"),
     allergies: text("allergies"),
     notes: text("notes"),
@@ -54,9 +80,9 @@ export const rsvps = pgTable(
   },
   (table) => [
     foreignKey({
-      columns: [table.guestId],
-      foreignColumns: [guests.id],
-      name: "rsvps_guest_id_fk",
+      columns: [table.inviteId],
+      foreignColumns: [invites.id],
+      name: "rsvps_invite_id_fk",
     }).onDelete("cascade"),
   ]
 );
@@ -78,6 +104,9 @@ export const events = pgTable("events", {
 // Type exports for use in components/server actions
 export type Guest = typeof guests.$inferSelect;
 export type InsertGuest = typeof guests.$inferInsert;
+
+export type Invite = typeof invites.$inferSelect;
+export type InsertInvite = typeof invites.$inferInsert;
 
 export type RSVP = typeof rsvps.$inferSelect;
 export type InsertRSVP = typeof rsvps.$inferInsert;

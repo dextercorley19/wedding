@@ -9,11 +9,12 @@ import { Navigation } from "@/components/common/Navigation";
 
 interface PasswordGateProps {
   onAuthenticated: () => void;
+  error?: string;
 }
 
-export const PasswordGate: FC<PasswordGateProps> = ({ onAuthenticated }) => {
+export const PasswordGate: FC<PasswordGateProps> = ({ onAuthenticated, error: externalError }) => {
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(externalError || "");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
