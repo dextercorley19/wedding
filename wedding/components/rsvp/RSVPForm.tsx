@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { rsvpFormSchema, type RSVPFormInput } from "@/db/zod/schema";
@@ -22,6 +23,7 @@ import { submitRsvp } from "@/app/actions/submitRsvp";
 import { AlertCircle, CheckCircle } from "lucide-react";
 
 export const RSVPForm = () => {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -57,6 +59,11 @@ export const RSVPForm = () => {
       });
 
       setSubmitted(true);
+      
+      // Redirect after 2 seconds
+      setTimeout(() => {
+        router.push("/#our-story");
+      }, 2000);
     } catch (error) {
       setSubmitError(error instanceof Error ? error.message : "Failed to submit RSVP");
     } finally {
@@ -71,7 +78,7 @@ export const RSVPForm = () => {
           <CheckCircle className="h-4 w-4 text-green-600" />
           <AlertTitle className="text-green-900">RSVP Received!</AlertTitle>
           <AlertDescription className="text-green-800">
-            Thank you for responding. We can't wait to celebrate with you!
+            Thank you for responding. We can't wait to celebrate with you! Redirecting...
           </AlertDescription>
         </Alert>
       </div>
