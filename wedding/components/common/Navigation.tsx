@@ -51,7 +51,7 @@ export function Navigation() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-2">
+          <div className="md:hidden mt-4 pb-4 space-y-2 transition-all duration-200 ease-in-out">
             <a
               href="/#details"
               className="block py-2 px-4 text-base hover:bg-muted rounded-md transition-colors"
