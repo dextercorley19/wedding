@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, FormEvent, useState } from "react";
-import { Lock } from "lucide-react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,11 +9,13 @@ import { Navigation } from "@/components/common/Navigation";
 
 interface PasswordGateProps {
   onAuthenticated: () => void;
+  error?: string;
 }
 
-export const PasswordGate: FC<PasswordGateProps> = ({ onAuthenticated }) => {
+export const PasswordGate: FC<PasswordGateProps> = ({ onAuthenticated, error: externalError }) => {
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(externalError || "");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,15 +45,28 @@ export const PasswordGate: FC<PasswordGateProps> = ({ onAuthenticated }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                className="w-full"
-                autoFocus
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="w-full pr-10"
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
+              </div>
             </div>
             {error && <p className="text-sm text-red-500">{error}</p>}
             <Button type="submit" className="w-full">
@@ -67,3 +82,4 @@ export const PasswordGate: FC<PasswordGateProps> = ({ onAuthenticated }) => {
     </div>
   );
 };
+
