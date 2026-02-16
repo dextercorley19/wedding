@@ -52,10 +52,6 @@ export async function submitRsvp(data: unknown) {
         lastName: entry.lastName,
         email: entry.email,
         attending: entry.attendance === "yes",
-        numGuests: null,
-        dietaryRestrictions: null,
-        allergies: null,
-        notes: null,
       };
 
       // Insert into database

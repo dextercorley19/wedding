@@ -1,6 +1,5 @@
 import {
   pgTable,
-  text,
   varchar,
   boolean,
   timestamp,
@@ -16,10 +15,6 @@ export const rsvps = pgTable("rsvps", {
   lastName: varchar("last_name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   attending: boolean("attending").notNull(),
-  numGuests: text("num_guests"),
-  dietaryRestrictions: text("dietary_restrictions"),
-  allergies: text("allergies"),
-  notes: text("notes"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()
     .notNull(),
@@ -31,3 +26,4 @@ export const rsvps = pgTable("rsvps", {
 // Type exports for use in components/server actions
 export type RSVP = typeof rsvps.$inferSelect;
 export type InsertRSVP = typeof rsvps.$inferInsert;
+
