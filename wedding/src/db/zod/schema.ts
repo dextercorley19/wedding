@@ -2,7 +2,6 @@ import { z } from "zod";
 
 // Form schema that matches the RSVP form UI
 export const rsvpFormSchema = z.object({
-  name: z.string().min(1, "Name is required").max(255),
   firstName: z.string().min(1, "First name is required").max(255),
   lastName: z.string().min(1, "Last name is required").max(255),
   email: z.string().email("Invalid email address").max(255),
