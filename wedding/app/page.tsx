@@ -219,8 +219,8 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="font-serif text-2xl">Getting There</h3>
               <p className="text-muted-foreground leading-relaxed">
-                The venue is located in beautiful Napa Valley, approximately 1 hour north of San Francisco. We recommend
-                flying into San Francisco International Airport (SFO) or Oakland International Airport (OAK).
+                The venue is located in beautiful Newport Beach, Orange County, approximately 1 hour south of Los Angeles. We recommend
+                flying into Los Angeles International Airport (LAX) or John Wayne Airport (SNA) in Orange County.
               </p>
             </div>
             <div className="space-y-4">
@@ -229,20 +229,29 @@ export default function Home() {
               <div className="space-y-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Napa Valley Lodge</CardTitle>
+                    <CardTitle className="text-lg">Balboa Bay Resort</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">456 Main Street, Yountville, CA</p>
-                    <p className="text-sm text-muted-foreground">Book by May 15, 2025 | Group Code: SARAHMICHAEL</p>
+                    <p className="text-sm text-muted-foreground">651 Yacht Club Drive, Newport Beach, CA 92663</p>
+                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
                   </CardContent>
                 </Card>
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Valley Inn & Suites</CardTitle>
+                    <CardTitle className="text-lg">Island Hotel Newport Beach</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">789 Valley Road, Napa, CA</p>
-                    <p className="text-sm text-muted-foreground">Book by May 15, 2025 | Group Code: SARAHMICHAEL</p>
+                    <p className="text-sm text-muted-foreground">690 Newport Center Drive, Newport Beach, CA 92660</p>
+                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
+                  </CardContent>
+                </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Pelican Hill Resort</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-2">
+                    <p className="text-sm text-muted-foreground">22551 Pelican Hill Road South, Newport Beach, CA 92657</p>
+                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
                   </CardContent>
                 </Card>
               </div>
