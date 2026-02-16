@@ -18,7 +18,7 @@ export default function Home() {
         </div>
         <div className="relative text-center space-y-6 px-4 text-white">
           <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-balance drop-shadow-lg">Sami & Dexter</h1>
-          <p className="text-xl md:text-2xl drop-shadow-md">June 15, 2025</p>
+          <p className="text-xl md:text-2xl drop-shadow-md">October 24, 2026</p>
           <p className="text-lg drop-shadow-md">We're getting married!</p>
           <Button asChild size="lg" className="mt-8">
             <Link href="/rsvp">RSVP Now</Link>
@@ -76,12 +76,12 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Saturday, June 15, 2025</p>
+                      <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 mt-0.5 shrink-0" />
-                    <p>4:00 PM</p>
+                    <p>5:30 PM</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
@@ -111,12 +111,12 @@ export default function Home() {
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 mt-0.5 shrink-0" />
                     <div>
-                      <p className="font-medium text-foreground">Saturday, June 15, 2025</p>
+                      <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 mt-0.5 shrink-0" />
-                    <p>6:00 PM - 11:00 PM</p>
+                    <p>6:30 PM - 10:30 PM</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
@@ -137,7 +137,7 @@ export default function Home() {
             <div className="max-w-2xl mx-auto space-y-6">
               <div className="flex gap-4 md:gap-6">
                 <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">3:30 PM</span>
+                  <span className="font-medium text-sm md:text-base">4:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Guest Arrival</h4>
@@ -146,7 +146,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 md:gap-6">
                 <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">4:00 PM</span>
+                  <span className="font-medium text-sm md:text-base">5:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Ceremony Begins</h4>
@@ -155,7 +155,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 md:gap-6">
                 <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">5:00 PM</span>
+                  <span className="font-medium text-sm md:text-base">5:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Cocktail Hour</h4>
@@ -164,7 +164,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 md:gap-6">
                 <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">6:00 PM</span>
+                  <span className="font-medium text-sm md:text-base">6:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Reception & Dinner</h4>
@@ -173,7 +173,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 md:gap-6">
                 <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">8:00 PM</span>
+                  <span className="font-medium text-sm md:text-base">7:30 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Dancing</h4>
@@ -182,7 +182,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 md:gap-6">
                 <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">11:00 PM</span>
+                  <span className="font-medium text-sm md:text-base">10:30 PM</span>
                 </div>
                 <div className="flex-1 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Send Off</h4>
@@ -238,7 +238,7 @@ export default function Home() {
       <footer className="py-12 border-t">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
           <p>We can't wait to celebrate with you!</p>
-          <p className="mt-2">Sami & Dexter | June 15, 2025</p>
+          <p className="mt-2">Sami & Dexter | October 24, 2026</p>
         </div>
       </footer>
     </div>

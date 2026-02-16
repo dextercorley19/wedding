@@ -18,7 +18,7 @@ export default function RSVPPage() {
           <h1 className="text-4xl md:text-5xl font-serif mb-2">
             Sami & Dexter
           </h1>
-          <p className="text-lg text-muted-foreground">June 15, 2025</p>
+          <p className="text-lg text-muted-foreground">October 24, 2026</p>
         </div>
 
         <RSVPForm />

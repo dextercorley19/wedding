@@ -18,8 +18,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Sami & Dexter | June 15, 2025",
-  description: "Join us as we celebrate our wedding on June 15, 2025 in Maui",
+  title: "Sami & Dexter | October 24, 2026",
+  description: "Join us as we celebrate our wedding on October 24, 2026 in Maui",
   generator: "v0.app",
   viewport: {
     width: "device-width",
