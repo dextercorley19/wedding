@@ -66,7 +66,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 mt-0.5 shrink-0" />
-                    <p>5:30 PM</p>
+                    <p>5:00 PM</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
@@ -131,7 +131,7 @@ export default function Home() {
               </div>
               <div className="flex gap-4 md:gap-6">
                 <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">5:30 PM</span>
+                  <span className="font-medium text-sm md:text-base">5:00 PM</span>
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Ceremony Begins</h4>
