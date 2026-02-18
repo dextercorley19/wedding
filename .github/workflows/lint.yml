@@ -1,0 +1,31 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        working-directory: wedding
+        run: bun install --frozen-lockfile
+
+      - name: Prettier
+        working-directory: wedding
+        run: bunx prettier --check .
+
+      - name: ESLint
+        working-directory: wedding
+        run: bunx eslint .
+
+      - name: TypeScript
+        working-directory: wedding
+        run: bunx tsc --noEmit
