@@ -12,17 +12,20 @@ interface GlobalPasswordGateProps {
 }
 
 export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  type AuthState = "checking" | "authenticated" | "guest";
+
+  const [authState, setAuthState] = useState<AuthState>("checking");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check if already authenticated in localStorage
-    const authenticated = localStorage.getItem("wedding-authenticated") === "true";
-    setIsAuthenticated(authenticated);
-    setMounted(true);
+    const frame = requestAnimationFrame(() => {
+      const isBrowser = typeof window !== "undefined";
+      const authenticated = isBrowser && localStorage.getItem("wedding-authenticated") === "true";
+      setAuthState(authenticated ? "authenticated" : "guest");
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +33,7 @@ export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) =>
 
     if (password === process.env.NEXT_PUBLIC_RSVP_PASSWORD) {
       localStorage.setItem("wedding-authenticated", "true");
-      setIsAuthenticated(true);
+      setAuthState("authenticated");
       setError("");
     } else {
       setError("Incorrect password. Please try again.");
@@ -38,12 +41,11 @@ export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) =>
     }
   };
 
-  // Prevent hydration mismatch
-  if (!mounted) {
+  if (authState === "checking") {
     return null;
   }
 
-  if (!isAuthenticated) {
+  if (authState !== "authenticated") {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
@@ -53,7 +55,9 @@ export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) =>
             <div className="text-center mb-8">
               <Lock className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
               <h1 className="font-serif text-4xl mb-2">Sami & Dexter</h1>
-              <p className="text-muted-foreground">Please enter the password from your invitation</p>
+              <p className="text-muted-foreground">
+                Please enter the password from your invitation
+              </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -74,11 +78,7 @@ export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) =>
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                   >
-                    {showPassword ? (
-                      <EyeOff className="w-4 h-4" />
-                    ) : (
-                      <Eye className="w-4 h-4" />
-                    )}
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>

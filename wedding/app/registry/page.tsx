@@ -36,7 +36,7 @@ export default function RegistryPage() {
             <h1 className="font-serif text-5xl md:text-6xl mb-4">Registry</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Your presence at our wedding is the greatest gift of all. However, if you wish to
-              honor us with a gift, we've registered at the following stores.
+              honor us with a gift, we&rsquo;ve registered at the following stores.
             </p>
           </div>
 
@@ -67,8 +67,8 @@ export default function RegistryPage() {
           <div className="mt-16 p-8 bg-muted/30 rounded-lg text-center">
             <h3 className="font-serif text-2xl mb-4">Honeymoon Fund</h3>
             <p className="text-muted-foreground leading-relaxed">
-              We're also saving for our dream honeymoon to Japan. If you'd like to contribute, we've
-              set up a honeymoon fund through our Zola registry.
+              We&rsquo;re also saving for our dream honeymoon to Japan. If you&rsquo;d like to
+              contribute, we&rsquo;ve set up a honeymoon fund through our Zola registry.
             </p>
           </div>
         </div>

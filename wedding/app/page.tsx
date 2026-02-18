@@ -1,8 +1,9 @@
-import Link from "next/link"
-import { Calendar, MapPin, Clock } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Navigation } from "@/components/common/Navigation"
+import Link from "next/link";
+import Image from "next/image";
+import { Calendar, MapPin, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Navigation } from "@/components/common/Navigation";
 
 export default function Home() {
   return (
@@ -13,13 +14,24 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center">
         <div className="absolute inset-0">
-          <img src="/IMG_4370 (2).jpg" alt="Wedding hero" className="w-full h-full object-cover" loading="eager" />
+          <div className="relative h-full w-full">
+            <Image
+              src="/IMG_4370 (2).jpg"
+              alt="Wedding hero"
+              fill
+              priority
+              className="object-cover"
+              sizes="100vw"
+            />
+          </div>
           <div className="absolute inset-0 bg-black/30" />
         </div>
         <div className="relative text-center space-y-6 px-4 text-white">
-          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-balance drop-shadow-lg">Sami & Dexter</h1>
+          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-balance drop-shadow-lg">
+            Sami & Dexter
+          </h1>
           <p className="text-xl md:text-2xl drop-shadow-md">October 24, 2026</p>
-          <p className="text-lg drop-shadow-md">We're getting married!</p>
+          <p className="text-lg drop-shadow-md">We&rsquo;re getting married!</p>
           <Button asChild size="lg" className="mt-8">
             <Link href="/rsvp">RSVP Now</Link>
           </Button>
@@ -31,14 +43,35 @@ export default function Home() {
         <div className="container mx-auto px-4 max-w-5xl">
           <h2 className="font-serif text-4xl md:text-5xl text-center mb-16">The Proposal</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="aspect-square bg-muted rounded-lg overflow-hidden">
-              <img src="/IMG_4371.JPG" alt="Proposal moment 1" className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
+              <Image
+                src="/IMG_4371.JPG"
+                alt="Proposal moment 1"
+                fill
+                className="object-cover"
+                loading="lazy"
+                sizes="(min-width: 768px) 33vw, 100vw"
+              />
             </div>
-            <div className="aspect-square bg-muted rounded-lg overflow-hidden">
-              <img src="/IMG_4373.JPG" alt="Proposal moment 2" className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
+              <Image
+                src="/IMG_4373.JPG"
+                alt="Proposal moment 2"
+                fill
+                className="object-cover"
+                loading="lazy"
+                sizes="(min-width: 768px) 33vw, 100vw"
+              />
             </div>
-            <div className="aspect-square bg-muted rounded-lg overflow-hidden">
-              <img src="/IMG_4372.JPG" alt="Proposal moment 3" className="w-full h-full object-cover" loading="lazy" />
+            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
+              <Image
+                src="/IMG_4372.JPG"
+                alt="Proposal moment 3"
+                fill
+                className="object-cover"
+                loading="lazy"
+                sizes="(min-width: 768px) 33vw, 100vw"
+              />
             </div>
           </div>
         </div>
@@ -52,8 +85,15 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-6 md:gap-12">
             {/* Ceremony */}
             <div className="space-y-6">
-              <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                <img src="/27_ceremony-area-Newport-Beach-Country-Club-wedding-photographer.jpg" alt="Ceremony venue" className="w-full h-full object-cover" loading="lazy" />
+              <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
+                <Image
+                  src="/27_ceremony-area-Newport-Beach-Country-Club-wedding-photographer.jpg"
+                  alt="Ceremony venue"
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                />
               </div>
               <div className="space-y-4">
                 <h3 className="font-serif text-2xl">Ceremony</h3>
@@ -82,12 +122,14 @@ export default function Home() {
 
             {/* Reception */}
             <div className="space-y-6">
-              <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                <img
+              <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
+                <Image
                   src="/34135813_1738752159505266_6750061028635049984_o.jpg"
                   alt="Reception venue"
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                   loading="lazy"
+                  sizes="(min-width: 768px) 50vw, 100vw"
                 />
               </div>
               <div className="space-y-4">
@@ -126,7 +168,9 @@ export default function Home() {
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Guest Arrival</h4>
-                  <p className="text-sm text-muted-foreground">Please arrive early to find your seats</p>
+                  <p className="text-sm text-muted-foreground">
+                    Please arrive early to find your seats
+                  </p>
                 </div>
               </div>
               <div className="flex gap-4 md:gap-6">
@@ -144,7 +188,9 @@ export default function Home() {
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Cocktail Hour</h4>
-                  <p className="text-sm text-muted-foreground">Drinks and light appetizers on the terrace</p>
+                  <p className="text-sm text-muted-foreground">
+                    Drinks and light appetizers on the terrace
+                  </p>
                 </div>
               </div>
               <div className="flex gap-4 md:gap-6">
@@ -162,7 +208,7 @@ export default function Home() {
                 </div>
                 <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
                   <h4 className="font-medium mb-1">Dancing</h4>
-                  <p className="text-sm text-muted-foreground">Let's party!</p>
+                  <p className="text-sm text-muted-foreground">Let&rsquo;s party!</p>
                 </div>
               </div>
               <div className="flex gap-4 md:gap-6">
@@ -187,21 +233,28 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="font-serif text-2xl">Getting There</h3>
               <p className="text-muted-foreground leading-relaxed">
-                The venue is located in beautiful Newport Beach, Orange County, approximately 1 hour south of Los Angeles. We recommend
-                flying into Los Angeles International Airport (LAX) or John Wayne Airport (SNA) in Orange County.
+                The venue is located in beautiful Newport Beach, Orange County, approximately 1 hour
+                south of Los Angeles. We recommend flying into Los Angeles International Airport
+                (LAX) or John Wayne Airport (SNA) in Orange County.
               </p>
             </div>
             <div className="space-y-4">
               <h3 className="font-serif text-2xl">Where to Stay</h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">We have room blocks at the following hotels:</p>
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                We have room blocks at the following hotels:
+              </p>
               <div className="space-y-4">
                 <Card>
                   <CardHeader>
                     <CardTitle className="text-lg">Balboa Bay Resort</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">651 Yacht Club Drive, Newport Beach, CA 92663</p>
-                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
+                    <p className="text-sm text-muted-foreground">
+                      651 Yacht Club Drive, Newport Beach, CA 92663
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Book by August 24, 2026 | Group Code: SAMIANDDEXTER
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
@@ -209,8 +262,12 @@ export default function Home() {
                     <CardTitle className="text-lg">Island Hotel Newport Beach</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">690 Newport Center Drive, Newport Beach, CA 92660</p>
-                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
+                    <p className="text-sm text-muted-foreground">
+                      690 Newport Center Drive, Newport Beach, CA 92660
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Book by August 24, 2026 | Group Code: SAMIANDDEXTER
+                    </p>
                   </CardContent>
                 </Card>
                 <Card>
@@ -218,8 +275,12 @@ export default function Home() {
                     <CardTitle className="text-lg">Pelican Hill Resort</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">22551 Pelican Hill Road South, Newport Beach, CA 92657</p>
-                    <p className="text-sm text-muted-foreground">Book by August 24, 2026 | Group Code: SAMIANDDEXTER</p>
+                    <p className="text-sm text-muted-foreground">
+                      22551 Pelican Hill Road South, Newport Beach, CA 92657
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Book by August 24, 2026 | Group Code: SAMIANDDEXTER
+                    </p>
                   </CardContent>
                 </Card>
               </div>
@@ -231,10 +292,10 @@ export default function Home() {
       {/* Footer */}
       <footer className="py-12 border-t">
         <div className="container mx-auto px-4 text-center text-muted-foreground">
-          <p>We can't wait to celebrate with you!</p>
+          <p>We can&rsquo;t wait to celebrate with you!</p>
           <p className="mt-2">Sami & Dexter | October 24, 2026</p>
         </div>
       </footer>
     </div>
-  )
+  );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FC } from "react";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,11 +23,11 @@ export const SuccessMessage: FC<SuccessMessageProps> = ({ attendance }) => {
           <h1 className="font-serif text-4xl mb-4">Thank You!</h1>
           <p className="text-lg text-muted-foreground mb-8">
             {attendance === "yes"
-              ? "We're so excited to celebrate with you on our special day!"
-              : "We'll miss you on our special day, but we understand."}
+              ? "We&rsquo;re so excited to celebrate with you on our special day!"
+              : "We&rsquo;ll miss you on our special day, but we understand."}
           </p>
           <Button asChild variant="outline">
-            <a href="/">Return Home</a>
+            <Link href="/">Return Home</Link>
           </Button>
         </div>
       </div>

@@ -54,9 +54,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable} ${playfair.variable}`}>
       <body className="font-sans antialiased">
-        <GlobalPasswordGate>
-          {children}
-        </GlobalPasswordGate>
+        <GlobalPasswordGate>{children}</GlobalPasswordGate>
         <Analytics />
       </body>
     </html>
