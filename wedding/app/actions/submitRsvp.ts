@@ -24,10 +24,7 @@ export async function submitRsvp(data: unknown) {
 
       try {
         // Insert into database (unique constraint will be enforced by DB)
-        const [rsvp] = await db
-          .insert(rsvps)
-          .values(dbData)
-          .returning();
+        const [rsvp] = await db.insert(rsvps).values(dbData).returning();
 
         results.push(rsvp);
         console.log("RSVP saved:", rsvp.id);

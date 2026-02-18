@@ -83,7 +83,7 @@ export const RSVPForm = () => {
           <CheckCircle className="h-4 w-4 text-green-600" />
           <AlertTitle className="text-green-900">RSVP Received!</AlertTitle>
           <AlertDescription className="text-green-800">
-            Thank you for responding. We can't wait to celebrate with you! Redirecting...
+            Thank you for responding. We can&rsquo;t wait to celebrate with you! Redirecting...
           </AlertDescription>
         </Alert>
       </div>
@@ -160,11 +160,11 @@ export const RSVPForm = () => {
                       >
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="yes" id="yes" />
-                          <Label htmlFor="yes">Yes, I'll be there!</Label>
+                          <Label htmlFor="yes">Yes, I&rsquo;ll be there!</Label>
                         </div>
                         <div className="flex items-center space-x-2">
                           <RadioGroupItem value="no" id="no" />
-                          <Label htmlFor="no">Sorry, I can't make it</Label>
+                          <Label htmlFor="no">Sorry, I can&rsquo;t make it</Label>
                         </div>
                       </RadioGroup>
                     </FormControl>
@@ -173,11 +173,7 @@ export const RSVPForm = () => {
                 )}
               />
 
-              <Button
-                type="button"
-                onClick={handleAddPerson}
-                className="w-full"
-              >
+              <Button type="button" onClick={handleAddPerson} className="w-full">
                 Add Person
               </Button>
             </form>
@@ -223,12 +219,7 @@ export const RSVPForm = () => {
 
         {/* Submit button - only show when people are added */}
         {people.length > 0 && (
-          <Button
-            onClick={handleSubmit}
-            disabled={isSubmitting}
-            size="lg"
-            className="w-full"
-          >
+          <Button onClick={handleSubmit} disabled={isSubmitting} size="lg" className="w-full">
             {isSubmitting ? "Submitting..." : "Submit All RSVPs"}
           </Button>
         )}

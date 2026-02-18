@@ -1,0 +1,7 @@
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "prettier", name = "Prettier", entry = "bash", args = ["-c", "cd wedding && bunx prettier --check ."], language = "system", pass_filenames = false },
+  { id = "eslint", name = "ESLint", entry = "bash", args = ["-c", "cd wedding && bunx eslint . --cache"], language = "system", pass_filenames = false },
+  { id = "typecheck", name = "TypeScript", entry = "bash", args = ["-c", "cd wedding && bunx tsc --noEmit"], language = "system", pass_filenames = false }
+]
