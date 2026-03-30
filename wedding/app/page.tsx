@@ -37,15 +37,15 @@ export default function Home() {
       {/* Proposal Gallery */}
       <section className="py-24">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
-            <p className="text-lg text-muted-foreground">
+          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16 font-serif text-muted-foreground">
+            <p className="text-lg leading-relaxed">
               We’re so excited to celebrate this weekend with all of our favorite people!
             </p>
-            <p className="text-muted-foreground">
-              While formal invitations will follow, we wanted to share a few details to help with travel planning.
-              We’ll continue updating this site as the weekend approaches.
+            <p className="text-lg leading-relaxed">
+              While formal invitations will follow, we wanted to share a few details to help with
+              travel planning. We’ll continue updating this site as the weekend approaches.
             </p>
-            <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground">
+            <p className="text-sm tracking-[0.3em] uppercase text-foreground/80">
               Here are a few photos from our engagement in Maui, HI
             </p>
           </div>
@@ -164,7 +164,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -197,7 +196,8 @@ export default function Home() {
                 <li>• Vea Hotel</li>
                 <li>• Courtyard by Marriott Irvine</li>
                 <li>
-                  • Airbnb or VRBO on Balboa Island, Newport Peninsula, or generally anywhere in Newport Beach.
+                  • Airbnb or VRBO on Balboa Island, Newport Peninsula, or generally anywhere in
+                  Newport Beach.
                 </li>
               </ul>
               <p className="text-muted-foreground leading-relaxed">
@@ -214,11 +214,15 @@ export default function Home() {
           <div className="space-y-8">
             <div>
               <h3 className="font-serif text-2xl mb-2">When should I RSVP?</h3>
-              <p className="text-muted-foreground">Formal invitations will be sent closer to the wedding date.</p>
+              <p className="text-muted-foreground">
+                Formal invitations will be sent closer to the wedding date.
+              </p>
             </div>
             <div>
               <h3 className="font-serif text-2xl mb-2">Can I bring a plus one?</h3>
-              <p className="text-muted-foreground">Plus ones will be named on your invitation if included.</p>
+              <p className="text-muted-foreground">
+                Plus ones will be named on your invitation if included.
+              </p>
             </div>
             <div>
               <h3 className="font-serif text-2xl mb-2">What will the weather be like?</h3>
