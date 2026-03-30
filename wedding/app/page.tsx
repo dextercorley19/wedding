@@ -15,7 +15,7 @@ export default function Home() {
         <div className="absolute inset-0">
           <div className="relative h-full w-full">
             <Image
-              src="/IMG_4370 (2).jpg"
+              src="/IMG_4372.JPG"
               alt="Wedding hero"
               fill
               priority
@@ -45,7 +45,7 @@ export default function Home() {
               While formal invitations will follow, we wanted to share a few details to help with
               travel planning. We’ll continue updating this site as the weekend approaches.
             </p>
-            <p className="text-sm tracking-[0.3em] uppercase text-foreground/80">
+            <p className="text-lg leading-relaxed">
               Here are a few photos from our engagement in Maui, HI
             </p>
           </div>
@@ -72,7 +72,7 @@ export default function Home() {
             </div>
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
               <Image
-                src="/IMG_4372.JPG"
+                src="/IMG_4370 (2).jpg"
                 alt="Proposal moment 3"
                 fill
                 className="object-cover"
