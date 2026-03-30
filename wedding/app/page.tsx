@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Calendar, MapPin, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Navigation } from "@/components/common/Navigation";
 
 export default function Home() {
@@ -31,17 +30,25 @@ export default function Home() {
             Sami & Dexter
           </h1>
           <p className="text-xl md:text-2xl drop-shadow-md">October 24, 2026</p>
-          <p className="text-lg drop-shadow-md">We&rsquo;re getting married!</p>
-          <Button asChild size="lg" className="mt-8">
-            <Link href="/rsvp">RSVP Now</Link>
-          </Button>
+          <p className="text-lg drop-shadow-md">Newport Beach, California</p>
         </div>
       </section>
 
       {/* Proposal Gallery */}
       <section className="py-24">
         <div className="container mx-auto px-4 max-w-5xl">
-          <h2 className="font-serif text-4xl md:text-5xl text-center mb-16">The Proposal</h2>
+          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
+            <p className="text-lg text-muted-foreground">
+              We’re so excited to celebrate this weekend with all of our favorite people!
+            </p>
+            <p className="text-muted-foreground">
+              While formal invitations will follow, we wanted to share a few details to help with travel planning.
+              We’ll continue updating this site as the weekend approaches.
+            </p>
+            <p className="text-sm tracking-[0.3em] uppercase text-muted-foreground">
+              Here are a few photos from our engagement in Maui, HI
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
               <Image
@@ -158,70 +165,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Timeline */}
-          <div className="mt-20 space-y-8">
-            <h3 className="font-serif text-3xl text-center">Timeline</h3>
-            <div className="max-w-2xl mx-auto space-y-6">
-              <div className="flex gap-4 md:gap-6">
-                <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">4:30 PM</span>
-                </div>
-                <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
-                  <h4 className="font-medium mb-1">Guest Arrival</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Please arrive early to find your seats
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 md:gap-6">
-                <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">5:00 PM</span>
-                </div>
-                <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
-                  <h4 className="font-medium mb-1">Ceremony Begins</h4>
-                  <p className="text-sm text-muted-foreground">The celebration starts!</p>
-                </div>
-              </div>
-              <div className="flex gap-4 md:gap-6">
-                <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">5:30 PM</span>
-                </div>
-                <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
-                  <h4 className="font-medium mb-1">Cocktail Hour</h4>
-                  <p className="text-sm text-muted-foreground">
-                    Drinks and light appetizers on the terrace
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 md:gap-6">
-                <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">6:30 PM</span>
-                </div>
-                <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
-                  <h4 className="font-medium mb-1">Reception & Dinner</h4>
-                  <p className="text-sm text-muted-foreground">Dinner service and toasts</p>
-                </div>
-              </div>
-              <div className="flex gap-4 md:gap-6">
-                <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">7:30 PM</span>
-                </div>
-                <div className="flex-1 pb-6 border-l-2 pl-4 md:pl-6">
-                  <h4 className="font-medium mb-1">Dancing</h4>
-                  <p className="text-sm text-muted-foreground">Let&rsquo;s party!</p>
-                </div>
-              </div>
-              <div className="flex gap-4 md:gap-6">
-                <div className="w-16 md:w-24 shrink-0 text-right">
-                  <span className="font-medium text-sm md:text-base">10:30 PM</span>
-                </div>
-                <div className="flex-1 pl-4 md:pl-6">
-                  <h4 className="font-medium mb-1">Send Off</h4>
-                  <p className="text-sm text-muted-foreground">Sparkler exit</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -232,58 +175,56 @@ export default function Home() {
           <div className="space-y-8">
             <div className="space-y-4">
               <h3 className="font-serif text-2xl">Getting There</h3>
+              <p className="text-muted-foreground leading-relaxed">We recommend flying into:</p>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• John Wayne Airport (SNA) — 15 minutes from Newport Beach</li>
+                <li>• Long Beach Airport (LGB) — ~35 minutes</li>
+                <li>• Los Angeles (LAX) — ~1 hour depending on traffic</li>
+              </ul>
               <p className="text-muted-foreground leading-relaxed">
-                The venue is located in beautiful Newport Beach, Orange County, approximately 1 hour
-                south of Los Angeles. We recommend flying into Los Angeles International Airport
-                (LAX) or John Wayne Airport (SNA) in Orange County.
+                Rideshare (Uber/Lyft) is readily available.
               </p>
             </div>
             <div className="space-y-4">
               <h3 className="font-serif text-2xl">Where to Stay</h3>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                We have room blocks at the following hotels:
+              <p className="text-muted-foreground leading-relaxed">
+                We are gauging interest in room blocks and will update shortly.
               </p>
-              <div className="space-y-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Balboa Bay Resort</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">
-                      651 Yacht Club Drive, Newport Beach, CA 92663
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Book by August 24, 2026 | Group Code: SAMIANDDEXTER
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Island Hotel Newport Beach</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">
-                      690 Newport Center Drive, Newport Beach, CA 92660
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Book by August 24, 2026 | Group Code: SAMIANDDEXTER
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Pelican Hill Resort</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground">
-                      22551 Pelican Hill Road South, Newport Beach, CA 92657
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Book by August 24, 2026 | Group Code: SAMIANDDEXTER
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
+              <p className="text-muted-foreground leading-relaxed">
+                In the meantime, nearby options include:
+              </p>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>• Vea Hotel</li>
+                <li>• Courtyard by Marriott Irvine</li>
+                <li>
+                  • Airbnb or VRBO on Balboa Island, Newport Peninsula, or generally anywhere in Newport Beach.
+                </li>
+              </ul>
+              <p className="text-muted-foreground leading-relaxed">
+                We recommend booking early, as October is a popular time in Newport.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-24">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <h2 className="font-serif text-4xl md:text-5xl text-center mb-12">FAQ</h2>
+          <div className="space-y-8">
+            <div>
+              <h3 className="font-serif text-2xl mb-2">When should I RSVP?</h3>
+              <p className="text-muted-foreground">Formal invitations will be sent closer to the wedding date.</p>
+            </div>
+            <div>
+              <h3 className="font-serif text-2xl mb-2">Can I bring a plus one?</h3>
+              <p className="text-muted-foreground">Plus ones will be named on your invitation if included.</p>
+            </div>
+            <div>
+              <h3 className="font-serif text-2xl mb-2">What will the weather be like?</h3>
+              <p className="text-muted-foreground">
+                Newport Beach in October is typically sunny and mild, with cooler evenings.
+              </p>
             </div>
           </div>
         </div>

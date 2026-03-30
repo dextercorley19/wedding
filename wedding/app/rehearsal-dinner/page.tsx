@@ -156,9 +156,6 @@ export default function RehearsalDinnerPage() {
                 <p className="text-muted-foreground mb-3">
                   Please confirm your attendance by May 1, 2025
                 </p>
-                <Button asChild>
-                  <a href="/rsvp">RSVP Now</a>
-                </Button>
               </div>
             </div>
           </div>
