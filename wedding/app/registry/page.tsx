@@ -12,7 +12,7 @@ export default function RegistryPage() {
     },
     {
       name: "Honeymoon Fund",
-      description: "Contribute to our Japan adventure",
+      description: "Contribute to our Hawaii adventure",
       url: "https://zola.com/wedding/dexterandsami2026/registry",
       icon: "💌",
     },
