@@ -5,22 +5,10 @@ import { Navigation } from "@/components/common/Navigation";
 export default function RegistryPage() {
   const registries = [
     {
-      name: "Amazon",
-      description: "Home essentials and everyday items",
-      url: "https://amazon.com",
-      icon: "📦",
-    },
-    {
       name: "Crate & Barrel",
-      description: "Kitchen and dining favorites",
-      url: "https://crateandbarrel.com",
+      description: "Our full registry of home + kitchen favorites",
+      url: "https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856",
       icon: "🏺",
-    },
-    {
-      name: "Zola",
-      description: "Our complete registry",
-      url: "https://zola.com",
-      icon: "💝",
     },
   ];
 
