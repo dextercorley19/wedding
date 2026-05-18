@@ -168,35 +168,17 @@ export default function Home() {
       </section>
 
       <section className="py-24 bg-muted/30">
-        <div className="container mx-auto px-4 max-w-3xl text-center space-y-6">
+        <div className="container mx-auto px-4 max-w-md text-center space-y-6">
           <h2 className="font-serif text-4xl md:text-5xl">Registry</h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Your love and presence are the greatest gifts, but if youd like to contribute, weve set up two easy options below.
-          </p>
-          <div className="grid md:grid-cols-2 gap-4">
-            <Link
-              href="https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block rounded-xl border bg-background p-6 hover:bg-muted transition-colors"
-            >
-              <p className="text-2xl mb-2">Crate & Barrel</p>
-              <p className="text-sm text-muted-foreground">
-                Curated home + kitchen favorites
-              </p>
-            </Link>
-            <Link
-              href="https://zola.com/wedding/dexterandsami2026/registry"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block rounded-xl border bg-background p-6 hover:bg-muted transition-colors"
-            >
-              <p className="text-2xl mb-2">Honeymoon Fund</p>
-              <p className="text-sm text-muted-foreground">
-                Help us celebrate in Hawaii
-              </p>
-            </Link>
-          </div>
+          <Link
+            href="https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block rounded-xl border bg-background p-6 hover:bg-muted transition-colors"
+          >
+            <p className="text-2xl mb-2">Crate &amp; Barrel</p>
+            <p className="text-sm text-muted-foreground">Curated home + kitchen favorites</p>
+          </Link>
         </div>
       </section>
 
