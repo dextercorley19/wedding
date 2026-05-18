@@ -10,6 +10,12 @@ export default function RegistryPage() {
       url: "https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856",
       icon: "🏺",
     },
+    {
+      name: "Honeymoon Fund",
+      description: "Contribute to our Japan adventure",
+      url: "https://zola.com/wedding/dexterandsami2026/registry",
+      icon: "💌",
+    },
   ];
 
   return (
