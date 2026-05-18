@@ -187,17 +187,27 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="font-serif text-2xl">Where to Stay</h3>
               <p className="text-muted-foreground leading-relaxed">
-                We are gauging interest in room blocks and will update shortly.
+                We have a limited room block at the Newport Beach Marriott (steps from the venue).
+                Use the link below to reserve your room under the Corley/Colleran wedding rate.
               </p>
+              <Button asChild className="w-full md:w-auto">
+                <a
+                  href="https://app.marriott.com/resview2?id=1778187461300&key=GRP&app=resvlink"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Book the Marriott Block
+                </a>
+              </Button>
               <p className="text-muted-foreground leading-relaxed">
-                In the meantime, nearby options include:
+                Additional nearby options include:
               </p>
               <ul className="space-y-2 text-muted-foreground">
                 <li>• Vea Hotel</li>
                 <li>• Courtyard by Marriott Irvine</li>
                 <li>
-                  • Airbnb or VRBO on Balboa Island, Newport Peninsula, or generally anywhere in
-                  Newport Beach.
+                  • Airbnb or VRBO on Balboa Island, Newport Peninsula, or anywhere in Newport Beach
+                  proper.
                 </li>
               </ul>
               <p className="text-muted-foreground leading-relaxed">
