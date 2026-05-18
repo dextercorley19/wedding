@@ -21,6 +21,9 @@ export function Navigation() {
             <Link href="/#details" className="text-sm hover:text-foreground/70 transition-colors">
               Details
             </Link>
+            <Link href="/registry" className="text-sm hover:text-foreground/70 transition-colors">
+              Registry
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -44,6 +47,13 @@ export function Navigation() {
               onClick={() => setMobileMenuOpen(false)}
             >
               Details
+            </Link>
+            <Link
+              href="/registry"
+              className="block py-2 px-4 text-base hover:bg-muted rounded-md transition-colors"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Registry
             </Link>
           </div>
         )}

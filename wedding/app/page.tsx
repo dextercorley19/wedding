@@ -167,6 +167,39 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="py-24 bg-muted/30">
+        <div className="container mx-auto px-4 max-w-3xl text-center space-y-6">
+          <h2 className="font-serif text-4xl md:text-5xl">Registry</h2>
+          <p className="text-muted-foreground leading-relaxed">
+            Your love and presence are the greatest gifts, but if youd like to contribute, weve set up two easy options below.
+          </p>
+          <div className="grid md:grid-cols-2 gap-4">
+            <Link
+              href="https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-xl border bg-background p-6 hover:bg-muted transition-colors"
+            >
+              <p className="text-2xl mb-2">Crate & Barrel</p>
+              <p className="text-sm text-muted-foreground">
+                Curated home + kitchen favorites
+              </p>
+            </Link>
+            <Link
+              href="https://zola.com/wedding/dexterandsami2026/registry"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-xl border bg-background p-6 hover:bg-muted transition-colors"
+            >
+              <p className="text-2xl mb-2">Honeymoon Fund</p>
+              <p className="text-sm text-muted-foreground">
+                Help us celebrate in Hawaii
+              </p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Travel & Accommodations */}
       <section className="py-24 bg-muted/30">
         <div className="container mx-auto px-4 max-w-3xl">
@@ -203,8 +236,7 @@ export default function Home() {
                 Additional nearby options include:
               </p>
               <ul className="space-y-2 text-muted-foreground">
-                <li>• Vea Hotel</li>
-                <li>• Courtyard by Marriott Irvine</li>
+                <li>• VEA Newport Beach (Marriott)</li>
                 <li>
                   • Airbnb or VRBO on Balboa Island, Newport Peninsula, or anywhere in Newport Beach
                   proper.
