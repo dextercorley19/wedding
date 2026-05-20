@@ -202,7 +202,7 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="font-serif text-2xl">Where to Stay</h3>
               <p className="text-muted-foreground leading-relaxed">
-                We have a limited room block at the Newport Beach Marriott (steps from the venue).
+                We have a limited room block at the Newport Beach Marriott .
                 Use the link below to reserve your room under the Corley/Colleran wedding rate.
               </p>
               <Button asChild className="w-full md:w-auto">
@@ -219,6 +219,7 @@ export default function Home() {
               </p>
               <ul className="space-y-2 text-muted-foreground">
                 <li>• VEA Newport Beach (Marriott)</li>
+                <li>• Courtyard by Marriott Irvine John Wayne</li>
                 <li>
                   • Airbnb or VRBO on Balboa Island, Newport Peninsula, or anywhere in Newport Beach
                   proper.
