@@ -1,12 +1,13 @@
 import type React from "react";
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Cormorant_Garamond, Geist_Mono, Pinyon_Script, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { GlobalPasswordGate } from "@/components/common/GlobalPasswordGate";
 import "./globals.css";
 
-const geist = Geist({
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   variable: "--font-sans",
 });
 const geistMono = Geist_Mono({
@@ -17,16 +18,17 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-serif",
 });
+const pinyon = Pinyon_Script({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-script",
+});
 
 export const metadata: Metadata = {
   title: "Sami & Dexter | October 24, 2026",
-  description: "Join us as we celebrate our wedding on October 24, 2026 in Maui",
+  description:
+    "Join us as we celebrate our wedding on October 24, 2026 in Newport Beach, California",
   generator: "v0.app",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 2,
-  },
   icons: {
     icon: [
       {
@@ -46,13 +48,22 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 2,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${playfair.variable}`}>
+    <html
+      lang="en"
+      className={`${cormorant.variable} ${geistMono.variable} ${playfair.variable} ${pinyon.variable}`}
+    >
       <body className="font-sans antialiased">
         <GlobalPasswordGate>{children}</GlobalPasswordGate>
         <Analytics />

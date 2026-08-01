@@ -11,6 +11,8 @@ export const rsvps = pgTable(
     lastName: varchar("last_name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
     attending: boolean("attending").notNull(),
+    // Dinner selection — only collected from guests who are attending.
+    mealChoice: varchar("meal_choice", { length: 32 }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   },
