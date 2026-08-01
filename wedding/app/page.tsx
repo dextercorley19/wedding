@@ -71,38 +71,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Welcome note + engagement photos */}
+      {/* Welcome note */}
       <section className="pb-24">
-        <div className="container mx-auto px-4 max-w-5xl">
-          <div className="max-w-2xl mx-auto text-center space-y-5 mb-14">
-            <p className="text-xl leading-relaxed text-muted-foreground">
-              We&rsquo;re so excited to celebrate this weekend with all of our favorite people!
-            </p>
-            <p className="text-xl leading-relaxed text-muted-foreground">
-              Here are a few photos from our engagement in Maui, HI
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { src: "/IMG_4371.JPG", alt: "Proposal moment 1" },
-              { src: "/IMG_4373.JPG", alt: "Proposal moment 2" },
-              { src: "/IMG_4370 (2).jpg", alt: "Proposal moment 3" },
-            ].map((photo) => (
-              <div
-                key={photo.src}
-                className="relative aspect-square bg-muted overflow-hidden ring-1 ring-sage/25"
-              >
-                <Image
-                  src={photo.src}
-                  alt={photo.alt}
-                  fill
-                  className="object-cover"
-                  loading="lazy"
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                />
-              </div>
-            ))}
-          </div>
+        <div className="container mx-auto px-4 max-w-2xl text-center">
+          <p className="text-xl leading-relaxed text-muted-foreground">
+            We&rsquo;re so excited to celebrate this weekend with all of our favorite people!
+          </p>
         </div>
       </section>
 
@@ -408,6 +382,42 @@ export default function Home() {
                 Newport Beach in October is typically sunny and mild, with cooler evenings.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <FloralDivider />
+
+      {/* Engagement photos */}
+      <section className="py-24">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="text-center mb-12 space-y-3">
+            <p className="suite-label text-sage-deep">How It Started</p>
+            <h2 className="font-serif text-4xl md:text-5xl">Our Engagement</h2>
+            <p className="text-lg text-muted-foreground pt-1">
+              A few photos from our engagement in Maui, HI
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { src: "/IMG_4371.JPG", alt: "Proposal moment 1" },
+              { src: "/IMG_4373.JPG", alt: "Proposal moment 2" },
+              { src: "/IMG_4370 (2).jpg", alt: "Proposal moment 3" },
+            ].map((photo) => (
+              <div
+                key={photo.src}
+                className="relative aspect-square bg-muted overflow-hidden ring-1 ring-sage/25"
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
