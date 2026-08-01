@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, MapPin, Clock, Coffee, Wine } from "lucide-react";
+import { Calendar, MapPin, Clock, Coffee, Heart, Utensils, Wine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/common/Navigation";
 import { FloralCorner, FloralDivider, FloralSprig } from "@/components/common/Floral";
@@ -11,24 +11,35 @@ export default function Home() {
       {/* Navigation */}
       <Navigation />
 
-      {/* Hero — styled as the invitation panel itself */}
-      <section className="relative min-h-screen flex items-center justify-center py-28">
+      {/* Hero — the photo, uncovered. Only our names sit over it. */}
+      <section className="relative h-screen flex items-end justify-center">
         <div className="absolute inset-0">
-          <div className="relative h-full w-full">
-            <Image
-              src="/IMG_4372.JPG"
-              alt="Wedding hero"
-              fill
-              priority
-              className="object-cover"
-              sizes="100vw"
-            />
-          </div>
-          <div className="absolute inset-0 bg-ink/35" />
+          <Image
+            src="/IMG_4372.JPG"
+            alt="Sami and Dexter on the beach"
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+          {/* Gradient rather than a flat wash, so the middle of the photo stays clear. */}
+          <div className="absolute inset-0 bg-gradient-to-b from-ink/25 via-transparent to-ink/60" />
         </div>
 
-        <div className="relative w-full px-4">
-          <div className="suite-frame mx-auto max-w-xl px-6 py-12 sm:px-14 sm:py-16 text-center shadow-xl">
+        <div className="relative w-full px-4 pb-20 text-center text-white sm:pb-24">
+          <h1 className="suite-script text-6xl sm:text-7xl md:text-8xl text-balance text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.45)]">
+            Sami <span className="text-5xl sm:text-6xl">&amp;</span> Dexter
+          </h1>
+          <p className="suite-label mt-4 text-white/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
+            October 24, 2026 — Newport Beach, California
+          </p>
+        </div>
+      </section>
+
+      {/* The invitation, on paper rather than over the photo */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="suite-frame mx-auto max-w-xl px-6 py-12 sm:px-14 sm:py-16 text-center shadow-sm">
             {/* Corner vines, one motif mirrored into all four corners */}
             <FloralCorner className="absolute left-1 top-1 h-14 w-14 sm:h-16 sm:w-16" />
             <FloralCorner className="absolute right-1 top-1 h-14 w-14 -scale-x-100 sm:h-16 sm:w-16" />
@@ -38,9 +49,9 @@ export default function Home() {
             <div className="relative space-y-6">
               <p className="suite-script text-5xl sm:text-6xl">S&amp;D</p>
               <p className="suite-label text-muted-foreground">Together with their families</p>
-              <h1 className="suite-script text-5xl sm:text-6xl md:text-7xl text-balance">
+              <p className="suite-script text-5xl sm:text-6xl md:text-7xl text-balance">
                 Sami <span className="text-4xl sm:text-5xl">&amp;</span> Dexter
-              </h1>
+              </p>
               <p className="suite-label text-muted-foreground">
                 Saturday, the twenty-fourth of October
               </p>
@@ -61,7 +72,7 @@ export default function Home() {
       </section>
 
       {/* Welcome note + engagement photos */}
-      <section className="py-24">
+      <section className="pb-24">
         <div className="container mx-auto px-4 max-w-5xl">
           <div className="max-w-2xl mx-auto text-center space-y-5 mb-14">
             <p className="text-xl leading-relaxed text-muted-foreground">
@@ -105,27 +116,16 @@ export default function Home() {
             <h2 className="font-serif text-4xl md:text-5xl">Ceremony &amp; Reception</h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 md:gap-12">
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
             {/* Ceremony */}
-            <div className="space-y-6">
-              <div className="relative aspect-video bg-muted overflow-hidden ring-1 ring-sage/25">
-                <Image
-                  src="/27_ceremony-area-Newport-Beach-Country-Club-wedding-photographer.jpg"
-                  alt="Ceremony venue"
-                  fill
-                  className="object-cover"
-                  loading="lazy"
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                />
-              </div>
-              <div className="space-y-4">
+            <div className="suite-frame p-8 sm:p-10">
+              <div className="relative space-y-4">
+                <Heart className="w-7 h-7 text-hydrangea" aria-hidden="true" />
                 <h3 className="suite-script text-3xl">Ceremony</h3>
                 <div className="space-y-3 text-muted-foreground">
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 mt-1 shrink-0 text-sage" />
-                    <div>
-                      <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
-                    </div>
+                    <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 mt-1 shrink-0 text-sage" />
@@ -144,25 +144,14 @@ export default function Home() {
             </div>
 
             {/* Reception */}
-            <div className="space-y-6">
-              <div className="relative aspect-video bg-muted overflow-hidden ring-1 ring-sage/25">
-                <Image
-                  src="/34135813_1738752159505266_6750061028635049984_o.jpg"
-                  alt="Reception venue"
-                  fill
-                  className="object-cover"
-                  loading="lazy"
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                />
-              </div>
-              <div className="space-y-4">
+            <div className="suite-frame p-8 sm:p-10">
+              <div className="relative space-y-4">
+                <Utensils className="w-7 h-7 text-hydrangea" aria-hidden="true" />
                 <h3 className="suite-script text-3xl">Reception</h3>
                 <div className="space-y-3 text-muted-foreground">
                   <div className="flex items-start gap-3">
                     <Calendar className="w-5 h-5 mt-1 shrink-0 text-sage" />
-                    <div>
-                      <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
-                    </div>
+                    <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                   </div>
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 mt-1 shrink-0 text-sage" />
@@ -341,7 +330,6 @@ export default function Home() {
               </p>
               <ul className="space-y-2 text-muted-foreground">
                 <li>• VEA Newport Beach (Marriott)</li>
-                <li>• Courtyard by Marriott Irvine John Wayne</li>
                 <li>
                   • Airbnb or VRBO on Balboa Island, Newport Peninsula, or anywhere in Newport Beach
                   proper.
