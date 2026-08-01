@@ -30,12 +30,22 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
 
 ## Features
 - **Public pages:** Details, RSVP, Registry (Gallery/Story removed per Feb 2026 refresh)
-- **Timeline:** Ceremony + reception schedule baked into `app/page.tsx`
+- **Timeline:** Ceremony (4:30 PM), reception (5:00–10:30 PM), and weekend events —
+  welcome drinks and the optional Wedding Walk — baked into `app/page.tsx`
+- **Attire:** Black tie optional, in the `#attire` section of `app/page.tsx`
+- **Theme:** Matches our printed invitation suite — ivory paper, blue hydrangea, sage
+  vine. Tokens live in `app/globals.css` (`--hydrangea*`, `--sage*`) alongside the
+  `.suite-frame` / `.suite-label` / `.suite-script` helpers; the floral SVG motifs are
+  in `components/common/Floral.tsx`.
 - **RSVP flow:**
   - Password gate (`components/rsvp/PasswordGate.tsx`)
   - Add multiple guests before submitting
+  - Dinner selection per attending guest — options defined once in
+    `src/db/zod/schema.ts` (`MEAL_OPTIONS`), persisted to `rsvps.meal_choice`
   - Duplicate detection on `(firstName, lastName, email)`
   - Inline validation powered by `react-hook-form` + `zod`
+  - `submitRsvp` returns `{ success, error }` rather than throwing, since Next.js
+    redacts Server Action error messages in production
 - **Admin Export:** Run from repo root:
   ```bash
   uv run scripts-shared/export_rsvps.py

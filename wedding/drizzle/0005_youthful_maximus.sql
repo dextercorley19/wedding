@@ -1,0 +1,1 @@
+ALTER TABLE "rsvps" ADD COLUMN "meal_choice" varchar(32);

@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, MapPin, Clock } from "lucide-react";
+import { Calendar, MapPin, Clock, Coffee, Wine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/common/Navigation";
+import { FloralCorner, FloralDivider, FloralSprig } from "@/components/common/Floral";
 
 export default function Home() {
   return (
@@ -10,8 +11,8 @@ export default function Home() {
       {/* Navigation */}
       <Navigation />
 
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center">
+      {/* Hero — styled as the invitation panel itself */}
+      <section className="relative min-h-screen flex items-center justify-center py-28">
         <div className="absolute inset-0">
           <div className="relative h-full w-full">
             <Image
@@ -23,76 +24,91 @@ export default function Home() {
               sizes="100vw"
             />
           </div>
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-ink/35" />
         </div>
-        <div className="relative text-center space-y-6 px-4 text-white">
-          <h1 className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-balance drop-shadow-lg">
-            Sami & Dexter
-          </h1>
-          <p className="text-xl md:text-2xl drop-shadow-md">October 24, 2026</p>
-          <p className="text-lg drop-shadow-md">Newport Beach, California</p>
+
+        <div className="relative w-full px-4">
+          <div className="suite-frame mx-auto max-w-xl px-6 py-12 sm:px-14 sm:py-16 text-center shadow-xl">
+            {/* Corner vines, one motif mirrored into all four corners */}
+            <FloralCorner className="absolute left-1 top-1 h-14 w-14 sm:h-16 sm:w-16" />
+            <FloralCorner className="absolute right-1 top-1 h-14 w-14 -scale-x-100 sm:h-16 sm:w-16" />
+            <FloralCorner className="absolute bottom-1 left-1 h-14 w-14 -scale-y-100 sm:h-16 sm:w-16" />
+            <FloralCorner className="absolute bottom-1 right-1 h-14 w-14 -scale-100 sm:h-16 sm:w-16" />
+
+            <div className="relative space-y-6">
+              <p className="suite-script text-5xl sm:text-6xl">S&amp;D</p>
+              <p className="suite-label text-muted-foreground">Together with their families</p>
+              <h1 className="suite-script text-5xl sm:text-6xl md:text-7xl text-balance">
+                Sami <span className="text-4xl sm:text-5xl">&amp;</span> Dexter
+              </h1>
+              <p className="suite-label text-muted-foreground">
+                Saturday, the twenty-fourth of October
+              </p>
+              <p className="font-serif text-lg text-muted-foreground">two thousand twenty-six</p>
+              <FloralSprig className="pt-1" />
+              <div className="space-y-1">
+                <p className="suite-script text-3xl sm:text-4xl">Newport Beach Country Club</p>
+                <p className="suite-label text-muted-foreground">Newport Beach, California</p>
+              </div>
+              <div className="pt-4">
+                <Button asChild size="lg">
+                  <Link href="/rsvp">RSVP</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Proposal Gallery */}
+      {/* Welcome note + engagement photos */}
       <section className="py-24">
         <div className="container mx-auto px-4 max-w-5xl">
-          <div className="max-w-3xl mx-auto text-center space-y-4 mb-16 font-serif text-muted-foreground">
-            <p className="text-lg leading-relaxed">
-              We’re so excited to celebrate this weekend with all of our favorite people!
+          <div className="max-w-2xl mx-auto text-center space-y-5 mb-14">
+            <p className="text-xl leading-relaxed text-muted-foreground">
+              We&rsquo;re so excited to celebrate this weekend with all of our favorite people!
             </p>
-            <p className="text-lg leading-relaxed">
-              While formal invitations will follow, we wanted to share a few details to help with
-              travel planning. We’ll continue updating this site as the weekend approaches.
-            </p>
-            <p className="text-lg leading-relaxed">
+            <p className="text-xl leading-relaxed text-muted-foreground">
               Here are a few photos from our engagement in Maui, HI
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
-              <Image
-                src="/IMG_4371.JPG"
-                alt="Proposal moment 1"
-                fill
-                className="object-cover"
-                loading="lazy"
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-            </div>
-            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
-              <Image
-                src="/IMG_4373.JPG"
-                alt="Proposal moment 2"
-                fill
-                className="object-cover"
-                loading="lazy"
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-            </div>
-            <div className="relative aspect-square bg-muted rounded-lg overflow-hidden">
-              <Image
-                src="/IMG_4370 (2).jpg"
-                alt="Proposal moment 3"
-                fill
-                className="object-cover"
-                loading="lazy"
-                sizes="(min-width: 768px) 33vw, 100vw"
-              />
-            </div>
+            {[
+              { src: "/IMG_4371.JPG", alt: "Proposal moment 1" },
+              { src: "/IMG_4373.JPG", alt: "Proposal moment 2" },
+              { src: "/IMG_4370 (2).jpg", alt: "Proposal moment 3" },
+            ].map((photo) => (
+              <div
+                key={photo.src}
+                className="relative aspect-square bg-muted overflow-hidden ring-1 ring-sage/25"
+              >
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  fill
+                  className="object-cover"
+                  loading="lazy"
+                  sizes="(min-width: 768px) 33vw, 100vw"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
+      <FloralDivider />
+
       {/* Event Details */}
       <section id="details" className="py-24">
         <div className="container mx-auto px-4 max-w-4xl">
-          <h2 className="font-serif text-4xl md:text-5xl text-center mb-16">Event Details</h2>
+          <div className="text-center mb-16 space-y-3">
+            <p className="suite-label text-sage-deep">The Wedding Day</p>
+            <h2 className="font-serif text-4xl md:text-5xl">Ceremony &amp; Reception</h2>
+          </div>
 
           <div className="grid md:grid-cols-2 gap-6 md:gap-12">
             {/* Ceremony */}
             <div className="space-y-6">
-              <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
+              <div className="relative aspect-video bg-muted overflow-hidden ring-1 ring-sage/25">
                 <Image
                   src="/27_ceremony-area-Newport-Beach-Country-Club-wedding-photographer.jpg"
                   alt="Ceremony venue"
@@ -103,20 +119,20 @@ export default function Home() {
                 />
               </div>
               <div className="space-y-4">
-                <h3 className="font-serif text-2xl">Ceremony</h3>
+                <h3 className="suite-script text-3xl">Ceremony</h3>
                 <div className="space-y-3 text-muted-foreground">
                   <div className="flex items-start gap-3">
-                    <Calendar className="w-5 h-5 mt-0.5 shrink-0" />
+                    <Calendar className="w-5 h-5 mt-1 shrink-0 text-sage" />
                     <div>
                       <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 mt-0.5 shrink-0" />
-                    <p>5:00 PM</p>
+                    <Clock className="w-5 h-5 mt-1 shrink-0 text-sage" />
+                    <p>4:30 PM</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
+                    <MapPin className="w-5 h-5 mt-1 shrink-0 text-sage" />
                     <div>
                       <p className="font-medium text-foreground">Newport Beach Country Club</p>
                       <p className="text-sm">One Clubhouse Dr</p>
@@ -129,7 +145,7 @@ export default function Home() {
 
             {/* Reception */}
             <div className="space-y-6">
-              <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
+              <div className="relative aspect-video bg-muted overflow-hidden ring-1 ring-sage/25">
                 <Image
                   src="/34135813_1738752159505266_6750061028635049984_o.jpg"
                   alt="Reception venue"
@@ -140,20 +156,20 @@ export default function Home() {
                 />
               </div>
               <div className="space-y-4">
-                <h3 className="font-serif text-2xl">Reception</h3>
+                <h3 className="suite-script text-3xl">Reception</h3>
                 <div className="space-y-3 text-muted-foreground">
                   <div className="flex items-start gap-3">
-                    <Calendar className="w-5 h-5 mt-0.5 shrink-0" />
+                    <Calendar className="w-5 h-5 mt-1 shrink-0 text-sage" />
                     <div>
                       <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
-                    <Clock className="w-5 h-5 mt-0.5 shrink-0" />
-                    <p>6:30 PM - 10:30 PM</p>
+                    <Clock className="w-5 h-5 mt-1 shrink-0 text-sage" />
+                    <p>5:00 PM - 10:30 PM</p>
                   </div>
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
+                    <MapPin className="w-5 h-5 mt-1 shrink-0 text-sage" />
                     <div>
                       <p className="font-medium text-foreground">Newport Beach Country Club</p>
                       <p className="text-sm">One Clubhouse Dr</p>
@@ -167,28 +183,134 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24 bg-muted/30">
-        <div className="container mx-auto px-4 max-w-md text-center space-y-6">
-          <h2 className="font-serif text-4xl md:text-5xl">Registry</h2>
-          <Link
-            href="https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block rounded-xl border bg-background p-6 hover:bg-muted transition-colors"
-          >
-            <p className="text-2xl mb-2">Crate &amp; Barrel</p>
-            <p className="text-sm text-muted-foreground">Curated home + kitchen favorites</p>
-          </Link>
+      <FloralDivider />
+
+      {/* Weekend Events */}
+      <section id="events" className="py-24">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-16 space-y-3">
+            <p className="suite-label text-sage-deep">Join Us All Weekend</p>
+            <h2 className="font-serif text-4xl md:text-5xl">Weekend Events</h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8">
+            {/* Welcome Drinks */}
+            <div className="suite-frame p-8 sm:p-10 space-y-4">
+              <div className="relative space-y-4">
+                <Wine className="w-7 h-7 text-hydrangea" aria-hidden="true" />
+                <h3 className="suite-script text-3xl">Welcome Drinks</h3>
+                <div className="space-y-3 text-muted-foreground">
+                  <div className="flex items-start gap-3">
+                    <Calendar className="w-5 h-5 mt-1 shrink-0 text-sage" />
+                    <p className="font-medium text-foreground">Friday, October 23, 2026</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 mt-1 shrink-0 text-sage" />
+                    <p>7:30 PM - 9:30 PM</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 mt-1 shrink-0 text-sage" />
+                    <div>
+                      <p className="font-medium text-foreground">Balboa Yacht Club</p>
+                      <p className="text-sm">Newport Beach, CA</p>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  Come say hello the night before and kick off the weekend with us.
+                </p>
+              </div>
+            </div>
+
+            {/* Wedding Walk */}
+            <div className="suite-frame p-8 sm:p-10 space-y-4">
+              <div className="relative space-y-4">
+                <Coffee className="w-7 h-7 text-hydrangea" aria-hidden="true" />
+                <h3 className="suite-script text-3xl">
+                  Wedding Walk{" "}
+                  <span className="font-sans text-base italic text-muted-foreground">
+                    (optional)
+                  </span>
+                </h3>
+                <div className="space-y-3 text-muted-foreground">
+                  <div className="flex items-start gap-3">
+                    <Calendar className="w-5 h-5 mt-1 shrink-0 text-sage" />
+                    <p className="font-medium text-foreground">Saturday, October 24, 2026</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Clock className="w-5 h-5 mt-1 shrink-0 text-sage" />
+                    <p>8:00 AM - 11:00 AM</p>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <MapPin className="w-5 h-5 mt-1 shrink-0 text-sage" />
+                    <div>
+                      <p className="font-medium text-foreground">Reborn Coffee</p>
+                      <p className="text-sm">Newport Beach, CA</p>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-muted-foreground leading-relaxed">
+                  Stop by any time that morning for complimentary coffee and a map of our favorite
+                  walk. Come and go as you please.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
+      <FloralDivider />
+
+      {/* Attire */}
+      <section id="attire" className="py-24">
+        <div className="container mx-auto px-4 max-w-2xl text-center">
+          <div className="space-y-3 mb-10">
+            <p className="suite-label text-sage-deep">Attire</p>
+            <h2 className="font-serif text-4xl md:text-5xl">Black Tie Optional</h2>
+          </div>
+          <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
+            <p>Dress for an elegant evening by the ocean.</p>
+            <p>
+              We hope you&rsquo;ll embrace the vibrant, coastal feel of the celebration with formal
+              attire in joyful colors, beautiful prints, and elevated textures.
+            </p>
+            <p>Tuxedos or dark suits are warmly welcomed.</p>
+          </div>
+        </div>
+      </section>
+
+      <FloralDivider />
+
+      {/* RSVP */}
+      <section id="rsvp" className="py-24">
+        <div className="container mx-auto px-4 max-w-xl">
+          <div className="suite-frame px-8 py-12 sm:px-12 text-center">
+            <div className="relative space-y-6">
+              <FloralSprig />
+              <h2 className="font-serif text-4xl md:text-5xl">RSVP</h2>
+              <p className="text-lg leading-relaxed text-muted-foreground">
+                Kindly reply for each member of your party, and let us know your dinner selection.
+              </p>
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <Link href="/rsvp">Reply to Our Invitation</Link>
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <FloralDivider />
+
       {/* Travel & Accommodations */}
-      <section className="py-24 bg-muted/30">
+      <section id="travel" className="py-24">
         <div className="container mx-auto px-4 max-w-3xl">
-          <h2 className="font-serif text-4xl md:text-5xl text-center mb-12">Travel & Stay</h2>
-          <div className="space-y-8">
+          <div className="text-center mb-12 space-y-3">
+            <p className="suite-label text-sage-deep">Getting to Newport</p>
+            <h2 className="font-serif text-4xl md:text-5xl">Travel &amp; Stay</h2>
+          </div>
+          <div className="space-y-10">
             <div className="space-y-4">
-              <h3 className="font-serif text-2xl">Getting There</h3>
+              <h3 className="suite-script text-3xl">Getting There</h3>
               <p className="text-muted-foreground leading-relaxed">We recommend flying into:</p>
               <ul className="space-y-2 text-muted-foreground">
                 <li>• John Wayne Airport (SNA) — 15 minutes from Newport Beach</li>
@@ -200,10 +322,10 @@ export default function Home() {
               </p>
             </div>
             <div className="space-y-4">
-              <h3 className="font-serif text-2xl">Where to Stay</h3>
+              <h3 className="suite-script text-3xl">Where to Stay</h3>
               <p className="text-muted-foreground leading-relaxed">
-                We have a limited room block at the Newport Beach Marriott .
-                Use the link below to reserve your room under the Corley/Colleran wedding rate.
+                We have a limited room block at the Newport Beach Marriott. Use the link below to
+                reserve your room under the Corley/Colleran wedding rate.
               </p>
               <Button asChild className="w-full md:w-auto">
                 <a
@@ -233,24 +355,67 @@ export default function Home() {
         </div>
       </section>
 
+      <FloralDivider />
+
+      {/* Registry */}
+      <section className="py-24">
+        <div className="container mx-auto px-4 max-w-md text-center space-y-6">
+          <p className="suite-label text-sage-deep">With Gratitude</p>
+          <h2 className="font-serif text-4xl md:text-5xl">Registry</h2>
+          <Link
+            href="https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="suite-frame block p-8 transition-colors hover:bg-accent/40"
+          >
+            <span className="relative block space-y-2">
+              <span className="block suite-script text-3xl">Crate &amp; Barrel</span>
+              <span className="block text-sm text-muted-foreground">
+                Curated home + kitchen favorites
+              </span>
+            </span>
+          </Link>
+        </div>
+      </section>
+
+      <FloralDivider />
+
+      {/* FAQ */}
       <section className="py-24">
         <div className="container mx-auto px-4 max-w-3xl">
-          <h2 className="font-serif text-4xl md:text-5xl text-center mb-12">FAQ</h2>
+          <div className="text-center mb-12 space-y-3">
+            <p className="suite-label text-sage-deep">Good to Know</p>
+            <h2 className="font-serif text-4xl md:text-5xl">FAQ</h2>
+          </div>
           <div className="space-y-8">
             <div>
-              <h3 className="font-serif text-2xl mb-2">When should I RSVP?</h3>
+              <h3 className="suite-script text-2xl mb-2">When should I RSVP?</h3>
               <p className="text-muted-foreground">
-                Formal invitations will be sent closer to the wedding date.
+                As soon as you&rsquo;re able! You can{" "}
+                <Link href="/rsvp" className="text-hydrangea-deep underline underline-offset-4">
+                  reply online here
+                </Link>
+                , including your dinner selection.
               </p>
             </div>
             <div>
-              <h3 className="font-serif text-2xl mb-2">Can I bring a plus one?</h3>
+              <h3 className="suite-script text-2xl mb-2">Can I bring a plus one?</h3>
               <p className="text-muted-foreground">
                 Plus ones will be named on your invitation if included.
               </p>
             </div>
             <div>
-              <h3 className="font-serif text-2xl mb-2">What will the weather be like?</h3>
+              <h3 className="suite-script text-2xl mb-2">What should I wear?</h3>
+              <p className="text-muted-foreground">
+                Black tie optional — see{" "}
+                <Link href="/#attire" className="text-hydrangea-deep underline underline-offset-4">
+                  Attire
+                </Link>{" "}
+                for the full details.
+              </p>
+            </div>
+            <div>
+              <h3 className="suite-script text-2xl mb-2">What will the weather be like?</h3>
               <p className="text-muted-foreground">
                 Newport Beach in October is typically sunny and mild, with cooler evenings.
               </p>
@@ -260,10 +425,11 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 border-t">
-        <div className="container mx-auto px-4 text-center text-muted-foreground">
+      <footer className="py-14 border-t">
+        <div className="container mx-auto px-4 text-center text-muted-foreground space-y-3">
+          <FloralSprig />
           <p>We can&rsquo;t wait to celebrate with you!</p>
-          <p className="mt-2">Sami & Dexter | October 24, 2026</p>
+          <p className="suite-label">Sami &amp; Dexter — October 24, 2026</p>
         </div>
       </footer>
     </div>

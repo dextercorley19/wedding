@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, ReactNode, useState, useEffect } from "react";
+import { FC, ReactNode, useState, useSyncExternalStore } from "react";
 import { Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,29 +11,62 @@ interface GlobalPasswordGateProps {
   children: ReactNode;
 }
 
-export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) => {
-  type AuthState = "checking" | "authenticated" | "guest";
+const AUTH_KEY = "wedding-authenticated";
 
-  const [authState, setAuthState] = useState<AuthState>("checking");
+/**
+ * Auth lives in localStorage, which the server can't see. Exposing it as an
+ * external store (rather than reading it in an effect) keeps the server and
+ * client renders consistent without deferring the read — a deferred read via
+ * requestAnimationFrame never resolves in a background tab, leaving the page
+ * blank until it is focused.
+ */
+const authListeners = new Set<() => void>();
+const notifyAuthChanged = () => authListeners.forEach((listener) => listener());
+
+const subscribeToAuth = (listener: () => void) => {
+  authListeners.add(listener);
+  // Keeps other tabs in sync; same-tab changes go through notifyAuthChanged.
+  window.addEventListener("storage", notifyAuthChanged);
+  return () => {
+    authListeners.delete(listener);
+    if (authListeners.size === 0) {
+      window.removeEventListener("storage", notifyAuthChanged);
+    }
+  };
+};
+
+const getIsAuthenticated = () => localStorage.getItem(AUTH_KEY) === "true";
+
+/** Never authenticated during SSR — there's no localStorage to read. */
+const getIsAuthenticatedOnServer = () => false;
+
+/** Resolves to false on the server and true once the client has hydrated. */
+const subscribeToNothing = () => () => {};
+const getHasHydrated = () => true;
+const getHasHydratedOnServer = () => false;
+
+export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    const frame = requestAnimationFrame(() => {
-      const isBrowser = typeof window !== "undefined";
-      const authenticated = isBrowser && localStorage.getItem("wedding-authenticated") === "true";
-      setAuthState(authenticated ? "authenticated" : "guest");
-    });
-    return () => cancelAnimationFrame(frame);
-  }, []);
+  const hasHydrated = useSyncExternalStore(
+    subscribeToNothing,
+    getHasHydrated,
+    getHasHydratedOnServer
+  );
+  const isAuthenticated = useSyncExternalStore(
+    subscribeToAuth,
+    getIsAuthenticated,
+    getIsAuthenticatedOnServer
+  );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (password === process.env.NEXT_PUBLIC_RSVP_PASSWORD) {
-      localStorage.setItem("wedding-authenticated", "true");
-      setAuthState("authenticated");
+      localStorage.setItem(AUTH_KEY, "true");
+      notifyAuthChanged();
       setError("");
     } else {
       setError("Incorrect password. Please try again.");
@@ -41,11 +74,12 @@ export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) =>
     }
   };
 
-  if (authState === "checking") {
+  // Render nothing until hydration so guests never see the gate flash by.
+  if (!hasHydrated) {
     return null;
   }
 
-  if (authState !== "authenticated") {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background">
         <Navigation />
