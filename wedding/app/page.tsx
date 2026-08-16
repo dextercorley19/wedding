@@ -182,6 +182,16 @@ export default function Home() {
                 <p className="text-muted-foreground leading-relaxed">
                   Come say hello the night before and kick off the weekend with us.
                 </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  <span className="font-medium text-foreground">Attire:</span> Yacht Club Casual —{" "}
+                  <Link
+                    href="/#attire"
+                    className="text-hydrangea-deep underline underline-offset-4"
+                  >
+                    see the details
+                  </Link>
+                  .
+                </p>
               </div>
             </div>
 
@@ -227,8 +237,9 @@ export default function Home() {
       {/* Attire */}
       <section id="attire" className="py-24">
         <div className="container mx-auto px-4 max-w-2xl text-center">
-          <div className="space-y-3 mb-10">
+          <div className="space-y-3 mb-4">
             <p className="suite-label text-sage-deep">Attire</p>
+            <p className="suite-label text-muted-foreground">Saturday &middot; The Wedding</p>
             <h2 className="font-serif text-4xl md:text-5xl">Black Tie Optional</h2>
           </div>
           <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
@@ -238,6 +249,34 @@ export default function Home() {
               attire in joyful colors, beautiful prints, and elevated textures.
             </p>
             <p>Tuxedos or dark suits are warmly welcomed.</p>
+          </div>
+
+          <div className="suite-frame mt-14 p-8 sm:p-10 text-left space-y-4">
+            <div className="relative space-y-3">
+              <p className="suite-label text-muted-foreground">Friday &middot; Welcome Drinks</p>
+              <h3 className="font-serif text-3xl md:text-4xl">Yacht Club Casual</h3>
+              <div className="space-y-4 leading-relaxed text-muted-foreground">
+                <p>
+                  We&rsquo;re on the harbor at Balboa Yacht Club, so think classic New England prep:
+                  Nantucket reds, navy blazers, crisp whites, and stripes.
+                </p>
+                <p>
+                  <span className="font-medium text-foreground">For the gentlemen:</span> Nantucket
+                  red or khaki trousers with a navy blazer, an oxford or polo, and boat shoes or
+                  loafers. No tie required.
+                </p>
+                <p>
+                  <span className="font-medium text-foreground">For the ladies:</span> a sundress, a
+                  linen or knit set, or tailored trousers — in navy, white, coral, or a nautical
+                  print. Flats, sandals, or espadrilles will serve you far better than heels on the
+                  docks.
+                </p>
+                <p>
+                  It cools off quickly once the sun goes down over the water, so bring a layer you
+                  don&rsquo;t mind wearing all night.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -369,7 +408,8 @@ export default function Home() {
             <div>
               <h3 className="suite-script text-2xl mb-2">What should I wear?</h3>
               <p className="text-muted-foreground">
-                Black tie optional — see{" "}
+                Black tie optional for the wedding, and yacht club casual for Friday&rsquo;s welcome
+                drinks — see{" "}
                 <Link href="/#attire" className="text-hydrangea-deep underline underline-offset-4">
                   Attire
                 </Link>{" "}
