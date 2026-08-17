@@ -249,23 +249,16 @@ export default function Home() {
                 <h3 className="font-serif text-3xl md:text-4xl">Yacht Club Casual</h3>
                 <div className="space-y-4 leading-relaxed text-muted-foreground">
                   <p>
-                    We&rsquo;re on the harbor at Balboa Yacht Club, so think classic New England
-                    prep: Nantucket reds, navy blazers, and stripes.
+                    An evening on the harbor at Balboa Yacht Club — classic New England prep,
+                    relaxed and easy.
                   </p>
                   <p>
-                    <span className="font-medium text-foreground">For the gentlemen:</span>{" "}
-                    Nantucket red or khaki trousers with a navy blazer, an oxford or polo, and boat
-                    shoes or loafers. No tie required.
+                    <span className="font-medium text-foreground">The palette:</span> Nantucket red,
+                    navy, khaki, and sand, with stripes and nautical prints always welcome.
                   </p>
                   <p>
-                    <span className="font-medium text-foreground">For the ladies:</span> a sundress,
-                    a linen or knit set, or tailored trousers — in navy, coral, or a nautical print.
-                    Flats, sandals, or espadrilles will serve you far better than heels on the
-                    docks.
-                  </p>
-                  <p>
-                    It cools off quickly once the sun goes down over the water, so bring a layer you
-                    don&rsquo;t mind wearing all night.
+                    Blazers, oxfords, sundresses, linen, and boat shoes all feel right at home here.
+                    Ties and heels are entirely optional.
                   </p>
                 </div>
               </div>
