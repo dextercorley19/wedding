@@ -248,17 +248,12 @@ export default function Home() {
                 <p className="suite-label text-muted-foreground">Friday &middot; Welcome Drinks</p>
                 <h3 className="font-serif text-3xl md:text-4xl">Yacht Club Casual</h3>
                 <div className="space-y-4 leading-relaxed text-muted-foreground">
+                  <p>Dress for an easy evening on the harbor.</p>
                   <p>
-                    An evening on the harbor at Balboa Yacht Club — classic New England prep,
-                    relaxed and easy.
+                    We hope you&rsquo;ll embrace the classic, preppy feel of the evening with
+                    relaxed attire in Nantucket reds, deep navies, and crisp stripes.
                   </p>
-                  <p>
-                    <span className="font-medium text-foreground">The palette:</span> Nantucket red,
-                    navy, khaki, sand, and stripes.
-                  </p>
-                  <p>
-                    Blazers, oxfords, sundresses, linen, and boat shoes. Ties and heels optional.
-                  </p>
+                  <p>Blazers, sundresses, and boat shoes are warmly welcomed.</p>
                 </div>
               </div>
             </div>
@@ -268,15 +263,12 @@ export default function Home() {
                 <p className="suite-label text-muted-foreground">Saturday &middot; The Wedding</p>
                 <h3 className="font-serif text-3xl md:text-4xl">Black Tie Optional</h3>
                 <div className="space-y-4 leading-relaxed text-muted-foreground">
+                  <p>Dress for an elegant evening by the ocean.</p>
                   <p>
-                    An evening by the ocean at Newport Beach Country Club — formal, with a coastal
-                    ease.
+                    We hope you&rsquo;ll embrace the vibrant, coastal feel of the celebration with
+                    formal attire in joyful colors, beautiful prints, and elevated textures.
                   </p>
-                  <p>
-                    <span className="font-medium text-foreground">The palette:</span> joyful colors,
-                    beautiful prints, and elevated textures.
-                  </p>
-                  <p>Gowns, cocktail dresses, tuxedos, and dark suits.</p>
+                  <p>Tuxedos or dark suits are warmly welcomed.</p>
                 </div>
               </div>
             </div>
