@@ -182,6 +182,16 @@ export default function Home() {
                 <p className="text-muted-foreground leading-relaxed">
                   Come say hello the night before and kick off the weekend with us.
                 </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  <span className="font-medium text-foreground">Attire:</span> Yacht Club Casual —{" "}
+                  <Link
+                    href="/#attire"
+                    className="text-hydrangea-deep underline underline-offset-4"
+                  >
+                    see the details
+                  </Link>
+                  .
+                </p>
               </div>
             </div>
 
@@ -229,15 +239,38 @@ export default function Home() {
         <div className="container mx-auto px-4 max-w-2xl text-center">
           <div className="space-y-3 mb-10">
             <p className="suite-label text-sage-deep">Attire</p>
-            <h2 className="font-serif text-4xl md:text-5xl">Black Tie Optional</h2>
+            <h2 className="font-serif text-4xl md:text-5xl">What to Wear</h2>
           </div>
-          <div className="space-y-5 text-lg leading-relaxed text-muted-foreground">
-            <p>Dress for an elegant evening by the ocean.</p>
-            <p>
-              We hope you&rsquo;ll embrace the vibrant, coastal feel of the celebration with formal
-              attire in joyful colors, beautiful prints, and elevated textures.
-            </p>
-            <p>Tuxedos or dark suits are warmly welcomed.</p>
+
+          <div className="space-y-6 md:space-y-8">
+            <div className="suite-frame p-8 sm:p-10 text-left">
+              <div className="relative space-y-3">
+                <p className="suite-label text-muted-foreground">Friday &middot; Welcome Drinks</p>
+                <h3 className="font-serif text-3xl md:text-4xl">Yacht Club Casual</h3>
+                <div className="space-y-4 leading-relaxed text-muted-foreground">
+                  <p>Dress for an easy evening on the harbor.</p>
+                  <p>
+                    We hope you&rsquo;ll embrace the relaxed feel of the evening with attire
+                    inspired by Nantucket reds, deep navies, and crisp stripes.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="suite-frame p-8 sm:p-10 text-left">
+              <div className="relative space-y-3">
+                <p className="suite-label text-muted-foreground">Saturday &middot; The Wedding</p>
+                <h3 className="font-serif text-3xl md:text-4xl">Black Tie Optional</h3>
+                <div className="space-y-4 leading-relaxed text-muted-foreground">
+                  <p>Dress for an elegant evening by the ocean.</p>
+                  <p>
+                    We hope you&rsquo;ll embrace the vibrant, coastal feel of the celebration with
+                    formal attire in joyful colors, beautiful prints, and elevated textures.
+                  </p>
+                  <p>Tuxedos or dark suits are warmly welcomed.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -369,7 +402,8 @@ export default function Home() {
             <div>
               <h3 className="suite-script text-2xl mb-2">What should I wear?</h3>
               <p className="text-muted-foreground">
-                Black tie optional — see{" "}
+                Black tie optional for the wedding, and yacht club casual for Friday&rsquo;s welcome
+                drinks — see{" "}
                 <Link href="/#attire" className="text-hydrangea-deep underline underline-offset-4">
                   Attire
                 </Link>{" "}
