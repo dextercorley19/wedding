@@ -250,10 +250,9 @@ export default function Home() {
                 <div className="space-y-4 leading-relaxed text-muted-foreground">
                   <p>Dress for an easy evening on the harbor.</p>
                   <p>
-                    We hope you&rsquo;ll embrace the classic, preppy feel of the evening with
-                    relaxed attire in Nantucket reds, deep navies, and crisp stripes.
+                    We hope you&rsquo;ll embrace the relaxed feel of the evening with attire
+                    inspired by Nantucket reds, deep navies, and crisp stripes.
                   </p>
-                  <p>Blazers, sundresses, and boat shoes are warmly welcomed.</p>
                 </div>
               </div>
             </div>
