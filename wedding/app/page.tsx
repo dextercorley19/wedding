@@ -254,11 +254,10 @@ export default function Home() {
                   </p>
                   <p>
                     <span className="font-medium text-foreground">The palette:</span> Nantucket red,
-                    navy, khaki, and sand, with stripes and nautical prints always welcome.
+                    navy, khaki, sand, and stripes.
                   </p>
                   <p>
-                    Blazers, oxfords, sundresses, linen, and boat shoes all feel right at home here.
-                    Ties and heels are entirely optional.
+                    Blazers, oxfords, sundresses, linen, and boat shoes. Ties and heels optional.
                   </p>
                 </div>
               </div>
