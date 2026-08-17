@@ -268,12 +268,15 @@ export default function Home() {
                 <p className="suite-label text-muted-foreground">Saturday &middot; The Wedding</p>
                 <h3 className="font-serif text-3xl md:text-4xl">Black Tie Optional</h3>
                 <div className="space-y-4 leading-relaxed text-muted-foreground">
-                  <p>Dress for an elegant evening by the ocean.</p>
                   <p>
-                    We hope you&rsquo;ll embrace the vibrant, coastal feel of the celebration with
-                    formal attire in joyful colors, beautiful prints, and elevated textures.
+                    An evening by the ocean at Newport Beach Country Club — formal, with a coastal
+                    ease.
                   </p>
-                  <p>Tuxedos or dark suits are warmly welcomed.</p>
+                  <p>
+                    <span className="font-medium text-foreground">The palette:</span> joyful colors,
+                    beautiful prints, and elevated textures.
+                  </p>
+                  <p>Gowns, cocktail dresses, tuxedos, and dark suits.</p>
                 </div>
               </div>
             </div>
