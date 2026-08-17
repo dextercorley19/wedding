@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, ReactNode, useState, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { Lock, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -49,6 +50,7 @@ export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) =>
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const pathname = usePathname();
 
   const hasHydrated = useSyncExternalStore(
     subscribeToNothing,
@@ -73,6 +75,12 @@ export const GlobalPasswordGate: FC<GlobalPasswordGateProps> = ({ children }) =>
       setPassword("");
     }
   };
+
+  // The admin dashboard runs its own server-side password check, so the guest
+  // gate steps aside rather than asking for two passwords.
+  if (pathname?.startsWith("/admin")) {
+    return <>{children}</>;
+  }
 
   // Render nothing until hydration so guests never see the gate flash by.
   if (!hasHydrated) {

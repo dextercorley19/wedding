@@ -25,6 +25,7 @@ The build script (`bun run build`) automatically runs `drizzle-kit push --force`
 DATABASE_URL="postgresql://user:password@region.neon.tech/dbname?sslmode=require&channel_binding=require"
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_RSVP_PASSWORD=<password shown to invitees>
+ADMIN_PASSWORD=<password for /admin — server-only, keep it different from the guest one>
 ```
 Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the real value.
 
@@ -46,7 +47,16 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
   - Inline validation powered by `react-hook-form` + `zod`
   - `submitRsvp` returns `{ success, error }` rather than throwing, since Next.js
     redacts Server Action error messages in production
-- **Admin Export:** Run from repo root:
+- **Admin dashboard (`/admin`):**
+  - Password-gated on the server with `ADMIN_PASSWORD` (guest contact details never
+    reach the client bundle unauthenticated) — the guest gate steps aside on `/admin`
+    so only the admin password is needed. Session is a 12-hour httpOnly cookie.
+  - Response counts, attending/declined split, and per-dinner totals
+  - Searchable, filterable guest table
+  - **Export CSV** button → `/admin/export`, which re-applies the on-screen
+    search/filter server-side. Excel-safe: UTF-8 BOM and formula-injection guards.
+  - Shared shaping/filter/CSV logic lives in `wedding/lib/rsvp-report.ts`
+- **Admin Excel + email export:** Run from repo root:
   ```bash
   uv run scripts-shared/export_rsvps.py
   ```
@@ -58,7 +68,8 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
 - Environment variables managed through Vercel dashboard—mirror `.env.local`.
 
 ## Useful Paths
-- `app/` – route files (Details, RSVP, Registry)
+- `app/` – route files (Details, RSVP, Registry, Admin)
+- `app/admin/` – dashboard page, login/logout actions, `export/route.ts` CSV download
 - `components/` – shared UI, navigation, RSVP form/pw gate
 - `src/db/schema.ts` – Drizzle schema definitions
 - `scripts-shared/export_rsvps.py` (workspace root) – Neon + Gmail export utility
