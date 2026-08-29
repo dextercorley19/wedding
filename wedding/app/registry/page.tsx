@@ -18,12 +18,12 @@ export default function RegistryPage() {
   const funds = [
     {
       name: "Honeymoon Fund",
-      description: "Help send us somewhere warm, with a long flight and no alarm clocks",
+      description: "Help support our honeymoon to Hawaii!",
       note: "Honeymoon Fund",
     },
     {
       name: "House Fund",
-      description: "A little something toward the first home we'll fill together",
+      description: "Help support filling our future first home",
       note: "House Fund",
     },
   ];
