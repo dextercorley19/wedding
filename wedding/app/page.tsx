@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, MapPin, Clock, Coffee, Heart, Utensils, Wine } from "lucide-react";
+import { Calendar, MapPin, Clock, Coffee, ExternalLink, Heart, Utensils, Wine } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/common/Navigation";
 import { FloralCorner, FloralDivider, FloralSprig } from "@/components/common/Floral";
+import { VENMO_HANDLE, venmoPaymentUrl } from "@/lib/venmo";
 
 export default function Home() {
   return (
@@ -352,24 +353,91 @@ export default function Home() {
 
       <FloralDivider />
 
-      {/* Registry */}
-      <section className="py-24">
-        <div className="container mx-auto px-4 max-w-md text-center space-y-6">
-          <p className="suite-label text-sage-deep">With Gratitude</p>
-          <h2 className="font-serif text-4xl md:text-5xl">Registry</h2>
-          <Link
-            href="https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="suite-frame block p-8 transition-colors hover:bg-accent/40"
-          >
-            <span className="relative block space-y-2">
-              <span className="block suite-script text-3xl">Crate &amp; Barrel</span>
-              <span className="block text-sm text-muted-foreground">
-                Curated home + kitchen favorites
-              </span>
-            </span>
-          </Link>
+      {/* Registry — the whole thing lives here rather than on its own page, so
+          the nav can stay a set of jumps down the home page. */}
+      <section id="registry" className="py-24">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="text-center mb-12 space-y-3">
+            <p className="suite-label text-sage-deep">With Gratitude</p>
+            <h2 className="font-serif text-4xl md:text-5xl">Registry</h2>
+            <p className="text-sm text-muted-foreground max-w-md mx-auto">
+              Your presence is the gift. If you&rsquo;d like to give something more, here&rsquo;s
+              where to find us.
+            </p>
+          </div>
+
+          <div className="max-w-md mx-auto">
+            <div className="suite-frame p-8 text-center">
+              <div className="relative space-y-6">
+                <div className="space-y-2">
+                  <h3 className="suite-script text-3xl">Crate &amp; Barrel</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Our full registry of home + kitchen favorites
+                  </p>
+                </div>
+                <Button asChild variant="outline" className="w-full bg-transparent">
+                  <a
+                    href="https://www.crateandbarrel.com/gift-registry/Dexter-Corley-and-Sami-Colleran/r7550856"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2"
+                  >
+                    Visit Registry
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mt-16 mb-10 space-y-3">
+            <p className="suite-label text-sage-deep">In Lieu of a Box</p>
+            <h3 className="font-serif text-3xl md:text-4xl">Honeymoon &amp; Home</h3>
+          </div>
+
+          {/* Both funds land on the same Venmo account; the note is what tells us
+              which one a gift was meant for. */}
+          <div className="grid gap-8 md:grid-cols-2 max-w-3xl mx-auto">
+            {[
+              {
+                name: "Honeymoon Fund",
+                description: "Help support our honeymoon to Hawaii!",
+                note: "Honeymoon Fund",
+              },
+              {
+                name: "House Fund",
+                description: "Help support filling our future first home",
+                note: "House Fund",
+              },
+            ].map((fund) => (
+              <div key={fund.name} className="suite-frame p-8 text-center">
+                <div className="relative space-y-6">
+                  <div className="space-y-2">
+                    <h4 className="suite-script text-3xl">{fund.name}</h4>
+                    <p className="text-sm text-muted-foreground">{fund.description}</p>
+                  </div>
+                  <div className="space-y-3">
+                    <Button asChild variant="outline" className="w-full bg-transparent">
+                      <a
+                        href={venmoPaymentUrl(fund.note)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2"
+                      >
+                        Give via Venmo
+                        <ExternalLink className="w-4 h-4" />
+                      </a>
+                    </Button>
+                    {/* Shown as text too: the deep link only opens the app on
+                        mobile, so desktop guests need something to search for. */}
+                    <p className="text-sm text-muted-foreground">
+                      or search <span className="text-foreground">{VENMO_HANDLE}</span> on Venmo
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
