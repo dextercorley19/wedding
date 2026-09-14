@@ -4,7 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MEAL_OPTIONS, mealLabel, rsvpFormSchema, type RSVPFormInput } from "@/db/zod/schema";
+import {
+  MEAL_OPTIONS,
+  mealLabel,
+  rehearsalRsvpFormSchema,
+  rsvpFormSchema,
+  type RSVPFormInput,
+} from "@/db/zod/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,10 +25,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { submitRsvp } from "@/app/actions/submitRsvp";
+import { submitRehearsalRsvp } from "@/app/actions/submitRehearsalRsvp";
 import { FloralSprig } from "@/components/common/Floral";
 import { AlertCircle, CheckCircle, X } from "lucide-react";
 
-export const RSVPForm = () => {
+/**
+ * Which event this form replies to. The wedding form asks for a dinner
+ * selection and writes to `rsvps`; the rehearsal dinner form ("the night
+ * before") skips the menu and writes to `rehearsal_rsvps`.
+ */
+export type RsvpFormVariant = "wedding" | "rehearsal";
+
+interface RSVPFormProps {
+  variant?: RsvpFormVariant;
+}
+
+export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
+  const isWedding = variant === "wedding";
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -30,7 +49,7 @@ export const RSVPForm = () => {
   const [people, setPeople] = useState<RSVPFormInput[]>([]);
 
   const form = useForm<RSVPFormInput>({
-    resolver: zodResolver(rsvpFormSchema),
+    resolver: zodResolver(isWedding ? rsvpFormSchema : rehearsalRsvpFormSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -41,7 +60,7 @@ export const RSVPForm = () => {
   });
 
   const attendance = form.watch("attendance");
-  const isAttending = attendance === "yes";
+  const showMealSelection = isWedding && attendance === "yes";
 
   // Drop any dinner selection if a guest switches to "can't make it", so we
   // never submit a meal for someone who isn't coming.
@@ -75,7 +94,7 @@ export const RSVPForm = () => {
       setIsSubmitting(true);
       setSubmitError("");
 
-      const result = await submitRsvp(people);
+      const result = isWedding ? await submitRsvp(people) : await submitRehearsalRsvp(people);
 
       if (!result.success) {
         setSubmitError(result.error);
@@ -199,8 +218,8 @@ export const RSVPForm = () => {
                   )}
                 />
 
-                {/* Dinner selection — only relevant for attending guests */}
-                {isAttending && (
+                {/* Dinner selection — the wedding only, and only for attending guests */}
+                {showMealSelection && (
                   <FormField
                     control={form.control}
                     name="mealChoice"

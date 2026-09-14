@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/common/Navigation";
@@ -6,8 +7,9 @@ import { FloralSprig } from "@/components/common/Floral";
 import { AdminLogin } from "@/components/admin/AdminLogin";
 import { RsvpTable } from "@/components/admin/RsvpTable";
 import { isAdminAuthenticated, isAdminConfigured } from "@/lib/admin-auth";
-import { fetchRsvpRows } from "@/lib/rsvp-queries";
-import { summarizeRsvps } from "@/lib/rsvp-report";
+import { fetchRsvpRowsForEvent } from "@/lib/rsvp-queries";
+import { parseRsvpEvent, RSVP_EVENTS, summarizeRsvps, type RsvpEvent } from "@/lib/rsvp-report";
+import { cn } from "@/lib/utils";
 import { logoutAdmin } from "./actions";
 
 export const metadata: Metadata = {
@@ -25,7 +27,39 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
   </div>
 );
 
-export default async function AdminPage() {
+const EVENT_TABS = Object.keys(RSVP_EVENTS) as RsvpEvent[];
+
+/**
+ * One tab per guest list. Plain links rather than client state, so each tab is
+ * its own server render (and its own shareable URL).
+ */
+const EventTabs = ({ active }: { active: RsvpEvent }) => (
+  <div className="flex justify-center">
+    <div className="inline-flex items-center gap-1 border-b border-sage/25">
+      {EVENT_TABS.map((event) => (
+        <Link
+          key={event}
+          href={event === "wedding" ? "/admin" : `/admin?event=${event}`}
+          aria-current={event === active ? "page" : undefined}
+          className={cn(
+            "suite-label text-xs px-4 py-2 -mb-px border-b-2 transition-colors",
+            event === active
+              ? "border-hydrangea text-foreground"
+              : "border-transparent text-muted-foreground hover:text-foreground"
+          )}
+        >
+          {RSVP_EVENTS[event].label}
+        </Link>
+      ))}
+    </div>
+  </div>
+);
+
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ event?: string }>;
+}) {
   if (!(await isAdminAuthenticated())) {
     return (
       <div className="min-h-screen bg-background">
@@ -37,8 +71,9 @@ export default async function AdminPage() {
     );
   }
 
-  const rows = await fetchRsvpRows();
-  const summary = summarizeRsvps(rows);
+  const event = parseRsvpEvent((await searchParams).event);
+  const rows = await fetchRsvpRowsForEvent(event);
+  const summary = summarizeRsvps(rows, event);
 
   return (
     <div className="min-h-screen bg-background">
@@ -51,6 +86,8 @@ export default async function AdminPage() {
             <p className="suite-label text-sage-deep">Guest List</p>
             <h1 className="font-serif text-5xl md:text-6xl">RSVPs</h1>
           </div>
+
+          <EventTabs active={event} />
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             <Stat label="Responses" value={summary.total} />
@@ -68,7 +105,7 @@ export default async function AdminPage() {
             </p>
           )}
 
-          <RsvpTable rows={rows} />
+          <RsvpTable rows={rows} event={event} />
 
           <form action={logoutAdmin} className="flex justify-center pt-4">
             <Button type="submit" variant="ghost" size="sm">

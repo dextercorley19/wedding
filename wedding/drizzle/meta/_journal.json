@@ -43,6 +43,13 @@
       "when": 1785612220789,
       "tag": "0005_youthful_maximus",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789355264214,
+      "tag": "0006_bouncy_rumiko_fujikawa",
+      "breakpoints": true
     }
   ]
 }

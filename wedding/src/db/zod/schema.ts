@@ -27,24 +27,35 @@ export const mealChoiceSchema = z.enum(mealValues);
 export const mealLabel = (value: string | null | undefined) =>
   MEAL_OPTIONS.find((option) => option.value === value)?.name ?? null;
 
+/**
+ * The guest fields every RSVP form collects. Both events share them (and the
+ * same inferred type) so one form component can render either.
+ */
+const guestFields = {
+  firstName: z.string().min(1, "First name is required").max(255),
+  lastName: z.string().min(1, "Last name is required").max(255),
+  email: z.string().email("Invalid email address").max(255),
+  attendance: z.enum(["yes", "no"]),
+  mealChoice: mealChoiceSchema.optional(),
+} as const;
+
 // Form schema that matches the RSVP form UI
-export const rsvpFormSchema = z
-  .object({
-    firstName: z.string().min(1, "First name is required").max(255),
-    lastName: z.string().min(1, "Last name is required").max(255),
-    email: z.string().email("Invalid email address").max(255),
-    attendance: z.enum(["yes", "no"]),
-    mealChoice: mealChoiceSchema.optional(),
-  })
-  .superRefine((data, ctx) => {
-    // A dinner selection is only meaningful for guests who are coming.
-    if (data.attendance === "yes" && !data.mealChoice) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["mealChoice"],
-        message: "Please choose a dinner selection",
-      });
-    }
-  });
+export const rsvpFormSchema = z.object(guestFields).superRefine((data, ctx) => {
+  // A dinner selection is only meaningful for guests who are coming.
+  if (data.attendance === "yes" && !data.mealChoice) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["mealChoice"],
+      message: "Please choose a dinner selection",
+    });
+  }
+});
 
 export type RSVPFormInput = z.infer<typeof rsvpFormSchema>;
+
+/**
+ * The rehearsal dinner asks for names and a yes/no only — there's no plated
+ * selection to make. `mealChoice` stays in the shape (never rendered, never
+ * stored) so the inferred type matches the wedding form's.
+ */
+export const rehearsalRsvpFormSchema = z.object(guestFields);

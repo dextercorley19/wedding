@@ -3,23 +3,13 @@
 import { db } from "@/db";
 import { rsvps } from "@/db/schema";
 import { rsvpFormSchema } from "@/db/zod/schema";
+import {
+  duplicateError,
+  GENERIC_ERROR,
+  isUniqueViolation,
+  type SubmitRsvpResult,
+} from "@/lib/rsvp-submit";
 import { z } from "zod";
-
-/** Message shown to guests when something unexpected goes wrong. */
-const GENERIC_ERROR =
-  "Sorry — we couldn't save your RSVP just now. Please try again, or email us if it keeps happening.";
-
-/** Postgres unique-violation SQLSTATE. */
-const UNIQUE_VIOLATION = "23505";
-
-const isUniqueViolation = (error: unknown) =>
-  (typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    (error as { code?: unknown }).code === UNIQUE_VIOLATION) ||
-  (error instanceof Error && error.message.includes("rsvps_name_email_unique"));
-
-export type SubmitRsvpResult = { success: true; count: number } | { success: false; error: string };
 
 /**
  * Persist a party's RSVPs.
@@ -56,11 +46,8 @@ export async function submitRsvp(data: unknown): Promise<SubmitRsvpResult> {
       count += 1;
       console.log("RSVP saved:", rsvp.id);
     } catch (error) {
-      if (isUniqueViolation(error)) {
-        return {
-          success: false,
-          error: `We already have an RSVP for ${entry.firstName} ${entry.lastName} (${entry.email}). Please email us if you need to change it.`,
-        };
+      if (isUniqueViolation(error, "rsvps_name_email_unique")) {
+        return { success: false, error: duplicateError(entry) };
       }
       // Connection failures and SQL errors stay in the server logs — guests
       // should never see a raw query or stack trace.
