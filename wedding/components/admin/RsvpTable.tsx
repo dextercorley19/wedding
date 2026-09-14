@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import {
   DEFAULT_FILTERS,
   filterRsvpRows,
-  RSVP_EVENTS,
   type RsvpEvent,
   type RsvpRow,
   type RsvpStatusFilter,
@@ -22,16 +21,13 @@ const STATUS_TABS: { value: RsvpStatusFilter; label: string }[] = [
 
 interface RsvpTableProps {
   rows: RsvpRow[];
-  /** Which guest list these rows came from; the rehearsal dinner has no dinner column. */
+  /** Which guest list these rows came from — the export re-fetches the same one. */
   event?: RsvpEvent;
 }
 
 export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
   const [status, setStatus] = useState<RsvpStatusFilter>(DEFAULT_FILTERS.status);
   const [query, setQuery] = useState(DEFAULT_FILTERS.query);
-
-  const showDinner = RSVP_EVENTS[event].hasMeal;
-  const columnCount = showDinner ? 5 : 4;
 
   const visibleRows = useMemo(() => filterRsvpRows(rows, { status, query }), [rows, status, query]);
 
@@ -72,7 +68,7 @@ export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
               type="search"
               value={query}
               onChange={(changed) => setQuery(changed.target.value)}
-              placeholder={showDinner ? "Search name, email, dinner" : "Search name, email"}
+              placeholder="Search name, email, dinner"
               className="pl-9 sm:w-64"
               aria-label="Search RSVPs"
             />
@@ -102,9 +98,7 @@ export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
                 <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Guest</th>
                 <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Email</th>
                 <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Status</th>
-                {showDinner && (
-                  <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Dinner</th>
-                )}
+                <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Dinner</th>
                 <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Submitted</th>
               </tr>
             </thead>
@@ -133,11 +127,9 @@ export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
                       {row.attending ? "Attending" : "Declined"}
                     </span>
                   </td>
-                  {showDinner && (
-                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
-                      {row.attending ? (row.mealName ?? "—") : "—"}
-                    </td>
-                  )}
+                  <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
+                    {row.attending ? (row.mealName ?? "—") : "—"}
+                  </td>
                   <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                     {row.submittedAt}
                   </td>
@@ -146,10 +138,7 @@ export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
 
               {visibleRows.length === 0 && (
                 <tr>
-                  <td
-                    colSpan={columnCount}
-                    className="px-4 py-10 text-center text-muted-foreground"
-                  >
+                  <td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">
                     {rows.length === 0 ? "No RSVPs yet." : "No RSVPs match this search."}
                   </td>
                 </tr>

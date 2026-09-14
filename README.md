@@ -47,24 +47,26 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
 - **RSVP flow:**
   - Password gate (`components/rsvp/PasswordGate.tsx`)
   - Add multiple guests before submitting
-  - Dinner selection per attending guest — options defined once in
-    `src/db/zod/schema.ts` (`MEAL_OPTIONS`), persisted to `rsvps.meal_choice`
+  - Dinner selection per attending guest — each event's menu is defined once in
+    `src/db/zod/schema.ts` (`MEAL_OPTIONS` for the wedding, `REHEARSAL_MEAL_OPTIONS`
+    for the night before), persisted to `meal_choice`. The schema rejects a choice
+    that isn't on that event's menu, so the two can't be crossed.
   - Duplicate detection on `(firstName, lastName, email)`
   - Inline validation powered by `react-hook-form` + `zod`
   - `submitRsvp` returns `{ success, error }` rather than throwing, since Next.js
     redacts Server Action error messages in production
   - The rehearsal dinner reuses the same form (`<RSVPForm variant="rehearsal" />`):
-    same fields and duplicate detection, no dinner selection, and it writes to the
-    separate `rehearsal_rsvps` table via `submitRehearsalRsvp` — so a guest can reply
-    to both events independently
+    same fields, menu of its own, and duplicate detection, writing to the separate
+    `rehearsal_rsvps` table via `submitRehearsalRsvp` — so a guest can reply to both
+    events independently
 - **Admin dashboard (`/admin`):**
   - Password-gated on the server with `ADMIN_PASSWORD` (guest contact details never
     reach the client bundle unauthenticated) — the guest gate steps aside on `/admin`
     so only the admin password is needed. Session is a 12-hour httpOnly cookie.
   - Two tabs — **Wedding** (`/admin`) and **The Night Before** (`/admin?event=rehearsal`).
     Each tab is its own server render, so a tab is a shareable URL.
-  - Response counts, attending/declined split, and per-dinner totals (wedding only —
-    the rehearsal dinner has no meal selection, so those stats and columns drop out)
+  - Response counts, attending/declined split, and per-dinner totals for whichever
+    event's menu the active tab uses
   - Searchable, filterable guest table
   - **Export CSV** button → `/admin/export`, which re-applies the on-screen
     tab/search/filter server-side. Excel-safe: UTF-8 BOM and formula-injection guards.

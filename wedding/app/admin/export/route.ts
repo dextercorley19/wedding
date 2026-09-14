@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
     query: searchParams.get("q") ?? "",
   });
 
-  return new NextResponse(withBom(rsvpRowsToCsv(rows, event)), {
+  return new NextResponse(withBom(rsvpRowsToCsv(rows)), {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
       "Content-Disposition": `attachment; filename="${csvFilename(new Date(), event)}"`,

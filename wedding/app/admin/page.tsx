@@ -30,6 +30,13 @@ const Stat = ({ label, value }: { label: string; value: number }) => (
 const EVENT_TABS = Object.keys(RSVP_EVENTS) as RsvpEvent[];
 
 /**
+ * The three response tiles plus one per dinner option — five for the wedding,
+ * six for the rehearsal dinner. Spelled out rather than interpolated, since
+ * Tailwind only ships class names it can find in the source.
+ */
+const statColumns = (tiles: number) => (tiles > 5 ? "lg:grid-cols-6" : "lg:grid-cols-5");
+
+/**
  * One tab per guest list. Plain links rather than client state, so each tab is
  * its own server render (and its own shareable URL).
  */
@@ -89,7 +96,12 @@ export default async function AdminPage({
 
           <EventTabs active={event} />
 
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          <div
+            className={cn(
+              "grid grid-cols-2 gap-4 sm:grid-cols-3",
+              statColumns(3 + summary.meals.length)
+            )}
+          >
             <Stat label="Responses" value={summary.total} />
             <Stat label="Attending" value={summary.attending} />
             <Stat label="Declined" value={summary.declined} />

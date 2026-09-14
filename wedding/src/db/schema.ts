@@ -39,6 +39,8 @@ export const rehearsalRsvps = pgTable(
     lastName: varchar("last_name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
     attending: boolean("attending").notNull(),
+    // Its own menu — see `REHEARSAL_MEAL_OPTIONS` in `src/db/zod/schema.ts`.
+    mealChoice: varchar("meal_choice", { length: 32 }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   },

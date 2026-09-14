@@ -5,11 +5,12 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  MEAL_OPTIONS,
   mealLabel,
+  mealOptionsFor,
   rehearsalRsvpFormSchema,
   rsvpFormSchema,
   type RSVPFormInput,
+  type RsvpEvent,
 } from "@/db/zod/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,18 +31,17 @@ import { FloralSprig } from "@/components/common/Floral";
 import { AlertCircle, CheckCircle, X } from "lucide-react";
 
 /**
- * Which event this form replies to. The wedding form asks for a dinner
- * selection and writes to `rsvps`; the rehearsal dinner form ("the night
- * before") skips the menu and writes to `rehearsal_rsvps`.
+ * Which event this form replies to. Each has its own menu and its own table:
+ * the wedding writes to `rsvps`, the rehearsal dinner ("the night before") to
+ * `rehearsal_rsvps`.
  */
-export type RsvpFormVariant = "wedding" | "rehearsal";
-
 interface RSVPFormProps {
-  variant?: RsvpFormVariant;
+  variant?: RsvpEvent;
 }
 
 export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
   const isWedding = variant === "wedding";
+  const mealOptions = mealOptionsFor(variant);
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -60,7 +60,7 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
   });
 
   const attendance = form.watch("attendance");
-  const showMealSelection = isWedding && attendance === "yes";
+  const showMealSelection = attendance === "yes";
 
   // Drop any dinner selection if a guest switches to "can't make it", so we
   // never submit a meal for someone who isn't coming.
@@ -218,7 +218,7 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
                   )}
                 />
 
-                {/* Dinner selection — the wedding only, and only for attending guests */}
+                {/* Dinner selection — only relevant for attending guests */}
                 {showMealSelection && (
                   <FormField
                     control={form.control}
@@ -232,7 +232,7 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
                             onValueChange={field.onChange}
                             className="gap-3"
                           >
-                            {MEAL_OPTIONS.map((option) => (
+                            {mealOptions.map((option) => (
                               // Radix renders each item as a button, which is not
                               // labelable — so we name it with aria-labelledby and
                               // forward label clicks manually.
@@ -245,7 +245,11 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
                                 <RadioGroupItem
                                   value={option.value}
                                   id={`meal-${option.value}`}
-                                  aria-labelledby={`meal-${option.value}-name meal-${option.value}-desc`}
+                                  aria-labelledby={
+                                    option.description
+                                      ? `meal-${option.value}-name meal-${option.value}-desc`
+                                      : `meal-${option.value}-name`
+                                  }
                                   className="mt-1"
                                 />
                                 <span className="space-y-1">
@@ -255,12 +259,14 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
                                   >
                                     {option.name}
                                   </span>
-                                  <span
-                                    id={`meal-${option.value}-desc`}
-                                    className="block text-sm font-normal text-muted-foreground"
-                                  >
-                                    {option.description}
-                                  </span>
+                                  {option.description && (
+                                    <span
+                                      id={`meal-${option.value}-desc`}
+                                      className="block text-sm font-normal text-muted-foreground"
+                                    >
+                                      {option.description}
+                                    </span>
+                                  )}
                                 </span>
                               </label>
                             ))}
@@ -296,7 +302,7 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
                   </p>
                   {person.attendance === "yes" && person.mealChoice && (
                     <p className="text-sm text-muted-foreground">
-                      Dinner: {mealLabel(person.mealChoice)}
+                      Dinner: {mealLabel(person.mealChoice, variant)}
                     </p>
                   )}
                 </div>

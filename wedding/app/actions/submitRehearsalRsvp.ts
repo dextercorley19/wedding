@@ -13,7 +13,7 @@ import { z } from "zod";
 
 /**
  * Persist a party's rehearsal dinner RSVPs. Same contract as `submitRsvp`,
- * against the `rehearsal_rsvps` table and without a dinner selection.
+ * against the `rehearsal_rsvps` table and its own menu.
  */
 export async function submitRehearsalRsvp(data: unknown): Promise<SubmitRsvpResult> {
   const parsed = z.array(rehearsalRsvpFormSchema).safeParse(Array.isArray(data) ? data : [data]);
@@ -29,11 +29,14 @@ export async function submitRehearsalRsvp(data: unknown): Promise<SubmitRsvpResu
   let count = 0;
 
   for (const entry of parsed.data) {
+    const attending = entry.attendance === "yes";
     const dbData = {
       firstName: entry.firstName,
       lastName: entry.lastName,
       email: entry.email,
-      attending: entry.attendance === "yes",
+      attending,
+      // Guests who decline don't pick a dinner, so store nothing for them.
+      mealChoice: attending ? (entry.mealChoice ?? null) : null,
     };
 
     try {

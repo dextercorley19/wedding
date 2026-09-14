@@ -1,5 +1,5 @@
 {
-  "id": "aef0ef4c-5f44-4631-9dbb-825016f32551",
+  "id": "46155314-4816-4cea-a5e7-307c715f43e9",
   "prevId": "00af4f81-ec96-4792-a8da-9a8765a4a6a2",
   "version": "7",
   "dialect": "postgresql",
@@ -38,6 +38,12 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": true
+        },
+        "meal_choice": {
+          "name": "meal_choice",
+          "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": false
         },
         "created_at": {
           "name": "created_at",

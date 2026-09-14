@@ -4,6 +4,7 @@ CREATE TABLE "rehearsal_rsvps" (
 	"last_name" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"attending" boolean NOT NULL,
+	"meal_choice" varchar(32),
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
