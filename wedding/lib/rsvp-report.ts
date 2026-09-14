@@ -1,10 +1,12 @@
-import type { RSVP } from "@/db/schema";
-import { MEAL_OPTIONS, mealLabel } from "@/db/zod/schema";
+import type { RehearsalRSVP, RSVP } from "@/db/schema";
+import { mealLabel, mealOptionsFor, type RsvpEvent } from "@/db/zod/schema";
 import { toCsv } from "@/lib/csv";
 
 /**
  * Shaping and filtering for the admin dashboard. The page, the table, and the
  * CSV export all go through here so a filtered view and its download agree.
+ * Both events — the wedding and the rehearsal dinner — share this module; an
+ * `RsvpEvent` says which one a set of rows belongs to.
  *
  * Deliberately free of database imports — the table is a client component, and
  * pulling `@/db` in would drag the Neon client into the browser bundle. The
@@ -25,6 +27,18 @@ const fileDateFormatter = new Intl.DateTimeFormat("en-CA", {
   dateStyle: "short",
 });
 
+/** Which guest list a set of rows came from. */
+export type { RsvpEvent };
+
+export const RSVP_EVENTS = {
+  wedding: { label: "Wedding", filePrefix: "rsvps" },
+  rehearsal: { label: "The Night Before", filePrefix: "rehearsal-rsvps" },
+} as const satisfies Record<RsvpEvent, { label: string; filePrefix: string }>;
+
+/** Anything but "rehearsal" falls back to the wedding list. */
+export const parseRsvpEvent = (value: string | null | undefined): RsvpEvent =>
+  value === "rehearsal" ? "rehearsal" : "wedding";
+
 /** A row after serialization — safe to hand to a client component. */
 export type RsvpRow = {
   id: string;
@@ -34,6 +48,8 @@ export type RsvpRow = {
   attending: boolean;
   mealChoice: string | null;
   mealName: string | null;
+  /** Null unless the guest ticked the allergy box and told us what it is. */
+  allergyNotes: string | null;
   submittedAt: string;
 };
 
@@ -58,6 +74,20 @@ export const toRsvpRow = (rsvp: RSVP): RsvpRow => ({
   attending: rsvp.attending,
   mealChoice: rsvp.mealChoice,
   mealName: mealLabel(rsvp.mealChoice),
+  allergyNotes: rsvp.allergyNotes,
+  submittedAt: timestampFormatter.format(rsvp.createdAt),
+});
+
+/** Same shape, resolved against the rehearsal dinner's own menu. */
+export const toRehearsalRsvpRow = (rsvp: RehearsalRSVP): RsvpRow => ({
+  id: rsvp.id,
+  firstName: rsvp.firstName,
+  lastName: rsvp.lastName,
+  email: rsvp.email,
+  attending: rsvp.attending,
+  mealChoice: rsvp.mealChoice,
+  mealName: mealLabel(rsvp.mealChoice, "rehearsal"),
+  allergyNotes: rsvp.allergyNotes,
   submittedAt: timestampFormatter.format(rsvp.createdAt),
 });
 
@@ -72,7 +102,7 @@ export const filterRsvpRows = (rows: readonly RsvpRow[], { status, query }: Rsvp
     if (status === "declined" && row.attending) return false;
     if (!needle) return true;
 
-    return [row.firstName, row.lastName, row.email, row.mealName ?? ""]
+    return [row.firstName, row.lastName, row.email, row.mealName ?? "", row.allergyNotes ?? ""]
       .join(" ")
       .toLowerCase()
       .includes(needle);
@@ -86,21 +116,27 @@ export type RsvpSummary = {
   meals: { value: string; name: string; count: number }[];
   /** Attending guests who somehow have no dinner on file. */
   missingMeal: number;
+  /** Attending guests with an allergy or restriction to pass to the kitchen. */
+  withAllergy: number;
 };
 
-export const summarizeRsvps = (rows: readonly RsvpRow[]): RsvpSummary => {
+export const summarizeRsvps = (
+  rows: readonly RsvpRow[],
+  event: RsvpEvent = "wedding"
+): RsvpSummary => {
   const attendingRows = rows.filter((row) => row.attending);
 
   return {
     total: rows.length,
     attending: attendingRows.length,
     declined: rows.length - attendingRows.length,
-    meals: MEAL_OPTIONS.map((option) => ({
+    meals: mealOptionsFor(event).map((option) => ({
       value: option.value,
       name: option.name,
       count: attendingRows.filter((row) => row.mealChoice === option.value).length,
     })),
     missingMeal: attendingRows.filter((row) => !row.mealChoice).length,
+    withAllergy: attendingRows.filter((row) => row.allergyNotes).length,
   };
 };
 
@@ -110,6 +146,7 @@ const CSV_HEADERS = [
   "Email",
   "Attending",
   "Dinner Selection",
+  "Allergy / Restriction",
   "Submitted",
 ] as const;
 
@@ -122,8 +159,10 @@ export const rsvpRowsToCsv = (rows: readonly RsvpRow[]) =>
       row.email,
       row.attending ? "Yes" : "No",
       row.mealName ?? "",
+      row.allergyNotes ?? "",
       row.submittedAt,
     ])
   );
 
-export const csvFilename = (now: Date) => `rsvps-${fileDateFormatter.format(now)}.csv`;
+export const csvFilename = (now: Date, event: RsvpEvent = "wedding") =>
+  `${RSVP_EVENTS[event].filePrefix}-${fileDateFormatter.format(now)}.csv`;

@@ -4,6 +4,7 @@ import { Calendar, MapPin, Clock, Coffee, ExternalLink, Heart, Utensils, Wine } 
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/common/Navigation";
 import { FloralCorner, FloralDivider, FloralSprig } from "@/components/common/Floral";
+import { AllergyDialog } from "@/components/rsvp/AllergyDialog";
 import { VENMO_HANDLE, venmoPaymentUrl } from "@/lib/venmo";
 
 export default function Home() {
@@ -477,6 +478,17 @@ export default function Home() {
                 </Link>{" "}
                 for the full details.
               </p>
+            </div>
+            <div>
+              <h3 className="suite-script text-2xl mb-2">
+                What should I do if I have a food allergy?
+              </h3>
+              <p className="text-muted-foreground">
+                The RSVP form asks about allergies and dietary restrictions along with your dinner
+                selection. If you replied before we started asking, tell us here and we&rsquo;ll add
+                it to your RSVP.
+              </p>
+              <AllergyDialog />
             </div>
             <div>
               <h3 className="suite-script text-2xl mb-2">What will the weather be like?</h3>

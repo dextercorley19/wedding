@@ -1,8 +1,8 @@
 "use server";
 
 import { db } from "@/db";
-import { rsvps } from "@/db/schema";
-import { rsvpFormSchema } from "@/db/zod/schema";
+import { rehearsalRsvps } from "@/db/schema";
+import { rehearsalRsvpFormSchema } from "@/db/zod/schema";
 import {
   duplicateError,
   GENERIC_ERROR,
@@ -13,16 +13,14 @@ import { syncGuestAllergy } from "@/lib/rsvp-queries";
 import { z } from "zod";
 
 /**
- * Persist a party's RSVPs.
- *
- * Returns a result rather than throwing: Next.js redacts Server Action error
- * messages in production, so a thrown message would never reach the guest.
+ * Persist a party's rehearsal dinner RSVPs. Same contract as `submitRsvp`,
+ * against the `rehearsal_rsvps` table and its own menu.
  */
-export async function submitRsvp(data: unknown): Promise<SubmitRsvpResult> {
-  const parsed = z.array(rsvpFormSchema).safeParse(Array.isArray(data) ? data : [data]);
+export async function submitRehearsalRsvp(data: unknown): Promise<SubmitRsvpResult> {
+  const parsed = z.array(rehearsalRsvpFormSchema).safeParse(Array.isArray(data) ? data : [data]);
 
   if (!parsed.success) {
-    console.error("RSVP validation error:", parsed.error.errors);
+    console.error("Rehearsal RSVP validation error:", parsed.error.errors);
     return {
       success: false,
       error: "Some details are missing or invalid. Please check and try again.",
@@ -46,16 +44,14 @@ export async function submitRsvp(data: unknown): Promise<SubmitRsvpResult> {
     };
 
     try {
-      const [rsvp] = await db.insert(rsvps).values(dbData).returning();
+      const [rsvp] = await db.insert(rehearsalRsvps).values(dbData).returning();
       count += 1;
-      console.log("RSVP saved:", rsvp.id);
+      console.log("Rehearsal RSVP saved:", rsvp.id);
     } catch (error) {
-      if (isUniqueViolation(error, "rsvps_name_email_unique")) {
+      if (isUniqueViolation(error, "rehearsal_rsvps_name_email_unique")) {
         return { success: false, error: duplicateError(entry) };
       }
-      // Connection failures and SQL errors stay in the server logs — guests
-      // should never see a raw query or stack trace.
-      console.error("RSVP submission error:", error);
+      console.error("Rehearsal RSVP submission error:", error);
       return { success: false, error: GENERIC_ERROR };
     }
 
