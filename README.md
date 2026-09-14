@@ -55,6 +55,13 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
     persisted to `allergy_notes`. Unticking discards what was typed, so a blank
     or stale note never reaches the database and `allergy_notes IS NOT NULL`
     means "there's something for the kitchen".
+  - **Late allergies:** the FAQ on the home page has a "Tell us about an allergy"
+    dialog (`components/rsvp/AllergyDialog.tsx` → `submitAllergyUpdate`) for guests
+    who replied before the form asked. It matches on first + last name — case- and
+    whitespace-insensitive, bound as parameters so `%` matches nobody — and updates
+    every event that guest is on. No match returns "we can't find an RSVP under that
+    name" with a link to the RSVP form; two guests sharing a name is reported rather
+    than guessed at, since either choice could put an allergy on the wrong plate.
   - Duplicate detection on `(firstName, lastName, email)`
   - Inline validation powered by `react-hook-form` + `zod`
   - `submitRsvp` returns `{ success, error }` rather than throwing, since Next.js

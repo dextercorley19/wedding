@@ -101,3 +101,20 @@ export const rsvpFormSchema = rsvpFormSchemaFor("wedding");
 export const rehearsalRsvpFormSchema = rsvpFormSchemaFor("rehearsal");
 
 export type RSVPFormInput = z.infer<typeof rsvpFormSchema>;
+
+/**
+ * The "I have an allergy" form in the FAQ, for guests who replied before the
+ * RSVP form asked. There's no email here — the guest is matched on name alone
+ * (see `findRsvpsByName`), so the form stays as short as the question deserves.
+ */
+export const allergyLookupSchema = z.object({
+  firstName: z.string().min(1, "First name is required").max(255),
+  lastName: z.string().min(1, "Last name is required").max(255),
+  allergyNotes: z
+    .string()
+    .trim()
+    .min(1, "Please tell us about the allergy or restriction")
+    .max(ALLERGY_NOTES_MAX, `Please keep this under ${ALLERGY_NOTES_MAX} characters`),
+});
+
+export type AllergyLookupInput = z.infer<typeof allergyLookupSchema>;

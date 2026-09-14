@@ -1,4 +1,4 @@
-import { desc } from "drizzle-orm";
+import { and, desc, inArray, sql } from "drizzle-orm";
 import { db } from "@/db";
 import { rehearsalRsvps, rsvps } from "@/db/schema";
 import { toRehearsalRsvpRow, toRsvpRow, type RsvpEvent, type RsvpRow } from "@/lib/rsvp-report";
@@ -18,3 +18,64 @@ export async function fetchRehearsalRsvpRows(): Promise<RsvpRow[]> {
 /** The rows behind one admin tab. */
 export const fetchRsvpRowsForEvent = (event: RsvpEvent): Promise<RsvpRow[]> =>
   event === "rehearsal" ? fetchRehearsalRsvpRows() : fetchRsvpRows();
+
+/**
+ * Matches a guest's name, case- and whitespace-insensitive on both sides, so
+ * "ada  LOVELACE " finds the row stored as "Ada Lovelace".
+ *
+ * The name is bound as a parameter rather than built into a LIKE pattern, so a
+ * guest typing `%` matches nobody instead of everybody.
+ */
+export const nameMatches = <T extends typeof rsvps | typeof rehearsalRsvps>(
+  table: T,
+  firstName: string,
+  lastName: string
+) =>
+  and(
+    sql`lower(trim(${table.firstName})) = ${firstName.trim().toLowerCase()}`,
+    sql`lower(trim(${table.lastName})) = ${lastName.trim().toLowerCase()}`
+  );
+
+/**
+ * Every RSVP filed under a guest's name, across both events.
+ *
+ * Names are not unique, so this returns every match and leaves it to the caller
+ * to decide what to do when there is more than one.
+ */
+export async function findRsvpsByName(firstName: string, lastName: string) {
+  const [wedding, rehearsal] = await Promise.all([
+    db
+      .select({ id: rsvps.id })
+      .from(rsvps)
+      .where(nameMatches(rsvps, firstName, lastName)),
+    db
+      .select({ id: rehearsalRsvps.id })
+      .from(rehearsalRsvps)
+      .where(nameMatches(rehearsalRsvps, firstName, lastName)),
+  ]);
+
+  return { wedding, rehearsal };
+}
+
+/** Record an allergy note against RSVPs we've already matched by id. */
+export async function setAllergyNotes(
+  ids: { wedding: string[]; rehearsal: string[] },
+  notes: string
+) {
+  const updatedAt = new Date();
+
+  await Promise.all([
+    ids.wedding.length > 0
+      ? db
+          .update(rsvps)
+          .set({ allergyNotes: notes, updatedAt })
+          .where(inArray(rsvps.id, ids.wedding))
+      : Promise.resolve(),
+    ids.rehearsal.length > 0
+      ? db
+          .update(rehearsalRsvps)
+          .set({ allergyNotes: notes, updatedAt })
+          .where(inArray(rehearsalRsvps.id, ids.rehearsal))
+      : Promise.resolve(),
+  ]);
+}
