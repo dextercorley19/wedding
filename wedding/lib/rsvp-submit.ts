@@ -26,3 +26,21 @@ export const duplicateError = (guest: { firstName: string; lastName: string; ema
   `We already have an RSVP for ${guest.firstName} ${guest.lastName} (${guest.email}). Please email us if you need to change it.`;
 
 export type SubmitRsvpResult = { success: true; count: number } | { success: false; error: string };
+
+/**
+ * Which allergy note should stand for a guest across both events.
+ *
+ * An allergy belongs to the person, not the dinner, so a reply carries it to
+ * the guest's other RSVP: what they just told us wins, and a guest who says
+ * nothing this time keeps whatever they told us before. That last part is the
+ * one that matters — someone who noted a peanut allergy on the wedding form and
+ * then replied to the rehearsal dinner without re-ticking the box would
+ * otherwise reach that kitchen with a clean record.
+ *
+ * Returns null when there's nothing on file anywhere, which leaves every row
+ * alone: a reply without an allergy never clears an allergy.
+ */
+export const resolveSharedAllergy = (
+  submitted: string | null | undefined,
+  onFile: readonly (string | null)[]
+) => submitted?.trim() || onFile.find((note) => note?.trim())?.trim() || null;

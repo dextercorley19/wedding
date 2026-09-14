@@ -9,6 +9,7 @@ import {
   isUniqueViolation,
   type SubmitRsvpResult,
 } from "@/lib/rsvp-submit";
+import { syncGuestAllergy } from "@/lib/rsvp-queries";
 import { z } from "zod";
 
 /**
@@ -57,6 +58,12 @@ export async function submitRsvp(data: unknown): Promise<SubmitRsvpResult> {
       console.error("RSVP submission error:", error);
       return { success: false, error: GENERIC_ERROR };
     }
+
+    // Outside the insert's catch on purpose: the RSVP is already saved, and a
+    // problem syncing the allergy must never be reported as a failed reply.
+    // A guest on both guest lists fills in two separate rows, so carry the
+    // allergy across rather than making them remember it twice.
+    await syncGuestAllergy(entry.firstName, entry.lastName, dbData.allergyNotes);
   }
 
   return { success: true, count };

@@ -62,6 +62,14 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
     every event that guest is on. No match returns "we can't find an RSVP under that
     name" with a link to the RSVP form; two guests sharing a name is reported rather
     than guessed at, since either choice could put an allergy on the wrong plate.
+  - **Allergies are shared across both events.** A guest on both guest lists fills
+    in two separate rows, so `syncGuestAllergy` reconciles them after every reply:
+    the note just submitted wins, and a reply with no allergy inherits whatever is
+    already on file rather than leaving that kitchen with a clean record. A reply
+    never clears an allergy, and a name matching two different guests is skipped
+    rather than guessed at. The rule itself is `resolveSharedAllergy` in
+    `lib/rsvp-submit.ts` — pure, so it can be reasoned about without a database.
+    Deliberately different notes per event aren't supported; edit those in the DB.
   - Duplicate detection on `(firstName, lastName, email)`
   - Inline validation powered by `react-hook-form` + `zod`
   - `submitRsvp` returns `{ success, error }` rather than throwing, since Next.js
