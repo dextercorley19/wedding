@@ -30,9 +30,14 @@ export default function RehearsalDinnerRsvpPage() {
             <p className="suite-label text-muted-foreground">
               Friday, October 23, 2026 — Newport Beach
             </p>
+            <p className="suite-label text-muted-foreground">Dinner at 5:00 PM</p>
             <p className="text-lg text-muted-foreground pt-2">
               We&rsquo;d love to have you the evening before. Kindly reply for each member of your
               party.
+            </p>
+            <p className="text-muted-foreground">
+              If you&rsquo;re in the wedding party, the rehearsal runs from 4:00 to 5:00 PM, just
+              before dinner.
             </p>
           </div>
 
