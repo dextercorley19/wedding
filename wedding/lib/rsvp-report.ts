@@ -48,6 +48,8 @@ export type RsvpRow = {
   attending: boolean;
   mealChoice: string | null;
   mealName: string | null;
+  /** Null unless the guest ticked the allergy box and told us what it is. */
+  allergyNotes: string | null;
   submittedAt: string;
 };
 
@@ -72,6 +74,7 @@ export const toRsvpRow = (rsvp: RSVP): RsvpRow => ({
   attending: rsvp.attending,
   mealChoice: rsvp.mealChoice,
   mealName: mealLabel(rsvp.mealChoice),
+  allergyNotes: rsvp.allergyNotes,
   submittedAt: timestampFormatter.format(rsvp.createdAt),
 });
 
@@ -84,6 +87,7 @@ export const toRehearsalRsvpRow = (rsvp: RehearsalRSVP): RsvpRow => ({
   attending: rsvp.attending,
   mealChoice: rsvp.mealChoice,
   mealName: mealLabel(rsvp.mealChoice, "rehearsal"),
+  allergyNotes: rsvp.allergyNotes,
   submittedAt: timestampFormatter.format(rsvp.createdAt),
 });
 
@@ -98,7 +102,7 @@ export const filterRsvpRows = (rows: readonly RsvpRow[], { status, query }: Rsvp
     if (status === "declined" && row.attending) return false;
     if (!needle) return true;
 
-    return [row.firstName, row.lastName, row.email, row.mealName ?? ""]
+    return [row.firstName, row.lastName, row.email, row.mealName ?? "", row.allergyNotes ?? ""]
       .join(" ")
       .toLowerCase()
       .includes(needle);
@@ -112,6 +116,8 @@ export type RsvpSummary = {
   meals: { value: string; name: string; count: number }[];
   /** Attending guests who somehow have no dinner on file. */
   missingMeal: number;
+  /** Attending guests with an allergy or restriction to pass to the kitchen. */
+  withAllergy: number;
 };
 
 export const summarizeRsvps = (
@@ -130,6 +136,7 @@ export const summarizeRsvps = (
       count: attendingRows.filter((row) => row.mealChoice === option.value).length,
     })),
     missingMeal: attendingRows.filter((row) => !row.mealChoice).length,
+    withAllergy: attendingRows.filter((row) => row.allergyNotes).length,
   };
 };
 
@@ -139,6 +146,7 @@ const CSV_HEADERS = [
   "Email",
   "Attending",
   "Dinner Selection",
+  "Allergy / Restriction",
   "Submitted",
 ] as const;
 
@@ -151,6 +159,7 @@ export const rsvpRowsToCsv = (rows: readonly RsvpRow[]) =>
       row.email,
       row.attending ? "Yes" : "No",
       row.mealName ?? "",
+      row.allergyNotes ?? "",
       row.submittedAt,
     ])
   );

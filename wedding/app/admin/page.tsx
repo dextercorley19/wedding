@@ -110,11 +110,23 @@ export default async function AdminPage({
             ))}
           </div>
 
-          {summary.missingMeal > 0 && (
-            <p className="text-sm text-muted-foreground text-center">
-              {summary.missingMeal} attending{" "}
-              {summary.missingMeal === 1 ? "guest has" : "guests have"} no dinner selection on file.
-            </p>
+          {(summary.withAllergy > 0 || summary.missingMeal > 0) && (
+            <div className="space-y-1 text-center text-sm text-muted-foreground">
+              {summary.withAllergy > 0 && (
+                <p>
+                  {summary.withAllergy} attending{" "}
+                  {summary.withAllergy === 1 ? "guest has" : "guests have"} an allergy or
+                  restriction — search or export to see the notes.
+                </p>
+              )}
+              {summary.missingMeal > 0 && (
+                <p>
+                  {summary.missingMeal} attending{" "}
+                  {summary.missingMeal === 1 ? "guest has" : "guests have"} no dinner selection on
+                  file.
+                </p>
+              )}
+            </div>
           )}
 
           <RsvpTable rows={rows} event={event} />

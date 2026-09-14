@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  ALLERGY_NOTES_MAX,
   mealLabel,
   mealOptionsFor,
   rehearsalRsvpFormSchema,
@@ -13,8 +14,10 @@ import {
   type RsvpEvent,
 } from "@/db/zod/schema";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
@@ -56,19 +59,35 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
       email: "",
       attendance: undefined,
       mealChoice: undefined,
+      hasAllergy: false,
+      allergyNotes: "",
     },
   });
 
   const attendance = form.watch("attendance");
-  const showMealSelection = attendance === "yes";
+  const hasAllergy = form.watch("hasAllergy");
+  const showDinnerQuestions = attendance === "yes";
 
-  // Drop any dinner selection if a guest switches to "can't make it", so we
-  // never submit a meal for someone who isn't coming.
+  // Drop the dinner answers if a guest switches to "can't make it", so we never
+  // submit a meal or an allergy for someone who isn't coming.
   useEffect(() => {
-    if (attendance === "no" && form.getValues("mealChoice")) {
+    if (attendance !== "no") return;
+
+    if (form.getValues("mealChoice")) {
       form.setValue("mealChoice", undefined, { shouldValidate: true });
     }
+    if (form.getValues("hasAllergy")) {
+      form.setValue("hasAllergy", false, { shouldValidate: true });
+    }
   }, [attendance, form]);
+
+  // Unticking the box discards whatever was typed, so a stale note can't be
+  // submitted with the box closed.
+  useEffect(() => {
+    if (!hasAllergy && form.getValues("allergyNotes")) {
+      form.setValue("allergyNotes", "", { shouldValidate: true });
+    }
+  }, [hasAllergy, form]);
 
   const handleAddPerson = async () => {
     const isValid = await form.trigger();
@@ -219,7 +238,7 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
                 />
 
                 {/* Dinner selection — only relevant for attending guests */}
-                {showMealSelection && (
+                {showDinnerQuestions && (
                   <FormField
                     control={form.control}
                     name="mealChoice"
@@ -278,6 +297,54 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
                   />
                 )}
 
+                {/* Allergies — the note only opens once the box is ticked. */}
+                {showDinnerQuestions && (
+                  <div className="space-y-3">
+                    <FormField
+                      control={form.control}
+                      name="hasAllergy"
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-center gap-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              id="has-allergy"
+                              checked={field.value ?? false}
+                              onCheckedChange={(checked) => field.onChange(checked === true)}
+                            />
+                          </FormControl>
+                          <Label htmlFor="has-allergy" className="cursor-pointer font-normal">
+                            I have a food allergy or dietary restriction
+                          </Label>
+                        </FormItem>
+                      )}
+                    />
+
+                    {hasAllergy && (
+                      <FormField
+                        control={form.control}
+                        name="allergyNotes"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="suite-label text-xs">
+                              Allergy or Restriction *
+                            </FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder="Let us know what to avoid — we'll pass it to the kitchen."
+                                maxLength={ALLERGY_NOTES_MAX}
+                                autoFocus
+                                {...field}
+                                value={field.value ?? ""}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    )}
+                  </div>
+                )}
+
                 <Button type="button" onClick={handleAddPerson} className="w-full">
                   Add Person
                 </Button>
@@ -304,6 +371,9 @@ export const RSVPForm = ({ variant = "wedding" }: RSVPFormProps) => {
                     <p className="text-sm text-muted-foreground">
                       Dinner: {mealLabel(person.mealChoice, variant)}
                     </p>
+                  )}
+                  {person.attendance === "yes" && person.hasAllergy && person.allergyNotes && (
+                    <p className="text-sm text-muted-foreground">Allergy: {person.allergyNotes}</p>
                   )}
                 </div>
                 <button

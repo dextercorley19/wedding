@@ -51,6 +51,10 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
     `src/db/zod/schema.ts` (`MEAL_OPTIONS` for the wedding, `REHEARSAL_MEAL_OPTIONS`
     for the night before), persisted to `meal_choice`. The schema rejects a choice
     that isn't on that event's menu, so the two can't be crossed.
+  - Allergy checkbox per attending guest — ticking it opens a required note,
+    persisted to `allergy_notes`. Unticking discards what was typed, so a blank
+    or stale note never reaches the database and `allergy_notes IS NOT NULL`
+    means "there's something for the kitchen".
   - Duplicate detection on `(firstName, lastName, email)`
   - Inline validation powered by `react-hook-form` + `zod`
   - `submitRsvp` returns `{ success, error }` rather than throwing, since Next.js
@@ -66,7 +70,9 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
   - Two tabs — **Wedding** (`/admin`) and **The Night Before** (`/admin?event=rehearsal`).
     Each tab is its own server render, so a tab is a shareable URL.
   - Response counts, attending/declined split, and per-dinner totals for whichever
-    event's menu the active tab uses
+    event's menu the active tab uses, plus a count of guests with an allergy
+  - Allergy notes show as their own column, are matched by the search box, and
+    ride along in the CSV
   - Searchable, filterable guest table
   - **Export CSV** button → `/admin/export`, which re-applies the on-screen
     tab/search/filter server-side. Excel-safe: UTF-8 BOM and formula-injection guards.

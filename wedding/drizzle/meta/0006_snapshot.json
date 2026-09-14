@@ -1,5 +1,5 @@
 {
-  "id": "46155314-4816-4cea-a5e7-307c715f43e9",
+  "id": "4f936213-0f7b-4c34-8fd1-dc8a0e3d28a3",
   "prevId": "00af4f81-ec96-4792-a8da-9a8765a4a6a2",
   "version": "7",
   "dialect": "postgresql",
@@ -42,6 +42,12 @@
         "meal_choice": {
           "name": "meal_choice",
           "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "allergy_notes": {
+          "name": "allergy_notes",
+          "type": "varchar(500)",
           "primaryKey": false,
           "notNull": false
         },
@@ -134,6 +140,12 @@
         "meal_choice": {
           "name": "meal_choice",
           "type": "varchar(32)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "allergy_notes": {
+          "name": "allergy_notes",
+          "type": "varchar(500)",
           "primaryKey": false,
           "notNull": false
         },

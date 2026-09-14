@@ -5,8 +5,10 @@ CREATE TABLE "rehearsal_rsvps" (
 	"email" varchar(255) NOT NULL,
 	"attending" boolean NOT NULL,
 	"meal_choice" varchar(32),
+	"allergy_notes" varchar(500),
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+ALTER TABLE "rsvps" ADD COLUMN "allergy_notes" varchar(500);--> statement-breakpoint
 CREATE UNIQUE INDEX "rehearsal_rsvps_name_email_unique" ON "rehearsal_rsvps" USING btree ("first_name","last_name","email");

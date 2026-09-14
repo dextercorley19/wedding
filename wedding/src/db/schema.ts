@@ -13,6 +13,9 @@ export const rsvps = pgTable(
     attending: boolean("attending").notNull(),
     // Dinner selection — only collected from guests who are attending.
     mealChoice: varchar("meal_choice", { length: 32 }),
+    // Free text, and only when the guest ticks the allergy box. Null means
+    // nothing to flag — an empty note is never stored.
+    allergyNotes: varchar("allergy_notes", { length: 500 }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   },
@@ -41,6 +44,7 @@ export const rehearsalRsvps = pgTable(
     attending: boolean("attending").notNull(),
     // Its own menu — see `REHEARSAL_MEAL_OPTIONS` in `src/db/zod/schema.ts`.
     mealChoice: varchar("meal_choice", { length: 32 }),
+    allergyNotes: varchar("allergy_notes", { length: 500 }),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
   },

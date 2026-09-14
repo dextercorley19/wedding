@@ -39,6 +39,9 @@ export async function submitRsvp(data: unknown): Promise<SubmitRsvpResult> {
       attending,
       // Guests who decline don't pick a dinner, so store nothing for them.
       mealChoice: attending ? (entry.mealChoice ?? null) : null,
+      // Same for allergies, and an unticked box or blank note stays null so
+      // the admin view can treat "has something to flag" as "not null".
+      allergyNotes: attending && entry.hasAllergy ? entry.allergyNotes?.trim() || null : null,
     };
 
     try {

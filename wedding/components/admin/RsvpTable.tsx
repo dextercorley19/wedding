@@ -68,7 +68,7 @@ export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
               type="search"
               value={query}
               onChange={(changed) => setQuery(changed.target.value)}
-              placeholder="Search name, email, dinner"
+              placeholder="Search name, email, dinner, allergy"
               className="pl-9 sm:w-64"
               aria-label="Search RSVPs"
             />
@@ -99,6 +99,7 @@ export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
                 <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Email</th>
                 <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Status</th>
                 <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Dinner</th>
+                <th className="suite-label text-xs px-4 py-3">Allergy</th>
                 <th className="suite-label text-xs px-4 py-3 whitespace-nowrap">Submitted</th>
               </tr>
             </thead>
@@ -130,6 +131,14 @@ export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
                   <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                     {row.attending ? (row.mealName ?? "—") : "—"}
                   </td>
+                  {/* The one free-text column, so it wraps instead of stretching the row. */}
+                  <td className="px-4 py-3 min-w-56 max-w-xs">
+                    {row.allergyNotes ? (
+                      <span className="text-foreground">{row.allergyNotes}</span>
+                    ) : (
+                      <span className="text-muted-foreground">—</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                     {row.submittedAt}
                   </td>
@@ -138,7 +147,7 @@ export const RsvpTable: FC<RsvpTableProps> = ({ rows, event = "wedding" }) => {
 
               {visibleRows.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-4 py-10 text-center text-muted-foreground">
+                  <td colSpan={6} className="px-4 py-10 text-center text-muted-foreground">
                     {rows.length === 0 ? "No RSVPs yet." : "No RSVPs match this search."}
                   </td>
                 </tr>

@@ -42,11 +42,17 @@ export const mealOptionsFor = (event: RsvpEvent): readonly MealOption[] =>
 export const mealLabel = (value: string | null | undefined, event: RsvpEvent = "wedding") =>
   mealOptionsFor(event).find((option) => option.value === value)?.name ?? null;
 
+/** How much an allergy note can hold, matching the column it lands in. */
+export const ALLERGY_NOTES_MAX = 500;
+
 /**
  * The guest fields every RSVP form collects. Both events share them — and the
  * same inferred type — so one form component can render either. `mealChoice`
  * is a plain string here; which values are actually allowed depends on the
  * event, and is checked in the refinement below.
+ *
+ * `hasAllergy` only drives the form: what we keep is the note itself, so a
+ * ticked box with nothing written down can't reach the database.
  */
 const guestFields = {
   firstName: z.string().min(1, "First name is required").max(255),
@@ -54,6 +60,11 @@ const guestFields = {
   email: z.string().email("Invalid email address").max(255),
   attendance: z.enum(["yes", "no"]),
   mealChoice: z.string().max(32).optional(),
+  hasAllergy: z.boolean().optional(),
+  allergyNotes: z
+    .string()
+    .max(ALLERGY_NOTES_MAX, `Please keep this under ${ALLERGY_NOTES_MAX} characters`)
+    .optional(),
 } as const;
 
 /**
@@ -72,6 +83,15 @@ const rsvpFormSchemaFor = (event: RsvpEvent) =>
         code: z.ZodIssueCode.custom,
         path: ["mealChoice"],
         message: "Please choose a dinner selection",
+      });
+    }
+
+    // Ticking the box is the guest saying there's something to tell us.
+    if (data.hasAllergy && !data.allergyNotes?.trim()) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["allergyNotes"],
+        message: "Please tell us about the allergy or restriction",
       });
     }
   });
