@@ -4,7 +4,7 @@ import { Navigation } from "@/components/common/Navigation";
 import { FloralSprig } from "@/components/common/Floral";
 
 /**
- * The rehearsal dinner RSVP, at `/thenightbefore`.
+ * The rehearsal dinner RSVP, at `/nightbefore`.
  *
  * Not a subset of the wedding guest list: the URL is shared only with the
  * people who are invited, so nothing on the site links here and the page asks
