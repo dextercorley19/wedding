@@ -55,9 +55,12 @@ export const ALLERGY_NOTES_MAX = 500;
  * ticked box with nothing written down can't reach the database.
  */
 const guestFields = {
-  firstName: z.string().min(1, "First name is required").max(255),
-  lastName: z.string().min(1, "Last name is required").max(255),
-  email: z.string().email("Invalid email address").max(255),
+  // Trimmed before anything else sees them. Phone keyboards love a trailing
+  // space, and the `(first_name, last_name, email)` unique index compares exact
+  // strings — so "Megan " and "Megan" would file as two different guests.
+  firstName: z.string().trim().min(1, "First name is required").max(255),
+  lastName: z.string().trim().min(1, "Last name is required").max(255),
+  email: z.string().trim().email("Invalid email address").max(255),
   attendance: z.enum(["yes", "no"]),
   mealChoice: z.string().max(32).optional(),
   hasAllergy: z.boolean().optional(),
@@ -108,8 +111,8 @@ export type RSVPFormInput = z.infer<typeof rsvpFormSchema>;
  * (see `findRsvpsByName`), so the form stays as short as the question deserves.
  */
 export const allergyLookupSchema = z.object({
-  firstName: z.string().min(1, "First name is required").max(255),
-  lastName: z.string().min(1, "Last name is required").max(255),
+  firstName: z.string().trim().min(1, "First name is required").max(255),
+  lastName: z.string().trim().min(1, "Last name is required").max(255),
   allergyNotes: z
     .string()
     .trim()

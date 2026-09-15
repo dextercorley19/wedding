@@ -70,7 +70,17 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
     rather than guessed at. The rule itself is `resolveSharedAllergy` in
     `lib/rsvp-submit.ts` — pure, so it can be reasoned about without a database.
     Deliberately different notes per event aren't supported; edit those in the DB.
-  - Duplicate detection on `(firstName, lastName, email)`
+  - Duplicate detection on `(firstName, lastName, email)`. Names and email are
+    **trimmed in the zod schema** before they are stored: the unique index compares
+    exact strings, so a phone keyboard's trailing space ("Megan " vs "Megan") would
+    otherwise file the same guest twice. `wedding/scripts/03-normalize-rsvp-whitespace.sql`
+    cleans up rows that predate that fix.
+  - **Migrations are not applied by the pipeline.** `bun run build` runs
+    `drizzle-kit push --force`, which syncs the schema from `src/db/schema.ts`
+    directly; the files in `drizzle/` are a paper trail and have never been run
+    (`drizzle.__drizzle_migrations` is empty). Put data fixes in `wedding/scripts/`
+    and run them by hand — a data migration dropped into `drizzle/` silently does
+    nothing.
   - Inline validation powered by `react-hook-form` + `zod`
   - `submitRsvp` returns `{ success, error }` rather than throwing, since Next.js
     redacts Server Action error messages in production
