@@ -30,7 +30,7 @@ export type InsertRSVP = typeof rsvps.$inferInsert;
 
 /**
  * Rehearsal dinner RSVPs — the invite-only "night before" event at
- * `/thenightbefore`. Kept in its own table rather than a flag on `rsvps` so a
+ * `/nightbefore`. Kept in its own table rather than a flag on `rsvps` so a
  * guest can reply to both events independently (and so the duplicate check for
  * one never blocks the other).
  */

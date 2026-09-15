@@ -6,9 +6,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/registry", destination: "/#registry", permanent: true },
-      // An unused scaffold page used to live at `/rehearsal-dinner`; the real
-      // rehearsal dinner RSVP is at `/thenightbefore`.
-      { source: "/rehearsal-dinner", destination: "/thenightbefore", permanent: true },
+      // The rehearsal dinner RSVP lives at `/nightbefore`. It was briefly at
+      // `/thenightbefore`, and an unused scaffold page before that at
+      // `/rehearsal-dinner` — both still resolve, in case either was shared.
+      { source: "/rehearsal-dinner", destination: "/nightbefore", permanent: true },
+      { source: "/thenightbefore", destination: "/nightbefore", permanent: true },
     ];
   },
 };
