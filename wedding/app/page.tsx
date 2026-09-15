@@ -255,6 +255,7 @@ export default function Home() {
                     We hope you&rsquo;ll embrace the relaxed feel of the evening with attire
                     inspired by Nantucket reds, deep navies, and crisp stripes.
                   </p>
+                  <p>Per the venue guidelines we ask that men do not wear shorts.</p>
                 </div>
               </div>
             </div>
