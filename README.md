@@ -112,6 +112,12 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
   - Rename a table inline, reshape it, empty it, or delete it. Shrinking a table
     or deleting one sends the affected guests back to the unseated list rather than
     refusing the edit or dropping them off the chart.
+  - **Tables are drawn at the size their seats need** (`tableBoxRem`), not squeezed
+    into a fixed card: every seat gets the same pitch whether a table seats 8 or 32,
+    which is what a dinner of three 30-seat tables needs. A table too wide for the
+    card scrolls sideways inside it (the card is `min-w-0`, so the page itself never
+    scrolls), and a wide table claims a whole row of the chart while small ones still
+    sit two or three across.
   - Each seat carries the guest's dinner selection and an allergy marker, so the
     kitchen-relevant detail is visible while seating rather than only in the export.
   - Moves are optimistic (`useOptimistic`) with the server's plan as the source of

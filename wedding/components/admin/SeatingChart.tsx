@@ -33,6 +33,7 @@ import {
   findSeat,
   firstFreeSeat,
   guestName,
+  isWideTable,
   matchesSeatingQuery,
   MAX_SIDE_SEATS,
   MAX_TABLE_SEATS,
@@ -367,6 +368,9 @@ export const SeatingChart: FC<SeatingChartProps> = ({ plan: serverPlan }) => {
                 <TableCard
                   key={table.id}
                   table={table}
+                  /* A long banquet table needs the room; a round of eight
+                     doesn't. The grid follows the table, not the other way. */
+                  wide={isWideTable(table)}
                   selectedGuest={selectedGuest}
                   selectedId={selected}
                   onSelectGuest={(rsvpId) => setSelected(selected === rsvpId ? null : rsvpId)}
@@ -415,6 +419,8 @@ type TableLayout = Pick<SeatingTable, "shape" | "seats" | "sides">;
 
 interface TableCardProps {
   table: SeatingTable;
+  /** Whether this table claims a whole row of the chart. */
+  wide: boolean;
   selectedGuest: SeatingGuest | null;
   selectedId: string | null;
   onSelectGuest: (rsvpId: string) => void;
@@ -427,6 +433,7 @@ interface TableCardProps {
 
 const TableCard: FC<TableCardProps> = ({
   table,
+  wide,
   selectedGuest,
   selectedId,
   onSelectGuest,
@@ -473,7 +480,15 @@ const TableCard: FC<TableCardProps> = ({
   };
 
   return (
-    <div className="suite-frame p-4 space-y-3">
+    <div
+      className={cn(
+        // `min-w-0`: a grid item sizes to its content by default, which would
+        // let a wide table stretch the card and scroll the whole page
+        // sideways instead of scrolling inside the diagram.
+        "suite-frame p-4 space-y-3 min-w-0",
+        wide && "lg:col-span-2 2xl:col-span-3"
+      )}
+    >
       <div className="flex items-start justify-between gap-2">
         <input
           key={table.name}
@@ -711,7 +726,7 @@ const SeatButton: FC<SeatButtonProps> = ({
       aria-label={label}
       aria-pressed={guest ? selectedId === guest.rsvpId : undefined}
       className={cn(
-        "w-full px-1 py-1 rounded-sm border text-[0.6rem] leading-tight transition-colors",
+        "w-full px-1 py-1 rounded-sm border text-[0.65rem] leading-tight transition-colors",
         guest ? "cursor-grab active:cursor-grabbing" : "cursor-pointer",
         over
           ? "border-hydrangea bg-hydrangea-pale/60"

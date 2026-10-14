@@ -180,21 +180,65 @@ export const seatSlots = (table: Pick<SeatingTable, "shape" | "seats" | "sides">
 };
 
 /**
- * How wide the table is drawn relative to its height.
- *
- * Taken from the seat counts rather than a size typed in feet: a table with
- * four seats a side and one at each end is a long rectangle, and that's the
- * proportion that makes the chart readable. Clamped so a lopsided table stays
- * a usable shape on screen.
+ * How much room one seat is drawn in, and how far apart neighbouring seats sit,
+ * in `rem`. The gap between them is the difference.
  */
-export const tableAspect = (table: Pick<SeatingTable, "shape" | "seats" | "sides">) => {
-  if (table.shape === "round") return 1;
+export const SEAT_SIZE_REM = 4.1;
+export const SEAT_PITCH_REM = 4.75;
+
+/** Vertical pitch is tighter: a seat is much shorter than it is wide. */
+const SEAT_ROW_PITCH_REM = 2.9;
+
+/** Nothing is drawn smaller than this, however few seats it has. */
+const MIN_SURFACE_REM = 10;
+
+/**
+ * How big the table is drawn, in `rem`, derived from its seat count.
+ *
+ * The table is sized to its seats rather than squeezed into whatever the card
+ * is wide: at a fixed size, a table of thirty crushes its seats into slivers,
+ * which is exactly what a rehearsal dinner of three big tables does. Every seat
+ * therefore gets `SEAT_PITCH_REM` of edge no matter how many there are, and a
+ * table too wide for the screen scrolls sideways inside its card instead of
+ * shrinking its names away.
+ *
+ * `rem`, not percentages, because the result has to be a real size the card can
+ * scroll: a percentage would just re-divide whatever width it was given.
+ */
+export const tableBoxRem = (table: Pick<SeatingTable, "shape" | "seats" | "sides">) => {
+  if (table.shape === "round") {
+    const count = Math.max(1, table.seats);
+
+    // Seats sit on the circumference, so the chord between neighbours is what
+    // needs to be a seat wide: chord = diameter × sin(π / n). Two seats or
+    // fewer have no meaningful chord, so they fall back to the floor.
+    const diameter = count <= 2 ? MIN_SURFACE_REM : SEAT_PITCH_REM / Math.sin(Math.PI / count);
+
+    const size = Math.max(MIN_SURFACE_REM, diameter);
+    return { width: size, height: size };
+  }
 
   const across = Math.max(table.sides.top, table.sides.bottom);
-  const down = Math.max(table.sides.left, table.sides.right);
+  const ends = Math.max(table.sides.left, table.sides.right);
 
-  return Math.min(3, Math.max(0.4, (across + 1) / (down + 1)));
+  const width = Math.max(MIN_SURFACE_REM, (across + 1) * SEAT_PITCH_REM);
+
+  // Tall enough for the seats on the ends, and never so flat or so tall that
+  // it stops reading as a table.
+  const height = Math.min(width * 2.5, Math.max(6, width / 5, (ends + 1) * SEAT_ROW_PITCH_REM));
+
+  return { width, height };
 };
+
+/**
+ * Whether a table needs a row of the chart to itself.
+ *
+ * A long banquet table in a third-width card is unreadable, while a round of
+ * eight in a full-width one is mostly empty space — so the card grid follows
+ * the table rather than the other way round.
+ */
+export const isWideTable = (table: Pick<SeatingTable, "shape" | "seats" | "sides">) =>
+  tableBoxRem(table).width > 26;
 
 /** The guest in a given seat, if anyone. */
 export const guestInSeat = (table: SeatingTable, seat: number) =>

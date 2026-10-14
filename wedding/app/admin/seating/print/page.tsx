@@ -6,8 +6,10 @@ import { PrintButton } from "@/components/admin/PrintButton";
 import { TableDiagram } from "@/components/admin/TableDiagram";
 import { isAdminAuthenticated, isAdminConfigured } from "@/lib/admin-auth";
 import { fetchSeatingPlan } from "@/lib/seating-queries";
+import { cn } from "@/lib/utils";
 import {
   guestName,
+  isWideTable,
   summarizeSeating,
   tableCapacity,
   TABLE_SHAPES,
@@ -83,7 +85,13 @@ export default async function SeatingPrintPage() {
         ) : (
           <div className="grid gap-8 sm:grid-cols-2">
             {plan.tables.map((table) => (
-              <section key={table.id} className="seating-table space-y-2">
+              <section
+                key={table.id}
+                className={cn(
+                  "seating-table space-y-2 min-w-0",
+                  isWideTable(table) && "sm:col-span-2"
+                )}
+              >
                 <h2 className="text-center space-y-0.5">
                   <span className="block font-serif text-2xl">{table.name}</span>
                   <span className="block text-xs text-muted-foreground">

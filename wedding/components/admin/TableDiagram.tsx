@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import {
   seatSlots,
-  tableAspect,
+  SEAT_SIZE_REM,
+  tableBoxRem,
   tableCapacity,
   type SeatingGuest,
   type SeatingTable,
@@ -16,6 +17,11 @@ import { cn } from "@/lib/utils";
  * in the same chair: the geometry comes from `seatSlots`, and the caller only
  * decides what goes *in* a seat — a drop target in the chart, a name on the
  * print page. No "use client" here, so the print page stays a server render.
+ *
+ * The table is drawn at the size its seats need (`tableBoxRem`) rather than
+ * stretched to fill the card. A table with thirty seats is simply a big table:
+ * it keeps every seat readable and scrolls sideways inside its card if the
+ * screen is too narrow, instead of shrinking names into slivers.
  */
 
 export type DiagramSeat = SeatSlot & { guest: SeatingGuest | null };
@@ -28,83 +34,63 @@ interface TableDiagramProps {
   className?: string;
 }
 
-/**
- * How wide a seat may be, as a percentage of the table's width.
- *
- * Seats are spaced evenly along an edge, so how much room each one has depends
- * on how many share that edge — a fixed width overlaps its neighbours the
- * moment a table seats six a side. Round tables get the chord between adjacent
- * seats; a rectangle's long edges get their share of the width, and the ends,
- * which only ever hold a seat or two, get a fixed slice.
- *
- * The floor keeps a very long table legible-ish rather than exact: better two
- * names slightly crowded than six unreadable ones.
- */
-const seatWidth = (table: SeatingTable, slot: SeatSlot) => {
-  // Seats take a little less than their share of the edge, so neighbours don't
-  // sit flush — two touching boxes read as one strip, and the one painted
-  // second clips the name in the one before it.
-  const gap = 0.86;
-
-  if (table.shape === "round") {
-    const count = Math.max(1, table.seats);
-    // The chord between neighbouring seats is how much room each one has.
-    return `${Math.max(18, Math.min(34, 100 * Math.sin(Math.PI / count) * gap))}%`;
-  }
-
-  if (slot.side === "left" || slot.side === "right") return "28%";
-
-  const across = Math.max(table.sides.top, table.sides.bottom);
-  return `${Math.max(13, (100 / (across + 1)) * gap)}%`;
-};
+/** Room for the seats that hang outside the table's edge. */
+const PAD_X_REM = SEAT_SIZE_REM / 2 + 0.4;
+const PAD_Y_REM = 1.6;
 
 export const TableDiagram = ({ table, renderSeat, children, className }: TableDiagramProps) => {
   const slots = seatSlots(table);
   const taken = new Map(table.seated.map((entry) => [entry.seat, entry.guest]));
+  const box = tableBoxRem(table);
 
   return (
-    // The padding is the room the seats need: they're positioned against the
-    // table surface and hang half outside it, so the surface is inset from the
-    // card by roughly half a seat.
-    <div className={cn("relative w-full max-w-[21rem] mx-auto px-8 py-10", className)}>
-      <div className="relative w-full" style={{ aspectRatio: tableAspect(table) }}>
-        {/* The table surface itself. */}
-        <div
-          className={cn(
-            "absolute inset-0 border border-sage/50 bg-sage/10",
-            table.shape === "round" ? "rounded-full" : "rounded-md"
-          )}
-        />
-
-        {children && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-2 pointer-events-none">
-            {children}
-          </div>
-        )}
-
-        {slots.map((slot) => (
+    // The scroller is the card's width; the table inside keeps its own size.
+    <div className={cn("w-full overflow-x-auto", className)}>
+      <div
+        className="relative mx-auto"
+        style={{
+          width: `${box.width + PAD_X_REM * 2}rem`,
+          padding: `${PAD_Y_REM}rem ${PAD_X_REM}rem`,
+        }}
+      >
+        <div className="relative" style={{ width: `${box.width}rem`, height: `${box.height}rem` }}>
+          {/* The table surface itself. */}
           <div
-            key={slot.seat}
-            className="absolute"
-            style={{
-              left: `${slot.x * 100}%`,
-              top: `${slot.y * 100}%`,
-              transform: "translate(-50%, -50%)",
-              // Percentages resolve against the table surface, so a seat's
-              // width tracks the table's as the card resizes.
-              width: seatWidth(table, slot),
-              minWidth: "2.25rem",
-            }}
-          >
-            {renderSeat({ ...slot, guest: taken.get(slot.seat) ?? null })}
-          </div>
-        ))}
+            className={cn(
+              "absolute inset-0 border border-sage/50 bg-sage/10",
+              table.shape === "round" ? "rounded-full" : "rounded-md"
+            )}
+          />
 
-        {tableCapacity(table) === 0 && (
-          <p className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground">
-            No seats
-          </p>
-        )}
+          {children && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-2 pointer-events-none">
+              {children}
+            </div>
+          )}
+
+          {slots.map((slot) => (
+            <div
+              key={slot.seat}
+              className="absolute"
+              style={{
+                left: `${slot.x * 100}%`,
+                top: `${slot.y * 100}%`,
+                transform: "translate(-50%, -50%)",
+                // One fixed, readable size: the table was sized so that every
+                // seat has room for it.
+                width: `${SEAT_SIZE_REM}rem`,
+              }}
+            >
+              {renderSeat({ ...slot, guest: taken.get(slot.seat) ?? null })}
+            </div>
+          ))}
+
+          {tableCapacity(table) === 0 && (
+            <p className="absolute inset-0 flex items-center justify-center text-xs text-muted-foreground">
+              No seats
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
