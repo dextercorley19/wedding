@@ -1,14 +1,20 @@
-import { and, asc, eq, inArray, sql } from "drizzle-orm";
+import { and, asc, eq, gte, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { rehearsalRsvps, rehearsalSeats, rehearsalTables } from "@/db/schema";
 import { mealLabel } from "@/db/zod/schema";
 import {
   DEFAULT_TABLE_SEATS,
+  DEFAULT_TABLE_SIDES,
   nextTableName,
+  parseTableShape,
   sortGuests,
+  tableCapacity,
+  type SeatedGuest,
   type SeatingGuest,
   type SeatingPlan,
   type SeatingTable,
+  type TableShape,
+  type TableSides,
 } from "@/lib/seating";
 
 /**
@@ -27,6 +33,20 @@ const tablesInOrder = () =>
     .from(rehearsalTables)
     .orderBy(asc(rehearsalTables.sortOrder), asc(rehearsalTables.createdAt));
 
+type TableRow = Awaited<ReturnType<typeof tablesInOrder>>[number];
+
+/** The stored columns as the shape the chart and its geometry work in. */
+const toTableShape = (row: TableRow): Pick<SeatingTable, "shape" | "seats" | "sides"> => ({
+  shape: parseTableShape(row.shape),
+  seats: row.seats,
+  sides: {
+    top: row.seatsTop,
+    bottom: row.seatsBottom,
+    left: row.seatsLeft,
+    right: row.seatsRight,
+  },
+});
+
 /**
  * The whole chart in two queries: the tables, and every attending guest with
  * the seat they're in (left join, so an unplaced guest still comes back).
@@ -42,15 +62,16 @@ export async function fetchSeatingPlan(): Promise<SeatingPlan> {
         mealChoice: rehearsalRsvps.mealChoice,
         allergyNotes: rehearsalRsvps.allergyNotes,
         tableId: rehearsalSeats.tableId,
-        seatOrder: rehearsalSeats.seatOrder,
+        seat: rehearsalSeats.seatOrder,
       })
       .from(rehearsalRsvps)
       .leftJoin(rehearsalSeats, eq(rehearsalSeats.rsvpId, rehearsalRsvps.id))
       .where(eq(rehearsalRsvps.attending, true))
-      .orderBy(asc(rehearsalSeats.seatOrder), asc(rehearsalRsvps.lastName)),
+      .orderBy(asc(rehearsalRsvps.lastName), asc(rehearsalRsvps.firstName)),
   ]);
 
-  const seated = new Map<string, SeatingGuest[]>(tables.map((table) => [table.id, []]));
+  const shapes = new Map(tables.map((row) => [row.id, toTableShape(row)]));
+  const seated = new Map<string, SeatedGuest[]>(tables.map((row) => [row.id, []]));
   const unseated: SeatingGuest[] = [];
 
   for (const row of guests) {
@@ -62,18 +83,27 @@ export async function fetchSeatingPlan(): Promise<SeatingPlan> {
       allergyNotes: row.allergyNotes,
     };
 
-    // `?? unseated` covers a seat whose table is gone — the cascade should mean
-    // there isn't one, but a guest is better unplaced than dropped.
-    (row.tableId ? (seated.get(row.tableId) ?? unseated) : unseated).push(guest);
+    const seats = row.tableId === null ? undefined : seated.get(row.tableId);
+    const shape = row.tableId === null ? undefined : shapes.get(row.tableId);
+
+    // A seat beyond the table's current size — or on a table that's gone —
+    // shows the guest as unseated rather than hiding them off the chart.
+    // `reshapeSeatingTable` clears those rows, so this is a belt-and-braces
+    // guard against a row that got past it.
+    if (seats && shape && row.seat !== null && row.seat < tableCapacity(shape)) {
+      seats.push({ seat: row.seat, guest });
+    } else {
+      unseated.push(guest);
+    }
   }
 
   return {
     tables: tables.map(
-      (table): SeatingTable => ({
-        id: table.id,
-        name: table.name,
-        seats: table.seats,
-        guests: seated.get(table.id) ?? [],
+      (row): SeatingTable => ({
+        id: row.id,
+        name: row.name,
+        ...toTableShape(row),
+        seated: seated.get(row.id) ?? [],
       })
     ),
     unseated: sortGuests(unseated),
@@ -81,17 +111,20 @@ export async function fetchSeatingPlan(): Promise<SeatingPlan> {
 }
 
 /** Add a table to the end of the chart, named for the couple to rename. */
-export async function createSeatingTable(seats = DEFAULT_TABLE_SEATS) {
+export async function createSeatingTable() {
   const tables = await tablesInOrder();
-  const sortOrder = tables.reduce((max, table) => Math.max(max, table.sortOrder), -1) + 1;
+  const sortOrder = tables.reduce((max, row) => Math.max(max, row.sortOrder), -1) + 1;
 
   const [created] = await db
     .insert(rehearsalTables)
     .values({
-      name: nextTableName(
-        tables.map((table) => ({ id: table.id, name: table.name, seats: table.seats, guests: [] }))
-      ),
-      seats,
+      name: nextTableName(tables.map((row) => row.name)),
+      shape: "round",
+      seats: DEFAULT_TABLE_SEATS,
+      seatsTop: DEFAULT_TABLE_SIDES.top,
+      seatsBottom: DEFAULT_TABLE_SIDES.bottom,
+      seatsLeft: DEFAULT_TABLE_SIDES.left,
+      seatsRight: DEFAULT_TABLE_SIDES.right,
       sortOrder,
     })
     .returning();
@@ -106,11 +139,34 @@ export async function renameSeatingTable(tableId: string, name: string) {
     .where(eq(rehearsalTables.id, tableId));
 }
 
-export async function setSeatingTableSeats(tableId: string, seats: number) {
+/**
+ * Change a table's shape or seat counts, unseating anyone whose seat no longer
+ * exists. Shrinking a table has to do something with those guests, and the
+ * unseated list says so plainly — the same rule `reshapeTable` applies in the
+ * chart, so the optimistic view and the stored one agree.
+ */
+export async function reshapeSeatingTable(
+  tableId: string,
+  shape: { shape: TableShape; seats: number; sides: TableSides }
+) {
   await db
     .update(rehearsalTables)
-    .set({ seats, updatedAt: new Date() })
+    .set({
+      shape: shape.shape,
+      seats: shape.seats,
+      seatsTop: shape.sides.top,
+      seatsBottom: shape.sides.bottom,
+      seatsLeft: shape.sides.left,
+      seatsRight: shape.sides.right,
+      updatedAt: new Date(),
+    })
     .where(eq(rehearsalTables.id, tableId));
+
+  await db
+    .delete(rehearsalSeats)
+    .where(
+      and(eq(rehearsalSeats.tableId, tableId), gte(rehearsalSeats.seatOrder, tableCapacity(shape)))
+    );
 }
 
 /** Delete a table; the cascade on `rehearsal_seats` unseats whoever was there. */
@@ -128,6 +184,11 @@ export async function clearAllSeats() {
   await db.delete(rehearsalSeats);
 }
 
+/** Take one guest out of their seat. */
+export async function unseatGuestById(rsvpId: string) {
+  await db.delete(rehearsalSeats).where(eq(rehearsalSeats.rsvpId, rsvpId));
+}
+
 /** True when this id is an attending rehearsal guest — the only kind that can be seated. */
 const isAttendingGuest = async (rsvpId: string) => {
   const [guest] = await db
@@ -142,34 +203,30 @@ const isAttendingGuest = async (rsvpId: string) => {
 export type SeatMoveResult = { ok: true } | { ok: false; error: string };
 
 /**
- * Seat a guest at `tableId`, or unseat them when it's null.
+ * Seat a guest in a specific seat.
  *
- * `index` is the position within the table; the rest of its seats are
- * renumbered around it so the stored order matches what the chart shows. The
- * guest's seat row is upserted on `rsvp_id`, which is unique, so a move can't
- * leave them sitting in two places at once.
+ * Dropping onto an occupied seat swaps the two when the guest being moved
+ * already had a seat, and returns the occupant to the unseated list when they
+ * didn't — the same rule `seatGuest` applies in the chart.
  *
- * The neon-http driver has no transactions, so the upsert and the renumber are
- * separate statements. The worst a failure between them can do is leave a
- * guest at the right table in the wrong seat order — visible on the chart, and
- * fixed by moving them again.
+ * The neon-http driver has no transactions, so both guests' rows are deleted
+ * and then re-inserted rather than updated in place: that's what keeps the
+ * `(table_id, seat_order)` unique index from rejecting the swap's intermediate
+ * state. If the process dies between the two statements, a guest ends up
+ * unseated — visible on the chart and fixed by moving them again, which is a
+ * better failure than two names in one chair.
  */
-export async function moveGuestToTable(
+export async function seatGuestInSeat(
   rsvpId: string,
-  tableId: string | null,
-  index?: number
+  tableId: string,
+  seat: number
 ): Promise<SeatMoveResult> {
   if (!(await isAttendingGuest(rsvpId))) {
     return { ok: false, error: "That guest isn't on the attending list for the night before." };
   }
 
-  if (tableId === null) {
-    await db.delete(rehearsalSeats).where(eq(rehearsalSeats.rsvpId, rsvpId));
-    return { ok: true };
-  }
-
   const [table] = await db
-    .select({ id: rehearsalTables.id })
+    .select()
     .from(rehearsalTables)
     .where(eq(rehearsalTables.id, tableId))
     .limit(1);
@@ -178,40 +235,43 @@ export async function moveGuestToTable(
     return { ok: false, error: "That table has been deleted — refresh the chart." };
   }
 
-  const existing = await db
-    .select({ rsvpId: rehearsalSeats.rsvpId })
-    .from(rehearsalSeats)
-    .where(eq(rehearsalSeats.tableId, tableId))
-    .orderBy(asc(rehearsalSeats.seatOrder));
+  if (seat < 0 || seat >= tableCapacity(toTableShape(table))) {
+    return { ok: false, error: "That seat is no longer on the table — refresh the chart." };
+  }
 
-  const ordered = existing.map((seat) => seat.rsvpId).filter((id) => id !== rsvpId);
-  ordered.splice(index === undefined ? ordered.length : Math.max(0, index), 0, rsvpId);
+  const [occupant, current] = await Promise.all([
+    db
+      .select({ rsvpId: rehearsalSeats.rsvpId })
+      .from(rehearsalSeats)
+      .where(and(eq(rehearsalSeats.tableId, tableId), eq(rehearsalSeats.seatOrder, seat)))
+      .limit(1),
+    db
+      .select({ tableId: rehearsalSeats.tableId, seat: rehearsalSeats.seatOrder })
+      .from(rehearsalSeats)
+      .where(eq(rehearsalSeats.rsvpId, rsvpId))
+      .limit(1),
+  ]);
+
+  const displaced = occupant[0]?.rsvpId ?? null;
+  const from = current[0] ?? null;
+
+  // Already in that seat — nothing to write.
+  if (displaced === rsvpId) return { ok: true };
 
   const updatedAt = new Date();
+  const moving = displaced ? [rsvpId, displaced] : [rsvpId];
 
-  await db
-    .insert(rehearsalSeats)
-    .values({ rsvpId, tableId, seatOrder: ordered.indexOf(rsvpId), updatedAt })
-    .onConflictDoUpdate({
-      target: rehearsalSeats.rsvpId,
-      set: { tableId, seatOrder: ordered.indexOf(rsvpId), updatedAt },
-    });
+  await db.delete(rehearsalSeats).where(inArray(rehearsalSeats.rsvpId, moving));
 
-  // One statement for the renumber: a CASE mapping each guest to their new seat.
-  if (ordered.length > 1) {
-    const cases = sql.join(
-      ordered.map((id, position) => sql`when ${rehearsalSeats.rsvpId} = ${id} then ${position}`),
-      sql` `
-    );
+  const values = [{ rsvpId, tableId, seatOrder: seat, updatedAt }];
 
-    await db
-      .update(rehearsalSeats)
-      .set({
-        seatOrder: sql`case ${cases} else ${rehearsalSeats.seatOrder} end`,
-        updatedAt,
-      })
-      .where(inArray(rehearsalSeats.rsvpId, ordered));
+  // A swap only has somewhere to put the occupant if the guest being moved
+  // vacated a seat; otherwise they stay unseated.
+  if (displaced && from) {
+    values.push({ rsvpId: displaced, tableId: from.tableId, seatOrder: from.seat, updatedAt });
   }
+
+  await db.insert(rehearsalSeats).values(values);
 
   return { ok: true };
 }

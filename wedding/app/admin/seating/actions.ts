@@ -8,11 +8,18 @@ import {
   clearSeatingTable,
   createSeatingTable,
   deleteSeatingTable,
-  moveGuestToTable,
   renameSeatingTable,
-  setSeatingTableSeats,
+  reshapeSeatingTable,
+  seatGuestInSeat,
+  unseatGuestById,
 } from "@/lib/seating-queries";
-import { MAX_TABLE_SEATS, MIN_TABLE_SEATS, TABLE_NAME_MAX } from "@/lib/seating";
+import {
+  MAX_SIDE_SEATS,
+  MAX_TABLE_SEATS,
+  MIN_TABLE_SEATS,
+  tableCapacity,
+  TABLE_NAME_MAX,
+} from "@/lib/seating";
 
 /**
  * Server actions behind the seating chart.
@@ -30,21 +37,45 @@ const UNAUTHORIZED = "Your admin session has expired — please sign in again.";
 
 const uuid = z.string().uuid();
 
-const tableSeatsSchema = z.object({
-  tableId: uuid,
-  seats: z.number().int().min(MIN_TABLE_SEATS).max(MAX_TABLE_SEATS),
-});
+const sideSeats = z.number().int().min(0).max(MAX_SIDE_SEATS);
 
 const renameSchema = z.object({
   tableId: uuid,
   name: z.string().trim().min(1).max(TABLE_NAME_MAX),
 });
 
-const moveSchema = z.object({
+/**
+ * A table's shape and its seats. Both layouts are always sent, so switching a
+ * table to a rectangle and back doesn't lose the per-side counts — and a
+ * table has to end up with at least one seat, since a table nobody can sit at
+ * is just clutter on the chart.
+ */
+const reshapeSchema = z
+  .object({
+    tableId: uuid,
+    shape: z.enum(["round", "rect"]),
+    seats: z.number().int().min(MIN_TABLE_SEATS).max(MAX_TABLE_SEATS),
+    sides: z.object({
+      top: sideSeats,
+      bottom: sideSeats,
+      left: sideSeats,
+      right: sideSeats,
+    }),
+  })
+  .refine((data) => tableCapacity(data) >= MIN_TABLE_SEATS, {
+    message: "A table needs at least one seat.",
+    path: ["sides"],
+  });
+
+const seatSchema = z.object({
   rsvpId: uuid,
-  /** Null means "back to the unseated list". */
-  tableId: uuid.nullable(),
-  index: z.number().int().min(0).optional(),
+  tableId: uuid,
+  /** A 0-based index into the table's seats. */
+  seat: z
+    .number()
+    .int()
+    .min(0)
+    .max(MAX_TABLE_SEATS * 4),
 });
 
 /**
@@ -62,6 +93,7 @@ const guarded = async (
   try {
     const result = await run();
     revalidatePath("/admin/seating");
+    revalidatePath("/admin/seating/print");
     return result ?? { success: true };
   } catch (error) {
     console.error("Seating chart error:", error);
@@ -90,17 +122,22 @@ export async function renameTable(input: unknown): Promise<SeatingActionResult> 
   });
 }
 
-export async function setTableSeats(input: unknown): Promise<SeatingActionResult> {
-  const parsed = tableSeatsSchema.safeParse(input);
+/** Switch a table between round and rectangular, or change its seat counts. */
+export async function reshapeTable(input: unknown): Promise<SeatingActionResult> {
+  const parsed = reshapeSchema.safeParse(input);
   if (!parsed.success) {
     return {
       success: false,
-      error: `A table can seat between ${MIN_TABLE_SEATS} and ${MAX_TABLE_SEATS} guests.`,
+      error:
+        parsed.error.errors[0]?.message ??
+        `A table seats between ${MIN_TABLE_SEATS} and ${MAX_TABLE_SEATS} guests.`,
     };
   }
 
+  const { tableId, ...shape } = parsed.data;
+
   return guarded(async () => {
-    await setSeatingTableSeats(parsed.data.tableId, parsed.data.seats);
+    await reshapeSeatingTable(tableId, shape);
   });
 }
 
@@ -131,18 +168,23 @@ export async function clearSeatingChart(): Promise<SeatingActionResult> {
   });
 }
 
-/** Drop a guest onto a table, or back onto the unseated list. */
-export async function moveGuest(input: unknown): Promise<SeatingActionResult> {
-  const parsed = moveSchema.safeParse(input);
+/** Put a guest in a specific seat, swapping with whoever is already in it. */
+export async function seatGuest(input: unknown): Promise<SeatingActionResult> {
+  const parsed = seatSchema.safeParse(input);
   if (!parsed.success) return { success: false, error: GENERIC_ERROR };
 
   return guarded(async () => {
-    const moved = await moveGuestToTable(
-      parsed.data.rsvpId,
-      parsed.data.tableId,
-      parsed.data.index
-    );
-
+    const moved = await seatGuestInSeat(parsed.data.rsvpId, parsed.data.tableId, parsed.data.seat);
     return moved.ok ? { success: true } : { success: false, error: moved.error };
+  });
+}
+
+/** Take a guest out of their seat and back to the unseated list. */
+export async function unseatGuest(input: unknown): Promise<SeatingActionResult> {
+  const parsed = uuid.safeParse(input);
+  if (!parsed.success) return { success: false, error: GENERIC_ERROR };
+
+  return guarded(async () => {
+    await unseatGuestById(parsed.data);
   });
 }

@@ -44,9 +44,11 @@ export default async function SeatingPage() {
             <FloralSprig />
             <p className="suite-label text-sage-deep">The Night Before</p>
             <h1 className="font-serif text-5xl md:text-6xl">Seating Chart</h1>
-            <p className="text-sm text-muted-foreground max-w-xl mx-auto">
-              Everyone attending the rehearsal dinner starts in the unseated list. Drag a guest onto
-              a table — or tap a guest, then tap a table — and export the CSV to send the planners.
+            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+              Everyone attending the rehearsal dinner starts in the unseated list. Add a table for
+              each one in the room, make it round or rectangular, then drop guests into the seats
+              you want them in — or tap a guest, then tap a seat. Dropping someone onto a taken seat
+              swaps the two. Send the planners the CSV, or the printable layout.
             </p>
           </div>
 
