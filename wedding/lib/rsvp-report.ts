@@ -164,5 +164,8 @@ export const rsvpRowsToCsv = (rows: readonly RsvpRow[]) =>
     ])
   );
 
+/** `YYYY-MM-DD` in the wedding's timezone — the date stamp every export filename carries. */
+export const fileDateStamp = (now: Date) => fileDateFormatter.format(now);
+
 export const csvFilename = (now: Date, event: RsvpEvent = "wedding") =>
-  `${RSVP_EVENTS[event].filePrefix}-${fileDateFormatter.format(now)}.csv`;
+  `${RSVP_EVENTS[event].filePrefix}-${fileDateStamp(now)}.csv`;

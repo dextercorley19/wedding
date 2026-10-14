@@ -186,3 +186,30 @@
     box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--sage) 22%, transparent);
   }
 }
+
+/*
+ * Print rules for the seating layout (`/admin/seating/print`), scoped to that
+ * page's wrapper so nothing else's printing changes.
+ *
+ * The browser's print dialog is the "export": a planner gets a PDF or a sheet
+ * of paper from the same layout the couple arranged on screen, so the two can't
+ * drift apart the way a separately generated file would.
+ */
+@media print {
+  .seating-print {
+    /* Keep the sage keylines and seat fills: without this, most browsers drop
+       background colours and the tables print as bare text. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* A table split across a page break is unreadable — keep each one whole. */
+  .seating-print .seating-table {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+}
+
+@page {
+  margin: 0.5in;
+}

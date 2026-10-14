@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { LogOut } from "lucide-react";
+import { LayoutGrid, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/common/Navigation";
 import { FloralSprig } from "@/components/common/Floral";
@@ -95,6 +95,19 @@ export default async function AdminPage({
           </div>
 
           <EventTabs active={event} />
+
+          {/* Seating is only planned for the night before, so the link lives on that tab. */}
+          {event === "rehearsal" && (
+            <div className="flex justify-center">
+              <Link
+                href="/admin/seating"
+                className="suite-label text-xs flex items-center gap-1.5 text-hydrangea-deep hover:underline"
+              >
+                <LayoutGrid className="w-4 h-4" aria-hidden />
+                Open seating chart
+              </Link>
+            </div>
+          )}
 
           <div
             className={cn(
