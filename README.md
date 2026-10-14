@@ -93,6 +93,28 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
     tab/search/filter server-side. Excel-safe: UTF-8 BOM and formula-injection guards.
   - Shared shaping/filter/CSV logic lives in `wedding/lib/rsvp-report.ts`, keyed by
     `RsvpEvent` (`"wedding" | "rehearsal"`)
+- **Rehearsal dinner seating chart (`/admin/seating`):** linked from the
+  **The Night Before** tab, behind the same admin password.
+  - Everyone attending the night before starts in an **unseated** list. Add a table
+    per table in the room, then place guests three ways — drag and drop, or tap a
+    guest and then "Seat here" (HTML5 drag events don't fire on touch, and the chips
+    and buttons are real buttons, so the same two taps work from a keyboard).
+    Dropping onto a seated guest inserts in front of them, so tables can be ordered.
+  - Rename a table inline, set how many it seats, empty it, or delete it — deleting
+    sends whoever sat there back to the unseated list rather than losing them.
+    A table seating more than it holds is flagged rather than refused.
+  - Each chip carries the guest's dinner selection and an allergy marker, so the
+    kitchen-relevant detail is visible while seating rather than only in the export.
+  - Moves are optimistic (`useOptimistic`) with the server's plan as the source of
+    truth, so a refused move reverts on its own.
+  - **Export CSV** → `/admin/seating/export`: one row per guest grouped by table,
+    with seat number, dinner, and allergy — the file to send the planners. Guests
+    with no seat yet are listed at the end under "Unseated" rather than omitted.
+  - Only *attending* guests can be seated; a guest who changes their reply to "no"
+    drops off the chart. Tables live in `rehearsal_tables`, one seat row per seated
+    guest in `rehearsal_seats` (unique on `rsvp_id`, so a guest can't sit twice;
+    both foreign keys cascade). Pure plan/CSV logic is in `wedding/lib/seating.ts`,
+    queries in `wedding/lib/seating-queries.ts`.
 - **Admin Excel + email export:** Run from repo root:
   ```bash
   uv run scripts-shared/export_rsvps.py
@@ -108,6 +130,7 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
 - `app/page.tsx` – the whole public site, section by section (registry + Venmo funds included)
 - `app/` – other route files (RSVP, `/nightbefore`, Admin)
 - `app/admin/` – dashboard page, login/logout actions, `export/route.ts` CSV download
+- `app/admin/seating/` – rehearsal dinner seating chart, its server actions, and CSV export
 - `components/` – shared UI, navigation, RSVP form/pw gate
 - `src/db/schema.ts` – Drizzle schema definitions
 - `scripts-shared/export_rsvps.py` (workspace root) – Neon + Gmail export utility
