@@ -112,6 +112,13 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
   - Rename a table inline, reshape it, empty it, or delete it. Shrinking a table
     or deleting one sends the affected guests back to the unseated list rather than
     refusing the edit or dropping them off the chart.
+  - **Any table opens full screen** (the expand icon on its card): one table on its
+    own, zoomed to fit the window, with the unseated list beside it so it's somewhere
+    to work rather than just somewhere to look. Zoom with −/+, or click the percentage
+    (or **Fit**) to go back to fitting the window; the fit is measured with a
+    `ResizeObserver`, so it follows the window. Escape closes it. The guest list is
+    hidden on a phone, where the table needs the room — select a guest in the chart
+    first, then open the table and tap a seat.
   - **Tables are drawn at the size their seats need** (`tableBoxRem`), not squeezed
     into a fixed card: every seat gets the same pitch whether a table seats 8 or 32,
     which is what a dinner of three 30-seat tables needs. A table too wide for the
@@ -158,6 +165,9 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
 - `app/` – other route files (RSVP, `/nightbefore`, Admin)
 - `app/admin/` – dashboard page, login/logout actions, `export/route.ts` CSV download
 - `app/admin/seating/` – seating chart, its server actions, CSV export, and `print/` layout
+- `components/admin/` – `SeatingChart` (the editor), `TableFocusView` (one table full
+  screen), `TableDiagram` (the drawing, shared with print), `SeatingPieces` (seat and
+  guest chips plus the drag plumbing, shared by the chart and the full-screen view)
 - `components/` – shared UI, navigation, RSVP form/pw gate
 - `src/db/schema.ts` – Drizzle schema definitions
 - `scripts-shared/export_rsvps.py` (workspace root) – Neon + Gmail export utility
