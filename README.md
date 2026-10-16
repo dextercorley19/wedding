@@ -139,6 +139,14 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
       saved as a PDF) from the browser, so what the planners hold is the same
       arrangement the couple made. Print rules live in `app/globals.css`, scoped to
       `.seating-print`.
+      - **Every table lands whole on the page.** Paper doesn't scroll, so a table
+        wider than the printable area used to run off the right edge and be lost.
+        `fitToPrintedPage` scales each table to the page, and a table that would
+        have to shrink a lot upright is instead turned a quarter turn to use the
+        page's long side — a 15-a-side table prints at ~67% sideways rather than
+        ~56% upright, and its heading says "turned sideways to fit". The turn lives
+        in `components/admin/PrintedTable.tsx`, so `TableDiagram` stays the one
+        thing that knows where seats go.
   - Seat geometry is defined once, in `seatSlots` (`wedding/lib/seating.ts`), and
     both the interactive chart and the printed layout draw from it via
     `components/admin/TableDiagram.tsx` — so seat 7 is the same chair in the chart,
