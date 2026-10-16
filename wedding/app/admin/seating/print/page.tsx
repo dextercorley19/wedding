@@ -3,11 +3,13 @@ import Link from "next/link";
 import { AlertTriangle, ArrowLeft } from "lucide-react";
 import { AdminLogin } from "@/components/admin/AdminLogin";
 import { PrintButton } from "@/components/admin/PrintButton";
-import { TableDiagram } from "@/components/admin/TableDiagram";
+import { diagramSizeRem } from "@/components/admin/TableDiagram";
+import { PrintedTable } from "@/components/admin/PrintedTable";
 import { isAdminAuthenticated, isAdminConfigured } from "@/lib/admin-auth";
 import { fetchSeatingPlan } from "@/lib/seating-queries";
 import { cn } from "@/lib/utils";
 import {
+  fitToPrintedPage,
   guestName,
   isWideTable,
   summarizeSeating,
@@ -97,38 +99,11 @@ export default async function SeatingPrintPage() {
                   <span className="block text-xs text-muted-foreground">
                     {TABLE_SHAPES[table.shape].label} · {table.seated.length} of{" "}
                     {tableCapacity(table)} seats
+                    {fitToPrintedPage(diagramSizeRem(table)).rotated && " · turned sideways to fit"}
                   </span>
                 </h2>
 
-                <TableDiagram
-                  table={table}
-                  renderSeat={({ seat, guest }) => (
-                    <div
-                      className={
-                        guest
-                          ? "w-full px-1 py-1 rounded-sm border border-sage/50 bg-background text-center text-[0.6rem] leading-tight"
-                          : "w-full px-1 py-1 rounded-sm border border-dashed border-sage/30 text-center text-[0.6rem] text-muted-foreground"
-                      }
-                    >
-                      {guest ? (
-                        <>
-                          <span className="block font-medium">{guestName(guest)}</span>
-                          <span className="flex items-center justify-center gap-0.5 text-muted-foreground">
-                            <span className="truncate">{guest.mealName ?? "No dinner"}</span>
-                            {guest.allergyNotes && (
-                              <AlertTriangle
-                                className="w-2.5 h-2.5 shrink-0 text-hydrangea-deep"
-                                aria-hidden
-                              />
-                            )}
-                          </span>
-                        </>
-                      ) : (
-                        <span>Seat {seat + 1}</span>
-                      )}
-                    </div>
-                  )}
-                />
+                <PrintedTable table={table} />
               </section>
             ))}
           </div>

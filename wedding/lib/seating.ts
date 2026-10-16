@@ -231,6 +231,48 @@ export const tableBoxRem = (table: Pick<SeatingTable, "shape" | "seats" | "sides
 };
 
 /**
+ * The printable area of a US Letter page at the 0.5in margins `@page` sets,
+ * in `rem` (1rem = 16px and CSS prints at 96dpi, so an inch is 6rem).
+ *
+ * The height leaves room for the table's heading above the drawing, so a
+ * table scaled to this still has somewhere to put its name.
+ */
+export const PRINT_PAGE_REM = { width: 45, height: 54 } as const;
+
+export type PrintFit = {
+  /** Zoom to draw the table at so the whole of it lands on the page. */
+  scale: number;
+  /** Whether it is turned a quarter turn to use the page's long side. */
+  rotated: boolean;
+};
+
+/**
+ * How to get a whole table onto a printed page.
+ *
+ * Paper doesn't scroll, so a table wider than the page is simply cut off —
+ * which is what a 15-a-side banquet table did. Scaling it down always fits it,
+ * but a long table squeezed into the short side of the page ends up tiny, so a
+ * table that would have to shrink a lot is turned on its side to use the
+ * page's long side instead, the way you'd turn the paper to read it.
+ *
+ * Turning it costs something — the names read sideways — so it only happens
+ * when the table is genuinely cramped upright *and* turning buys a materially
+ * bigger drawing. A table that already fits is left alone at full size.
+ */
+export const fitToPrintedPage = (
+  size: { width: number; height: number },
+  page: { width: number; height: number } = PRINT_PAGE_REM
+): PrintFit => {
+  const upright = Math.min(1, page.width / size.width, page.height / size.height);
+  // Turned a quarter turn, the table's width runs down the page.
+  const turned = Math.min(1, page.height / size.width, page.width / size.height);
+
+  return upright < 0.8 && turned >= upright * 1.15
+    ? { scale: turned, rotated: true }
+    : { scale: upright, rotated: false };
+};
+
+/**
  * Whether a table needs a row of the chart to itself.
  *
  * A long banquet table in a third-width card is unreadable, while a round of
