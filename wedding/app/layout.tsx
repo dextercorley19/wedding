@@ -2,7 +2,6 @@ import type React from "react";
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Geist_Mono, Pinyon_Script, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { GlobalPasswordGate } from "@/components/common/GlobalPasswordGate";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -65,7 +64,7 @@ export default function RootLayout({
       className={`${cormorant.variable} ${geistMono.variable} ${playfair.variable} ${pinyon.variable}`}
     >
       <body className="font-sans antialiased">
-        <GlobalPasswordGate>{children}</GlobalPasswordGate>
+        {children}
         <Analytics />
       </body>
     </html>

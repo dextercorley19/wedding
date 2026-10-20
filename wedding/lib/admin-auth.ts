@@ -4,10 +4,9 @@ import { cookies } from "next/headers";
 /**
  * Admin auth for the RSVP dashboard.
  *
- * The guest-facing gate (`GlobalPasswordGate`) checks a `NEXT_PUBLIC_` password
- * in the browser, which is fine for a "don't index this" curtain but useless
- * for guest contact details. Admin access is therefore checked on the server
- * with a password that never reaches the client bundle.
+ * The guest-facing pages are public, but the dashboard exposes guest contact
+ * details, so admin access is checked on the server with a password that never
+ * reaches the client bundle.
  */
 
 export const ADMIN_COOKIE = "wedding-admin";

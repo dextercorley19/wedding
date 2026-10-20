@@ -8,8 +8,7 @@ import { FloralSprig } from "@/components/common/Floral";
  *
  * Not a subset of the wedding guest list: the URL is shared only with the
  * people who are invited, so nothing on the site links here and the page asks
- * search engines not to index it. (The guest password gate in the root layout
- * still applies, same as every other public page.)
+ * search engines not to index it.
  */
 export const metadata: Metadata = {
   title: "The Night Before | Sami & Dexter",

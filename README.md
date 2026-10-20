@@ -5,7 +5,7 @@ Customer-facing wedding site + RSVP flow for Dexter & Sami. Built with **Next.js
 ## Stack
 - **Frontend:** Next.js App Router, Tailwind 4, shadcn components
 - **Database:** Neon PostgreSQL (serverless) accessed via Drizzle ORM
-- **Auth:** Simple password gate for RSVP (no guest accounts)
+- **Auth:** None for guests — the site and RSVP are public (no guest accounts); `/admin` is password-gated on the server
 - **Admin tooling:** Excel export + Gmail delivery via root-level `scripts-shared/export_rsvps.py`
 
 ## Linting & Formatting
@@ -24,8 +24,7 @@ The build script (`bun run build`) automatically runs `drizzle-kit push --force`
 ```env
 DATABASE_URL="postgresql://user:password@region.neon.tech/dbname?sslmode=require&channel_binding=require"
 NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_RSVP_PASSWORD=<password shown to invitees>
-ADMIN_PASSWORD=<password for /admin — server-only, keep it different from the guest one>
+ADMIN_PASSWORD=<password for /admin — server-only, never prefix with NEXT_PUBLIC_>
 ```
 Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the real value.
 
@@ -45,7 +44,6 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
   `.suite-frame` / `.suite-label` / `.suite-script` helpers; the floral SVG motifs are
   in `components/common/Floral.tsx`.
 - **RSVP flow:**
-  - Password gate (`components/rsvp/PasswordGate.tsx`)
   - Add multiple guests before submitting
   - Dinner selection per attending guest — each event's menu is defined once in
     `src/db/zod/schema.ts` (`MEAL_OPTIONS` for the wedding, `REHEARSAL_MEAL_OPTIONS`
@@ -80,8 +78,7 @@ Keep `DATABASE_URL` in 1Password (vault: "son of anton") and never commit the re
     events independently
 - **Admin dashboard (`/admin`):**
   - Password-gated on the server with `ADMIN_PASSWORD` (guest contact details never
-    reach the client bundle unauthenticated) — the guest gate steps aside on `/admin`
-    so only the admin password is needed. Session is a 12-hour httpOnly cookie.
+    reach the client bundle unauthenticated). Session is a 12-hour httpOnly cookie.
   - Two tabs — **Wedding** (`/admin`) and **The Night Before** (`/admin?event=rehearsal`).
     Each tab is its own server render, so a tab is a shareable URL.
   - Response counts, attending/declined split, and per-dinner totals for whichever
