@@ -1,6 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Calendar, MapPin, Clock, Coffee, ExternalLink, Heart, Utensils, Wine } from "lucide-react";
+import {
+  Bus,
+  Calendar,
+  MapPin,
+  Clock,
+  Coffee,
+  ExternalLink,
+  Heart,
+  Utensils,
+  Wine,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/common/Navigation";
 import { FloralCorner, FloralDivider, FloralSprig } from "@/components/common/Floral";
@@ -35,6 +45,32 @@ export default function Home() {
           <p className="suite-label mt-4 text-white/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.5)]">
             October 24, 2026 — Newport Beach, California
           </p>
+          {/* Jumps to the two things guests ask about most. Glassy rather than
+              solid so the photo still reads through them. */}
+          <div className="mx-auto mt-8 flex w-full max-w-md flex-col items-center gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="w-full border-white/70 bg-white/15 text-white backdrop-blur-sm hover:bg-white/25 hover:text-white sm:w-auto"
+            >
+              <Link href="/#shuttle">
+                <Bus aria-hidden="true" />
+                Shuttle Schedule
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="w-full border-white/70 bg-white/15 text-white backdrop-blur-sm hover:bg-white/25 hover:text-white sm:w-auto"
+            >
+              <Link href="/#wedding-walk">
+                <Coffee aria-hidden="true" />
+                Coffee Walk
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -198,7 +234,7 @@ export default function Home() {
             </div>
 
             {/* Wedding Walk */}
-            <div className="suite-frame p-8 sm:p-10 space-y-4">
+            <div id="wedding-walk" className="suite-frame scroll-mt-28 p-8 sm:p-10 space-y-4">
               <div className="relative space-y-4">
                 <Coffee className="w-7 h-7 text-hydrangea" aria-hidden="true" />
                 <h3 className="suite-script text-3xl">
@@ -323,6 +359,13 @@ export default function Home() {
               </ul>
               <p className="text-muted-foreground leading-relaxed">
                 Rideshare (Uber/Lyft) is readily available.
+              </p>
+            </div>
+            <div id="shuttle" className="scroll-mt-28 space-y-4">
+              <h3 className="suite-script text-3xl">Wedding Shuttle</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                We&rsquo;re running a shuttle on the wedding day. Pickup locations and times are
+                still being finalized — the full schedule will be posted here before the weekend.
               </p>
             </div>
             <div className="space-y-4">
