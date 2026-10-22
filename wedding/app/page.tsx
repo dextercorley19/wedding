@@ -480,8 +480,8 @@ export default function Home() {
             <div className="space-y-4">
               <h3 className="suite-script text-3xl">Where to Stay</h3>
               <p className="text-muted-foreground leading-relaxed">
-                We have a limited room block at the Newport Beach Marriott. Use the link below to
-                reserve your room under the Corley/Colleran wedding rate.
+                We have a limited room block at the {HOTEL}. Use the link below to reserve your room
+                under the Corley/Colleran wedding rate.
               </p>
               <Button asChild className="w-full md:w-auto">
                 <a
