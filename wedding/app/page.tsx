@@ -218,10 +218,15 @@ export default function Home() {
                   </div>
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-1 shrink-0 text-sage" />
-                    <div>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=Reborn+Coffee+Newport+Beach+CA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline-offset-4 hover:underline"
+                    >
                       <p className="font-medium text-foreground">Reborn Coffee</p>
                       <p className="text-sm">Newport Beach, CA</p>
-                    </div>
+                    </a>
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed">
