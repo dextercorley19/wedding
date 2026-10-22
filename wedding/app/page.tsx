@@ -17,6 +17,71 @@ import { FloralCorner, FloralDivider, FloralSprig } from "@/components/common/Fl
 import { AllergyDialog } from "@/components/rsvp/AllergyDialog";
 import { VENMO_HANDLE, venmoPaymentUrl } from "@/lib/venmo";
 
+// Pickup points, named once so every run below reads the same.
+const HOTEL = "Courtyard Marriott John Wayne";
+const NBCC = "Newport Beach Country Club";
+const BYC = "Balboa Yacht Club";
+const REBORN = "Reborn Coffee";
+const DRYBAR = "Dry Bar Fashion Island";
+
+/*
+ * Shuttle runs, straight from the transport schedule. Arrival times are the
+ * ones the schedule lists rather than departure plus duration, since a few of
+ * them build in slack.
+ */
+const SHUTTLE_SCHEDULE = [
+  {
+    title: "Friday, October 23",
+    note: "The outbound runs are for the wedding party. Welcome Drinks guests, please Uber or Lyft to Balboa Yacht Club \u2014 the shuttle will bring you back to the hotel afterward.",
+    runs: [
+      { time: "3:25 PM", from: HOTEL, to: NBCC, arrive: "3:45 PM", note: "Wedding party" },
+      { time: "4:45 PM", from: NBCC, to: BYC, arrive: "4:50 PM", note: "Wedding party" },
+      { time: "8:30 PM", from: BYC, to: HOTEL, arrive: "8:50 PM" },
+      { time: "8:55 PM", from: HOTEL, to: BYC, arrive: "9:15 PM" },
+      { time: "9:30 PM", from: BYC, to: HOTEL, arrive: "9:50 PM" },
+      { time: "9:55 PM", from: HOTEL, to: BYC, arrive: "10:15 PM" },
+      { time: "10:15 PM", from: BYC, to: HOTEL, arrive: "10:50 PM", note: "Last run of the night" },
+    ],
+  },
+  {
+    title: "Saturday morning, October 24",
+    note: "For the coffee walk. Directions are handed out at Reborn \u2014 it\u2019s a self-guided walk, so come and go on whichever run suits you.",
+    runs: [
+      { time: "7:30 AM", from: HOTEL, to: REBORN, arrive: "7:50 AM" },
+      { time: "7:55 AM", from: REBORN, to: HOTEL, arrive: "8:15 AM" },
+      { time: "8:30 AM", from: HOTEL, to: REBORN, arrive: "8:50 AM" },
+      { time: "8:55 AM", from: REBORN, to: HOTEL, arrive: "9:15 AM" },
+      { time: "9:30 AM", from: HOTEL, to: REBORN, arrive: "9:50 AM" },
+      { time: "9:55 AM", from: REBORN, to: HOTEL, arrive: "10:15 AM" },
+      { time: "10:30 AM", from: HOTEL, to: DRYBAR, arrive: "10:46 AM" },
+      { time: "10:51 AM", from: DRYBAR, to: REBORN, arrive: "10:56 AM", note: "Last coffee run" },
+      { time: "11:01 AM", from: REBORN, to: HOTEL, arrive: "11:21 AM" },
+      { time: "11:30 AM", from: HOTEL, to: REBORN, arrive: "11:50 AM" },
+      { time: "11:55 AM", from: REBORN, to: HOTEL, arrive: "12:15 PM" },
+      { time: "12:20 PM", from: HOTEL, to: DRYBAR, arrive: "12:40 PM" },
+      { time: "12:45 PM", from: DRYBAR, to: HOTEL, arrive: "1:05 PM" },
+    ],
+  },
+  {
+    title: "Saturday afternoon and evening, October 24",
+    note: "Wedding guests, the 3:50 PM run is yours. The earlier runs are for the groomsmen and family.",
+    runs: [
+      { time: "1:50 PM", from: HOTEL, to: NBCC, arrive: "2:10 PM", note: "Groomsmen" },
+      { time: "2:15 PM", from: NBCC, to: HOTEL, arrive: "2:35 PM" },
+      { time: "2:40 PM", from: HOTEL, to: NBCC, arrive: "3:00 PM", note: "Family, immediate and extended" },
+      { time: "3:05 PM", from: NBCC, to: HOTEL, arrive: "3:25 PM" },
+      { time: "3:50 PM", from: HOTEL, to: NBCC, arrive: "4:10 PM", note: "Wedding guests" },
+      { time: "8:30 PM", from: NBCC, to: HOTEL, arrive: "8:50 PM" },
+      { time: "8:55 PM", from: HOTEL, to: NBCC, arrive: "9:15 PM" },
+      { time: "9:30 PM", from: NBCC, to: HOTEL, arrive: "9:50 PM" },
+      { time: "9:55 PM", from: HOTEL, to: NBCC, arrive: "10:15 PM" },
+      { time: "10:30 PM", from: NBCC, to: HOTEL, arrive: "10:50 PM", note: "Grand exit is at 10:20 PM" },
+      { time: "10:50 PM", from: HOTEL, to: NBCC, arrive: "11:15 PM", note: "If needed" },
+      { time: "11:15 PM", from: NBCC, to: HOTEL, arrive: "11:30 PM", note: "Last trip if needed" },
+    ],
+  },
+];
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
@@ -361,12 +426,44 @@ export default function Home() {
                 Rideshare (Uber/Lyft) is readily available.
               </p>
             </div>
-            <div id="shuttle" className="scroll-mt-28 space-y-4">
+            <div id="shuttle" className="scroll-mt-28 space-y-6">
               <h3 className="suite-script text-3xl">Wedding Shuttle</h3>
               <p className="text-muted-foreground leading-relaxed">
-                We&rsquo;re running a shuttle on the wedding day. Pickup locations and times are
-                still being finalized — the full schedule will be posted here before the weekend.
+                We&rsquo;re running a shuttle Friday and Saturday between the Courtyard Marriott
+                John Wayne and the weekend&rsquo;s events. Times below are departures, so please be
+                at the pickup a few minutes early.
               </p>
+              <div className="space-y-6">
+                {SHUTTLE_SCHEDULE.map((day) => (
+                  <div key={day.title} className="suite-frame p-6 sm:p-8">
+                    <div className="relative space-y-5">
+                      <div className="space-y-2">
+                        <h4 className="suite-script text-2xl">{day.title}</h4>
+                        <p className="text-sm leading-relaxed text-muted-foreground">{day.note}</p>
+                      </div>
+                      <ul className="space-y-3">
+                        {day.runs.map((run) => (
+                          <li
+                            key={`${day.title}-${run.time}-${run.to}`}
+                            className="grid gap-x-4 border-t border-sage/20 pt-3 sm:grid-cols-[6.5rem_1fr]"
+                          >
+                            <p className="font-medium text-foreground">{run.time}</p>
+                            <div>
+                              <p className="text-muted-foreground">
+                                {run.from} <span className="text-sage">&rarr;</span> {run.to}
+                              </p>
+                              <p className="text-sm text-muted-foreground/80">
+                                Arrives {run.arrive}
+                                {run.note ? ` \u00b7 ${run.note}` : ""}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="space-y-4">
               <h3 className="suite-script text-3xl">Where to Stay</h3>
